@@ -53,7 +53,16 @@
 				}
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/dynamic/index/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"subPackages": [{
 			"root": "pages/componentsC",
 			"pages": [
@@ -846,21 +855,27 @@
 		"borderStyle": "black",
 		"list": [{
 				"pagePath": "pages/example/components",
-				"iconPath": "static/uview/example/component.png",
-				"selectedIconPath": "static/uview/example/component_select.png",
-				"text": "组件"
+				"iconPath": "static/ico/首页_动态灰.png",
+				"selectedIconPath": "static/ico/首页_动态亮.png",
+				"text": "动态"
 			},
 			{
 				"pagePath": "pages/example/js",
-				"iconPath": "static/uview/example/js.png",
-				"selectedIconPath": "static/uview/example/js_select.png",
-				"text": "工具"
+				"iconPath": "static/ico/活动.png",
+				"selectedIconPath": "static/ico/活动选中.png",
+				"text": "活动"
 			},
 			{
 				"pagePath": "pages/example/template",
-				"iconPath": "static/uview/example/template.png",
-				"selectedIconPath": "static/uview/example/template_select.png",
-				"text": "模板"
+				"iconPath": "static/ico/骑行.png",
+				"selectedIconPath": "static/ico/骑行选中.png",
+				"text": "骑行"
+			},
+			{
+				"pagePath": "pages/example/template",
+				"iconPath": "static/ico/我的.png",
+				"selectedIconPath": "static/ico/我的选中.png",
+				"text": "我的"
 			}
 		]
 	}
