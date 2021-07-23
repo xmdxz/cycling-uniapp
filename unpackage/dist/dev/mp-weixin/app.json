@@ -1,145 +1,8 @@
 {
   "pages": [
-    "pages/example/components",
-    "uview-ui/components/u-avatar-cropper/u-avatar-cropper",
-    "pages/example/js",
-    "pages/example/template",
-    "uview-ui/components/u-full-screen/u-full-screen",
     "pages/dynamic/index/index"
   ],
-  "subPackages": [
-    {
-      "root": "pages/componentsC",
-      "pages": [
-        "test/index",
-        "gap/index",
-        "subsection/index",
-        "section/index",
-        "link/index",
-        "mask/index",
-        "countTo/index",
-        "color/index",
-        "countDown/index",
-        "progress/index",
-        "alertTips/index",
-        "badge/index",
-        "button/index",
-        "collapse/index",
-        "actionSheet/index",
-        "messageInput/index",
-        "popup/index",
-        "cell/index",
-        "numberBox/index",
-        "grid/index",
-        "layout/index",
-        "loadmore/index"
-      ]
-    },
-    {
-      "root": "pages/template",
-      "pages": [
-        "wxCenter/index",
-        "keyboardPay/index",
-        "mallMenu/index2",
-        "mallMenu/index1",
-        "coupon/index",
-        "login/index",
-        "citySelect/index",
-        "submitBar/index",
-        "comment/index",
-        "comment/reply",
-        "order/index",
-        "login/code",
-        "address/index",
-        "address/addSite"
-      ]
-    },
-    {
-      "root": "pages/library",
-      "pages": [
-        "debounce/index",
-        "deepClone/index",
-        "deepMerge/index",
-        "getRect/index",
-        "timeFrom/index",
-        "globalVariable/globalData",
-        "globalVariable/prototype",
-        "globalVariable/vuex",
-        "globalVariable/index",
-        "http/index",
-        "test/index",
-        "mpShare/index",
-        "color/index",
-        "trim/index",
-        "random/index",
-        "md5/index",
-        "colorSwitch/index",
-        "randomArray/index",
-        "guid/index",
-        "timeFormat/index",
-        "route/index",
-        "route/routeTo",
-        "queryParams/index"
-      ]
-    },
-    {
-      "root": "pages/componentsA",
-      "pages": [
-        "parse/index",
-        "backTop/index",
-        "calendar/index",
-        "form/index",
-        "select/index",
-        "slider/index",
-        "fullScreen/index",
-        "navbar/index",
-        "field/index",
-        "modal/index",
-        "indexList/index",
-        "empty/index",
-        "avatarCropper/index",
-        "noNetwork/index",
-        "icon/index",
-        "avatar/index",
-        "keyboard/index",
-        "lazyLoad/index",
-        "tabs/index",
-        "tag/index",
-        "timeLine/index",
-        "toast/index",
-        "topTips/index",
-        "verificationCode/index"
-      ]
-    },
-    {
-      "root": "pages/componentsB",
-      "pages": [
-        "dropdown/index",
-        "tabbar/index",
-        "line/index",
-        "image/index",
-        "card/index",
-        "divider/index",
-        "picker/index",
-        "noticeBar/index",
-        "checkbox/index",
-        "radio/index",
-        "loading/index",
-        "switch/index",
-        "skeleton/index",
-        "upload/index",
-        "waterfall/index",
-        "table/index",
-        "rate/index",
-        "readMore/index",
-        "search/index",
-        "steps/index",
-        "sticky/index",
-        "swiper/index",
-        "swipeAction/index"
-      ]
-    }
-  ],
+  "subPackages": [],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uView",
@@ -153,40 +16,30 @@
     "borderStyle": "black",
     "list": [
       {
-        "pagePath": "pages/example/components",
+        "pagePath": "pages/dynamic/index/index",
         "iconPath": "static/ico/首页_动态灰.png",
         "selectedIconPath": "static/ico/首页_动态亮.png",
         "text": "动态"
       },
       {
-        "pagePath": "pages/example/js",
+        "pagePath": "pages/dynamic/index/index",
         "iconPath": "static/ico/活动.png",
         "selectedIconPath": "static/ico/活动选中.png",
         "text": "活动"
       },
       {
-        "pagePath": "pages/example/template",
+        "pagePath": "pages/dynamic/index/index",
         "iconPath": "static/ico/骑行.png",
         "selectedIconPath": "static/ico/骑行选中.png",
         "text": "骑行"
       },
       {
-        "pagePath": "pages/example/template",
+        "pagePath": "pages/dynamic/index/index",
         "iconPath": "static/ico/我的.png",
         "selectedIconPath": "static/ico/我的选中.png",
         "text": "我的"
       }
     ]
-  },
-  "preloadRule": {
-    "pages/example/components": {
-      "network": "all",
-      "packages": [
-        "pages/componentsA",
-        "pages/componentsB",
-        "pages/componentsC"
-      ]
-    }
   },
   "usingComponents": {}
 }

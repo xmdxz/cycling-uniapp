@@ -1,6 +1,6 @@
 {
     "name" : "Cycling-Uniapp",
-    "appid" : "",
+    "appid" : "__UNI__290860E",
     "description" : "多平台快速开发的UI框架",
     "versionName" : "1.8.4",
     "versionCode" : "100",
@@ -93,9 +93,9 @@
     },
     "quickapp" : {},
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wx7452280dfb5fd676",
         "setting" : {
-            "urlCheck" : true,
+            "urlCheck" : false,
             "es6" : false,
             "minified" : true,
             "postcss" : true

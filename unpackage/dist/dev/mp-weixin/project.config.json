@@ -4,14 +4,14 @@
     "ignore": []
   },
   "setting": {
-    "urlCheck": true,
+    "urlCheck": false,
     "es6": false,
     "minified": true,
     "postcss": true
   },
   "compileType": "miniprogram",
   "libVersion": "",
-  "appid": "touristappid",
+  "appid": "wx7452280dfb5fd676",
   "projectname": "Cycling-Uniapp",
   "condition": {
     "search": {
