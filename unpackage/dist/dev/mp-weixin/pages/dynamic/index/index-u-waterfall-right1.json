@@ -1,0 +1,22 @@
+{
+  "component": true,
+  "usingComponents": {
+    "index-u-waterfall-left": "/pages/dynamic/index/index-u-waterfall-left",
+    "index-u-waterfall-right": "/pages/dynamic/index/index-u-waterfall-right",
+    "index-u-waterfall-left1": "/pages/dynamic/index/index-u-waterfall-left1",
+    "index-u-waterfall-right1": "/pages/dynamic/index/index-u-waterfall-right1",
+    "u-tabs-swiper": "/uview-ui/components/u-tabs-swiper/u-tabs-swiper",
+    "u-line": "/uview-ui/components/u-line/u-line",
+    "u-avatar": "/uview-ui/components/u-avatar/u-avatar",
+    "u-grid": "/uview-ui/components/u-grid/u-grid",
+    "u-grid-item": "/uview-ui/components/u-grid-item/u-grid-item",
+    "u-icon": "/uview-ui/components/u-icon/u-icon",
+    "u-swiper": "/uview-ui/components/u-swiper/u-swiper",
+    "u-notice-bar": "/uview-ui/components/u-notice-bar/u-notice-bar",
+    "u-section": "/uview-ui/components/u-section/u-section",
+    "u-image": "/uview-ui/components/u-image/u-image",
+    "u-waterfall": "/uview-ui/components/u-waterfall/u-waterfall",
+    "u-lazy-load": "/uview-ui/components/u-lazy-load/u-lazy-load",
+    "u-loadmore": "/uview-ui/components/u-loadmore/u-loadmore"
+  }
+}

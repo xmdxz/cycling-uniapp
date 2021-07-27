@@ -16,7 +16,7 @@
 		    "path" : "pages/dynamic/index/index",
 		    "style" :                                                                                    
 		    {
-		        "navigationBarTitleText": "动态",
+		        "navigationBarTitleText": "",
 		        "enablePullDownRefresh": false
 		    }
 		    
