@@ -2,36 +2,27 @@
 	<view>
 		<view class="content-item">
 			<view class="content-header">
-				<u-avatar :src="src" style="vertical-align: middle;"></u-avatar>
+				<u-avatar :src="avatar" style="vertical-align: middle;"></u-avatar>
 				<view class="content-authorinfo">
-				<text class="content-user">官方账号</text>
-				<text class="content-level">等级</text>
+				<text class="content-user">{{contentuser}}</text>
+				<text class="content-level">{{contentlevel}}</text>
 				</view>
 			</view>
 			<view class="content-text">
-				周末骑行游览邹默到货时间卡的事数据库大开大合撒娇啊斯柯达斯柯达接口的数据啊来得及爱上了
+				{{contenttext}}
 			</view>
 			<view class="content-imgs">
-				<image :src="src" class="content-img"></image>
-				<image :src="src" class="content-img"></image>
-				<image :src="src" class="content-img"></image>
+				<image v-for="(item,index) in imgs" :src="item" :key="index" class="content-img"></image>
 			</view>
 			<view class="content-time">
-				<text>发布于:2021年7月26日8时49分</text>
+				<text>{{contenttime}}</text>
 			</view>
 			<view class="content-comment">
-				<view class="comment-item">
-					<view class="comment-user">张三:</view>
-					<view class="comment-text">大力支持,哈哈哈好,真不错十大手机端卡萨丁哈萨克交会对接卡刷 的哈数据库的就撒测试的爱神的箭撒和大家看挥洒接口的哈数据库动环监控撒谎登记卡会尽快</view>
+				<view class="comment-item" v-for="(item,index) in commentitems" :key="index">
+					<view class="comment-user">{{item.user}}:</view>
+					<view class="comment-text">{{item.text}}</view>
 				</view>
-				<view class="comment-item">
-					<view class="comment-user">张三:</view>
-					<view class="comment-text">大力支持,哈哈哈好</view>
-				</view>
-				<view class="comment-item">
-					<view class="comment-user">张三:</view>
-					<view class="comment-text">大力支持</view>
-				</view>
+				
 			</view>
 			<view class="content-menu">
 				<u-grid :col="3" :border="false">
@@ -54,6 +45,7 @@
 <script>
 	export default {
 		name:"attentionitem",
+		props:['avatar','contentuser','contentlevel','imgs','contenttext','contenttime','commentitems'],
 		data() {
 			return {
 				

@@ -12,7 +12,16 @@
 						<scroll-view scroll-y style="height: 100%;width: 100%;margin-top: 20upx;">
 							<view class="swiper-div">
 								<view class="content">
-									<view class="content-item">
+									<attentionitem :avatar="src" contentuser="admin" contentlevel="王者" 
+									contenttext="今日西湖边骑行,神清气爽!"
+									contenttime="发布时间:2021年7月28号13时40分" :imgs="imgList"></attentionitem>
+									<attentionitem :avatar="src" contentuser="admin" contentlevel="王者"
+									contenttext="今日西湖边骑行,神清气爽!"
+									contenttime="发布时间:2021年7月28号13时40分" :imgs="imgList"></attentionitem>
+									<attentionitem :avatar="src" contentuser="admin" contentlevel="王者"
+									contenttext="今日西湖边骑行,神清气爽!"
+									contenttime="发布时间:2021年7月28号13时40分" :imgs="imgList"></attentionitem>
+<!-- 									<view class="content-item">
 										<view class="content-header">
 											<u-avatar :src="src" style="vertical-align: middle;"></u-avatar>
 											<view class="content-authorinfo">
@@ -59,7 +68,7 @@
 												</u-grid>
 										</view>
 										<view class="diver" style="width: 100%;height: 25upx;background-color: #DCDFE6;"></view>
-									</view>
+									</view> -->
 								</view>
 							</view>
 						</scroll-view>
@@ -177,7 +186,11 @@
 </template>
 
 <script>
+	import attentionitem from "../../../components/attentionitem.vue"
 	export default {
+		components:{
+			attentionitem
+		},
 		data() {
 			return {
 				list: [{
