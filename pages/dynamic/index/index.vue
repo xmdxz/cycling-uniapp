@@ -11,7 +11,7 @@
 					<swiper-item class="swiper-item">
 						<scroll-view scroll-y style="height: 100%;width: 100%;margin-top: 20upx;">
 							<view class="swiper-div">
-								<view class="content">
+								<view class="content" style="margin-bottom: 100upx;">
 									<attentionitem :avatar="src" contentuser="admin" contentlevel="王者" 
 									contenttext="今日西湖边骑行,神清气爽!"
 									contenttime="发布时间:2021年7月28号13时40分" :imgs="imgList"></attentionitem>
@@ -21,54 +21,10 @@
 									<attentionitem :avatar="src" contentuser="admin" contentlevel="王者"
 									contenttext="今日西湖边骑行,神清气爽!"
 									contenttime="发布时间:2021年7月28号13时40分" :imgs="imgList"></attentionitem>
-<!-- 									<view class="content-item">
-										<view class="content-header">
-											<u-avatar :src="src" style="vertical-align: middle;"></u-avatar>
-											<view class="content-authorinfo">
-											<text class="content-user">官方账号</text>
-											<text class="content-level">等级</text>
-											</view>
-										</view>
-										<view class="content-text">
-											周末骑行游览邹默到货时间卡的事数据库大开大合撒娇啊斯柯达斯柯达接口的数据啊来得及爱上了
-										</view>
-										<view class="content-imgs">
-											<image :src="src" class="content-img"></image>
-											<image :src="src" class="content-img"></image>
-											<image :src="src" class="content-img"></image>
-										</view>
-										<view class="content-time">
-											<text>发布于:2021年7月26日8时49分</text>
-										</view>
-										<view class="content-comment">
-											<view class="comment-item">
-												<view class="comment-user">张三:</view>
-												<view class="comment-text">大力支持,哈哈哈好,真不错十大手机端卡萨丁哈萨克交会对接卡刷 的哈数据库的就撒测试的爱神的箭撒和大家看挥洒接口的哈数据库动环监控撒谎登记卡会尽快</view>
-											</view>
-											<view class="comment-item">
-												<view class="comment-user">张三:</view>
-												<view class="comment-text">大力支持,哈哈哈好</view>
-											</view>
-											<view class="comment-item">
-												<view class="comment-user">张三:</view>
-												<view class="comment-text">大力支持</view>
-											</view>
-										</view>
-										<view class="content-menu">
-											<u-grid :col="3" :border="false">
-													<u-grid-item>
-														<u-icon name="heart" :size="30"></u-icon>
-													</u-grid-item>
-													<u-grid-item>
-														<u-icon name="more-circle" :size="30"></u-icon>
-													</u-grid-item>
-													<u-grid-item>
-														<u-icon name="share" :size="30"></u-icon>
-													</u-grid-item>
-												</u-grid>
-										</view>
-										<view class="diver" style="width: 100%;height: 25upx;background-color: #DCDFE6;"></view>
-									</view> -->
+									<attentionitem :avatar="src" contentuser="admin" contentlevel="王者"
+									contenttext="今日西湖边骑行,神清气爽!"
+									contenttime="发布时间:2021年7月28号13时40分" :imgs="imgList"></attentionitem>
+
 								</view>
 							</view>
 						</scroll-view>
@@ -162,10 +118,11 @@
 												</view>
 											</template>
 										</u-waterfall>
-										<!-- 加载更多 -->
-										<u-loadmore bg-color="rgb(240, 240, 240)" :status="loadStatus" @loadmore="addRandomData">
-										</u-loadmore>
+										
 									</view>
+									<!-- 加载更多 -->
+									<u-loadmore bg-color="rgb(240, 240, 240)" :status="loadStatus" @loadmore="addRandomData">
+									</u-loadmore>
 								</view>
 								
 							</view>
@@ -173,9 +130,11 @@
 					</swiper-item>
 					<!-- 当选中附近标签时显示 -->
 					<swiper-item class="swiper-item">
-						<scroll-view scroll-y style="width: 100%;margin-top: 20upx;">
-							<view class="swiper-div">
-								
+						<scroll-view scroll-y style="width: 100%;margin-top: 20upx;margin-bottom: 100upx;" @scrolltolower="onreachBottomTwo">
+							<view class="swiper-div u-margin-20">
+								<attentionitem :avatar="src" contentuser="admin" contentlevel="骑行王者"
+								contenttext="今日西湖边骑行,神清气爽!"
+								contenttime="发布时间:2021年7月28号13时40分" :imgs="imgList"></attentionitem>
 							</view>
 						</scroll-view>
 					</swiper-item>
@@ -187,9 +146,11 @@
 
 <script>
 	import attentionitem from "../../../components/attentionitem.vue"
+	import waterfalls from "../../../components/waterfalls.vue"
 	export default {
 		components:{
-			attentionitem
+			attentionitem,
+			waterfalls
 		},
 		data() {
 			return {
@@ -315,11 +276,11 @@
 				swiperCurrent: 0,
 				src: '/static/img/topicimg.jpg',
 				loadStatus: 'loadmore',
-				loadStatusTwo: 'loadmore'
 			}
 		},
 		onLoad() {
 			this.addRandomData()
+			
 		},
 		// onReachBottom() {
 		// 	this.loadStatus = 'loading'
@@ -338,6 +299,7 @@
 					this.loadStatus = 'loadmore'
 				}, 1000)
 			},
+			
 			// tabs通知swiper切换
 			tabsChange(index) {
 				this.swiperCurrent = index;
@@ -357,7 +319,7 @@
 			},
 			addRandomData() {
 				for (let i = 0; i < 10; i++) {
-					let index = this.$u.random(0, this.list.length - 1);
+					let index = this.$u.random(0, this.contentList.length - 1);
 					// 先转成字符串再转成对象，避免数组对象引用导致数据混乱
 					let item = JSON.parse(JSON.stringify(this.contentList[index]))
 					// item.id = this.$u.guid();
@@ -365,6 +327,7 @@
 				}
 				// console.log(this.flowList)
 			},
+			
 		}
 	}
 </script>

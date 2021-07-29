@@ -1,6 +1,7 @@
 {
   "pages": [
-    "pages/dynamic/index/index"
+    "pages/dynamic/index/index",
+    "pages/dynamic/dynamicdetail"
   ],
   "subPackages": [],
   "window": {
@@ -41,6 +42,5 @@
       }
     ]
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap.json"
+  "usingComponents": {}
 }

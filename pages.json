@@ -23,6 +23,15 @@
 		}
 		
 		
+        ,{
+            "path" : "pages/dynamic/dynamicdetail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	//分包注册页面
 	// "subPackages": [{

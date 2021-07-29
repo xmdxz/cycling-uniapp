@@ -59,8 +59,9 @@
 	.content-item{
 		width: 100%;
 	}
-.content-item .content-header{
+	.content-item .content-header{
 		margin-left: 30upx;
+		margin-top: 10upx;
 		display: flex;
 		justify-content: flex-start;
 	}
