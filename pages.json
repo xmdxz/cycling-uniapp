@@ -13,7 +13,7 @@
 	"pages": [
 		//动态界面
 		{
-		    "path" : "pages/dynamic/index/index",
+		    "path" : "pages/dynamic/index",
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "",
@@ -25,6 +25,17 @@
 		
         ,{
             "path" : "pages/dynamic/dynamicdetail",
+            "style" :                                                                                    
+            {
+				"navigationStyle":"custom",
+                "navigationBarTitleText": "",
+				"navigationBarTextStyle":"white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/dynamic/search",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",
@@ -70,25 +81,25 @@
 		"backgroundColor": "#FFFFFF",
 		"borderStyle": "black",
 		"list": [{
-				"pagePath": "pages/dynamic/index/index",
+				"pagePath": "pages/dynamic/index",
 				"iconPath": "static/ico/首页_动态灰.png",
 				"selectedIconPath": "static/ico/首页_动态亮.png",
 				"text": "动态"
 			},
 			{
-				"pagePath": "pages/dynamic/index/index",
+				"pagePath": "pages/dynamic/index",
 				"iconPath": "static/ico/活动.png",
 				"selectedIconPath": "static/ico/活动选中.png",
 				"text": "活动"
 			},
 			{
-				"pagePath": "pages/dynamic/index/index",
+				"pagePath": "pages/dynamic/index",
 				"iconPath": "static/ico/骑行.png",
 				"selectedIconPath": "static/ico/骑行选中.png",
 				"text": "骑行"
 			},
 			{
-				"pagePath": "pages/dynamic/index/index",
+				"pagePath": "pages/dynamic/index",
 				"iconPath": "static/ico/我的.png",
 				"selectedIconPath": "static/ico/我的选中.png",
 				"text": "我的"

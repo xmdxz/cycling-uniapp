@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view @click="toDynamic">
 		<view class="content-item">
 			<view class="content-header">
 				<u-avatar :src="avatar" style="vertical-align: middle;"></u-avatar>
@@ -50,6 +50,21 @@
 			return {
 				
 			};
+		},
+		methods:{
+			toDynamic(){
+				uni.navigateTo({
+					url:'/pages/dynamic/dynamicdetail',
+					animationType:'fade-in',
+					animationDuration:1000,
+					success:(res)=>{
+						console.log(res)
+					},
+					fail: (res) => {
+						console.log(res)
+					}
+				})
+			}
 		}
 	}
 </script>

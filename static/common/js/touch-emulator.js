@@ -5,7 +5,7 @@
     var multiTouchStartPos;
     var eventTarget;
     var touchElements = {};
-
+	
     // polyfills
     if(!document.createTouch) {
         document.createTouch = function(view, target, identifier, pageX, pageY, screenX, screenY, clientX, clientY) {

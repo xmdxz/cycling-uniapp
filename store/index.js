@@ -38,24 +38,36 @@ const store = new Vuex.Store({
 		vuex_demo: '绛紫',
 		// 自定义tabbar数据
 		vuex_tabbar: [{
-				iconPath: "/static/uview/example/component.png",
-				selectedIconPath: "/static/uview/example/component_select.png",
-				text: '组件',
-				pagePath: '/pages/example/components'
+				iconPath: "/static/ico/首页_动态灰.png",
+				selectedIconPath: "/static/ico/首页_动态亮.png",
+				text: '动态',
+				pagePath: '/pages/dynamic/index'
 			},
 			{
-				iconPath: "/static/uview/example/js.png",
-				selectedIconPath: "/static/uview/example/js_select.png",
-				text: '工具',
+				iconPath: "/static/ico/活动.png",
+				selectedIconPath: "/static/ico/活动选中.png",
+				text: '活动',
+				pagePath: '/pages/dynamic/index'
+			},
+			{
+				iconPath: "/static/ico/发布.png",
+				selectedIconPath: "/static/ico/发布选中.png",
+				text: '发布',
 				midButton: true,
-				pagePath: '/pages/example/js'
+				pagePath: '/pages/dynamic/index'
 			},
 			{
-				iconPath: "/static/uview/example/template.png",
-				selectedIconPath: "/static/uview/example/template_select.png",
-				text: '模板',
-				pagePath: '/pages/example/template'
-			}
+				iconPath: "/static/ico/骑行.png",
+				selectedIconPath: "/static/ico/骑行选中.png",
+				text: '骑行',
+				pagePath: '/pages/dynamic/index'
+			},
+			{
+				iconPath: "/static/ico/我的.png",
+				selectedIconPath: "/static/ico/我的选中.png",
+				text: '我的',
+				pagePath: '/pages/dynamic/index'
+			},
 		]
 	},
 	mutations: {
