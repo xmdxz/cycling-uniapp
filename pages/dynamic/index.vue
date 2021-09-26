@@ -4,7 +4,7 @@
 	<view class="content-main">
 		<view class="search">
 			<u-avatar :src="src" size="mini"></u-avatar>
-			<u-search class="u-m-l-20" placeholder="请输入要搜索的动态" disabled :show-action="false"></u-search>
+			<u-search class="u-m-l-20" placeholder="请输入要搜索的动态" disabled :show-action="false" @click="toSearch()"></u-search>
 		</view>
 		<view>
 			<u-tabs-swiper ref="uTabs" :list="list" :current="current" @change="tabsChange" :is-scroll="false"
@@ -366,6 +366,11 @@
 		// 	}, 1000)
 		// },
 		methods: {
+			toSearch(){
+				uni.navigateTo({
+					url:"./search"
+				})
+			},
 			onreachBottom(){
 				this.loadStatus = 'loading'
 				//模拟数据加载

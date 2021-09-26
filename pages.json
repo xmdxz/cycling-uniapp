@@ -38,7 +38,9 @@
             "path" : "pages/dynamic/search",
             "style" :                                                                                    
             {
+				"navigationStyle":"custom",
                 "navigationBarTitleText": "",
+				"navigationBarTextStyle":"white",
                 "enablePullDownRefresh": false
             }
             
