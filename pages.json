@@ -7,7 +7,7 @@
 	// 	"list": [{
 	// 		"name": "test", //模式名称
 	// 		"path": "pages/componentsC/test/index", //启动页面，必选
-	// 		"query": "uuid=c4bba940-f69e-11ea-a419-6bafda9d095e&__id__=1" //启动参数，在页面的onLoad函数里面得到
+	// 		"query": "uuid=c4bba940-f69e-11ea-a419-6bafda9d09git 5e&__id__=1" //启动参数，在页面的onLoad函数里面得到
 	// 	}]
 	// },
 	"pages": [
@@ -51,6 +51,58 @@
             {
 				"navigationStyle":"custom",
 				"navigationBarTextStyle":"white",
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+        }
+		,{
+			"path" : "pages/my/my",
+			"style" :                                                                                    
+			{
+			    "navigationBarTitleText": "我的",
+			    "enablePullDownRefresh": false
+			}
+		}
+        ,{
+            "path" : "pages/my/info",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/my/setting",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "设置",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/my/person",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "个人性息",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/my/thirdBind",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "第三方绑定",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/my/account",
+            "style" :                                                                                    
+            {
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
@@ -112,7 +164,7 @@
 				"text": "骑行"
 			},
 			{
-				"pagePath": "pages/dynamic/index",
+				"pagePath": "pages/my/my",
 				"iconPath": "static/ico/我的.png",
 				"selectedIconPath": "static/ico/我的选中.png",
 				"text": "我的"

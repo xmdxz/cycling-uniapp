@@ -66,7 +66,7 @@ const store = new Vuex.Store({
 				iconPath: "/static/ico/我的.png",
 				selectedIconPath: "/static/ico/我的选中.png",
 				text: '我的',
-				pagePath: '/pages/dynamic/index'
+				pagePath: '/pages/my/my'
 			},
 		]
 	},
