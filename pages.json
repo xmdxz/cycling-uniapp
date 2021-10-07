@@ -21,8 +21,6 @@
 		    }
 		    
 		}
-		
-		
         ,{
             "path" : "pages/dynamic/dynamicdetail",
             "style" :                                                                                    
@@ -108,6 +106,28 @@
             }
             
         }
+		,{
+            "path" : "pages/running/run",
+            "style" :                                                                                    
+            {
+				"navigationStyle":"custom",
+                "navigationBarTitleText": "",
+				"navigationBarTextStyle":"white",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+		,{
+		    "path" : "pages/running/prepare",
+		    "style" :                                                                                    
+		    {
+				"navigationStyle":"custom",
+		        "navigationBarTitleText": "",
+				"navigationBarTextStyle":"white",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
     ],
 	//分包注册页面
 	// "subPackages": [{
@@ -158,7 +178,7 @@
 				"text": "活动"
 			},
 			{
-				"pagePath": "pages/dynamic/index",
+				"pagePath": "pages/running/prepare",
 				"iconPath": "static/ico/骑行.png",
 				"selectedIconPath": "static/ico/骑行选中.png",
 				"text": "骑行"
