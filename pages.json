@@ -45,6 +45,17 @@
             }
             
         }
+        ,{
+            "path" : "pages/dynamic/publicdynamic",
+            "style" :                                                                                    
+            {
+				"navigationStyle":"custom",
+				"navigationBarTextStyle":"white",
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	//分包注册页面
 	// "subPackages": [{

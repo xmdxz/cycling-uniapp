@@ -2,14 +2,23 @@
 	<view>
 	
 	<view class="content-main">
-		<view class="search">
-			<u-avatar :src="src" size="mini"></u-avatar>
-			<u-search class="u-m-l-20" placeholder="请输入要搜索的动态" disabled :show-action="false" @click="toSearch()"></u-search>
-		</view>
-		<view>
-			<u-tabs-swiper ref="uTabs" :list="list" :current="current" @change="tabsChange" :is-scroll="false"
-				swiperWidth="750"></u-tabs-swiper>
-		</view>
+		<u-sticky>
+			<view class="stickt">
+				<view class="search">
+					<u-avatar :src="src" size="mini"></u-avatar>
+					<u-search class="u-m-l-20" placeholder="请输入要搜索的动态" disabled :show-action="false" @click="toSearch()"></u-search>
+				</view>
+				
+				<view>
+					<u-tabs-swiper ref="uTabs" :list="list" :current="current" @change="tabsChange" :is-scroll="false"
+						swiperWidth="750"></u-tabs-swiper>
+				</view>
+			</view>
+		
+		
+		</u-sticky>
+		
+		
 		<u-line color="gray"></u-line>
 		
 		<swiper :current="swiperCurrent" @transition="transition" @animationfinish="animationfinish">
@@ -448,6 +457,12 @@
 		margin: 0 auto;
 		display: flex;
 		flex-wrap: nowrap;
+	}
+	
+	.content-main .stickt{
+		width: 100%;
+		height: auto;
+		background-color: #FFFFFF;
 	}
 	
 	.content-main 
