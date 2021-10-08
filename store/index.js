@@ -47,14 +47,14 @@ const store = new Vuex.Store({
 				iconPath: "/static/ico/活动.png",
 				selectedIconPath: "/static/ico/活动选中.png",
 				text: '活动',
-				pagePath: '/pages/dynamic/index'
+				pagePath: '/pages/activity/index'
 			},
 			{
 				iconPath: "/static/ico/发布.png",
 				selectedIconPath: "/static/ico/发布选中.png",
 				text: '发布',
 				midButton: true,
-				pagePath: '/pages/dynamic/index'
+				pagePath: '/pages/dynamic/publicdynamic'
 			},
 			{
 				iconPath: "/static/ico/骑行.png",

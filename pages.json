@@ -127,7 +127,52 @@
 		        "enablePullDownRefresh": false
 		    }
 		    
+		},
+		{
+		    "path" : "pages/login/index",
+		    "style" :                                                                                    
+		    {
+				"navigationStyle":"custom",
+		        "navigationBarTitleText": "",
+				"navigationBarTextStyle":"white",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" :"pages/login/index2",
+		    "style" :                                                                                    
+		    {
+				"navigationStyle":"custom",
+		        "navigationBarTitleText": "",
+				"navigationBarTextStyle":"white",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" :"pages/activity/index",
+		    "style" :                                                                                    
+		    {
+				"navigationStyle":"custom",
+		        "navigationBarTitleText": "",
+				"navigationBarTextStyle":"white",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" :"pages/activity/addactivity",
+		    "style" :                                                                                    
+		    {
+				"navigationStyle":"custom",
+		        "navigationBarTitleText": "",
+				"navigationBarTextStyle":"white",
+		        "enablePullDownRefresh": false
+		    }
+		    
 		}
+		
     ],
 	//分包注册页面
 	// "subPackages": [{
@@ -172,10 +217,16 @@
 				"text": "动态"
 			},
 			{
-				"pagePath": "pages/dynamic/index",
+				"pagePath": "pages/activity/index",
 				"iconPath": "static/ico/活动.png",
 				"selectedIconPath": "static/ico/活动选中.png",
 				"text": "活动"
+			},
+			{
+				"pagePath": "pages/dynamic/publicdynamic",
+				"iconPath": "static/ico/发布",
+				"selectedIconPath": "static/ico/发布选中.png",
+				"text": "发布"
 			},
 			{
 				"pagePath": "pages/running/prepare",
