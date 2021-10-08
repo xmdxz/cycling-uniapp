@@ -74,15 +74,19 @@
 				</view>
 			</u-card>
 			<!------------>
-
+			
 		</view>
+		<u-tabbar v-model="tabBarCurrent" :list="tabBarList" :mid-button="true" mid-button-size="90"></u-tabbar>
 	</view>
 </template>
 
 <script>
+	import store from "../../store/index.js"
 	export default {
 		data() {
 			return {
+				tabBarCurrent:0,
+				tabBarList:[],
 				input:"",
 				value:'',
 				//中心点位置：
@@ -132,6 +136,9 @@
 				
 				showpicker:false,
 			}
+		},
+		onLoad(){
+			this.tabBarList = store.state.vuex_tabbar
 		},
 		methods: {
 			click(){

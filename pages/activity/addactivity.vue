@@ -1,5 +1,6 @@
 <template>
 	<view>
+		
 		<u-sticky>
 			<u-row gutter="12" justify="between" style="background-color: #fff;">
 				<u-col span="3">
