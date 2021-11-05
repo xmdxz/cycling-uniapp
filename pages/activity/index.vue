@@ -1,8 +1,11 @@
 <template>
 	<view>
-		<u-search v-model="value" @change="change" @custom="custom" @search="search" :shape="shape" :clearabled="clearabled"
-		:show-action="showAction" :input-align="inputAlign" @clear="clear"></u-search>
-		
+		<u-sticky>
+			<view class="search">
+				<u-search v-model="value" @change="change" @custom="custom" @search="search" :shape="shape" :clearabled="clearabled"
+				:show-action="showAction" :input-align="inputAlign" @clear="clear"></u-search>
+			</view>
+		</u-sticky>
 		<u-swiper  :height="250" :list="list" title="true" :effect3d="effect3d"
 		:indicator-pos="indicatorPos" :mode="mode" :interval="3000" ></u-swiper>
 		<view class="pickers">
@@ -138,11 +141,26 @@
 			}
 		},
 		onLoad(){
-			this.tabBarList = store.state.vuex_tabbar
+			this.tabBarList = store.state.vuex_tabbar,
+			console.log(this.latitude)
+			//console.log(this.longitude)
+			console.log(this.lineArray[0].points)
+			var ava =0;
+			var ave =0;
+			for(var i =0;i <this.lineArray[0].points.length;i++){
+				ava +=this.lineArray[0].points[i].latitude;
+				ave +=this.lineArray[0].points[i].longitude;
+			}
+			ava /=this.lineArray[0].points.length;
+			ave /=this.lineArray[0].points.length;
+			this.latitude=ava;
+			this.longitude=ave;
 		},
 		methods: {
 			click(){
-				alert("click click")
+				uni.navigateTo({
+					url: './addactivity'
+				})
 			},
 			mores(){
 				event.stopPropagation();
@@ -220,5 +238,8 @@
 		font-size: 30rpx;
 		margin-left: 300rpx;
 		margin-top: 20rpx;
+	}
+	.search{
+		background-color: #FFFFFF;
 	}
 </style>
