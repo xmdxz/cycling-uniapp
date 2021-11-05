@@ -79,17 +79,11 @@ export default {
 		getBarTitle(type) {
 			let title = '';
 			switch (parseInt(type)) {
-				case 0:
+				case 1:
 					title = '关注';
 					break;
-				case 1:
-					title = '粉丝';
-					break;
 				case 2:
-					title = '获赞';
-					break;
-				case 3:
-					title = '评论';
+					title = '粉丝';
 					break;
 				default:
 					break;

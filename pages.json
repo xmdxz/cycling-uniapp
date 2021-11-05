@@ -83,7 +83,7 @@
             "path" : "pages/my/person",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "个人性息",
+                "navigationBarTitleText": "个人信息",
                 "enablePullDownRefresh": false
             }
             
@@ -154,9 +154,8 @@
 		    "path" :"pages/activity/index",
 		    "style" :                                                                                    
 		    {
-				"navigationStyle":"custom",
+				
 		        "navigationBarTitleText": "",
-				"navigationBarTextStyle":"white",
 		        "enablePullDownRefresh": false
 		    }
 		    
@@ -165,10 +164,8 @@
 		    "path" :"pages/activity/addactivity",
 		    "style" :                                                                                    
 		    {
-				"navigationStyle":"custom",
-		        "navigationBarTitleText": "",
-				"navigationBarTextStyle":"white",
-		        "enablePullDownRefresh": false
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
 		    }
 		    
 		}
