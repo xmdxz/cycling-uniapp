@@ -31,8 +31,17 @@
 				position:''
 			}
 		},
+		onLoad() {
+			uni.request({
+				method:'GET',
+				url: 'http://localhost:5678/utils/getUploadToken',
+				success(res) {
+					console.log(res)
+				}
+			})
+		},
 		methods: {
-
+			
 		}
 	}
 </script>
@@ -60,7 +69,7 @@
 	.btn-pub{
 		position: fixed;
 		width: 90%;
-		bottom: 30upx;
+		bottom: 150upx;
 	}
 	
 </style>

@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import App from './App';
 import utils from '@/store/utils.js'
-
+const qiniu = require('qiniu-js')
 Vue.config.productionTip = false;
 
 App.mpType = 'app';
@@ -62,5 +62,7 @@ Vue.use(httpInterceptor, app);
 // http接口API抽离，免于写url或者一些固定的参数
 import httpApi from '@/common/http.api.js';
 Vue.use(httpApi, app);
+
+
 
 app.$mount();
