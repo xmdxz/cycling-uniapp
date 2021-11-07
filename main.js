@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import App from './App';
 import utils from '@/store/utils.js'
-const qiniu = require('qiniu-js')
+// const qiniu = require('qiniu-js')
 Vue.config.productionTip = false;
 
 App.mpType = 'app';

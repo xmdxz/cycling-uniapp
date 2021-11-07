@@ -166,10 +166,11 @@ export default {
 		//点击加载更多
 		loadmoreByDynamic(){
 			console.log("ee")
-		}
+		}	
 	},
 	onLoad() {
 		this.windowWidth = app.globalData.windowWidth;
+		this.$u.api.getSearch('/login').then(e => {console.log(e)})
 	},
 	//加载更多
 	onReachBottom(){
