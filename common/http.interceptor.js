@@ -1,14 +1,16 @@
 // 这里的vm，就是我们在vue文件里面的this，所以我们能在这里获取vuex的变量，比如存放在里面的token
 // 同时，我们也可以在此使用getApp().globalData，如果你把token放在getApp().globalData的话，也是可以使用的
 const baseUrl = 'http://localhost:5678'
+//这里表示不需要添加token的接口
 const excludeHeader = [
-	'login'
+	'/login','/registry'
 ]
 const install = (Vue, vm) => {
 	Vue.prototype.$u.http.setConfig({
 		baseUrl: baseUrl,
 		dataType: 'json',
-		originalData: true
+		originalData: true,
+		showLoading:false
 		// 如果将此值设置为true，拦截回调中将会返回服务端返回的所有数据response，而不是response.data
 		// 设置为true后，就需要在this.$u.http.interceptor.response进行多一次的判断，请打印查看具体值
 		// originalData: true, 
@@ -17,8 +19,9 @@ const install = (Vue, vm) => {
 		// 	'content-type': 'xxx'
 		// }
 	});
-	// 请求拦截，配置Token等参数
+	// 请求拦截，配置Token等参数 
 	Vue.prototype.$u.http.interceptor.request = (config) => {
+		//路径不需要添加token
 		if (excludeHeader.indexOf(config.url) === -1) {
 			config.header.Token = vm.$store.state.token;
 		}
