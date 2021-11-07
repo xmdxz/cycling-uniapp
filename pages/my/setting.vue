@@ -1,5 +1,6 @@
 <template>
 	<view>
+		
 		<u-cell-group title="账户与安全" >
 			<u-cell-item title="第三方绑定" @click="toSetting(0)"  ></u-cell-item>
 			<u-cell-item title="账户安全" @click="toSetting(1)"></u-cell-item>

@@ -6,6 +6,7 @@
 			<u-cell-item title="个性签名" :value="info.personSignature" @click="change('个性签名')"></u-cell-item>
 			<u-cell-item title="性别" :value="info.sex" @click="showOneLevel('sex')"></u-cell-item>
 			<u-cell-item title="年龄" :value="info.age" @click="showOneLevel('age')"></u-cell-item>
+			<u-cell-item title="生日" :value="info.birthday" @click="showBirthday = true"></u-cell-item>
 			<u-cell-item title="身高" :value="info.height + 'cm'" @click="showOneLevel('height')"></u-cell-item>
 			<u-cell-item title="体重" :value="info.weight + 'kg'" @click="showOneLevel('weight')"></u-cell-item>
 			<u-cell-item title="地址" :value="info.address" @click="showTreeLevel()"></u-cell-item>
@@ -13,7 +14,8 @@
 		<u-modal v-model="show" :show-cancel-button="true" @confirm="confirm()" @cancel="cancel()">
 			<view><u-field v-model="input.value" :label="input.label" :placeholder="input.placeholder"></u-field></view>
 		</u-modal>
-		<u-select v-model="showMap" mode="mutil-column-auto" :list="listMap" @confirm="selectMap"></u-select>
+		<u-picker v-model="showBirthday" mode="time" @confirm="selectBirthday"></u-picker>
+		<u-picker v-model="showMap" mode="region" @confirm="selectMap"></u-picker>
 		<u-select v-model="show_sex" :default-value="default_sex" @confirm="selectSex" :list="list_sex"></u-select>
 		<u-select v-model="show_age" :default-value="default_age" @confirm="selectAge" :list="list_age"></u-select>
 		<u-select v-model="show_weight" :default-value="default_weight" @confirm="selectWeight" :list="list_weight"></u-select>
@@ -33,9 +35,11 @@ export default {
 				age: 22,
 				height: 178,
 				weight: 65,
-				address: '山西省临汾市乡宁县'
+				address: '山西省临汾市乡宁县',
+				birthday:'2000-09-23'
 			},
 			show: false,
+			showBirthday:false,
 			input: {
 				label: '',
 				placeholder: '',
@@ -86,42 +90,23 @@ export default {
 		};
 	},
 	methods: {
+		selectBirthday(e){
+			let time = e.year + '-' + e.month + '-' + e.day
+			this.info.birthday = time
+			/**
+			 * @param {Object} e 访问后端接口进行更新
+			 */
+			this.showBirthday = false
+		},
 		selectMap(e) {
-			let x
-			e[2].label == null? x = '':x = e[2].label
-			this.info.address = e[0].label + e[1].label + x;
+			this.info.address = e.province.label + e.city.label + e.area.label;
 			/**
 			 * 这里写访问后台接口进行更新
 			 */
 			this.showMap = false;
 		},
 		showTreeLevel() {
-			let that = this;
-			if (this.listMap.length == 0) {
-				uni.showLoading({
-					title: '获取地址信息中'
-				});
-				uni.request({
-					url: 'https://restapi.amap.com/v3/config/district?subdistrict=3&key=17aba5351dab18b94199188ce6c13168',
-					method: 'GET',
-					dataType: 'json',
-					success(res) {
-						let json = that.utils.apiJsonToOwnJson(res.data.districts);
-						that.listMap = json;
-						that.showMap = true;
-						uni.hideLoading();
-					},
-					fail(e) {
-						uni.hideLoading();
-						uni.showToast({
-							title: '网络错误，请重试！',
-							icon: 'none'
-						});
-					}
-				});
-			} else {
-				that.showMap = true;
-			}
+			this.showMap = true;
 		},
 		cancel() {
 			this.show = !this.show;
