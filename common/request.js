@@ -8,9 +8,9 @@ export const myRequest = (options) => {
 			url: BASE_URL + options.url, //接受请求的url
 			method: options.method || 'GET', //接受请求的类型，如果不传默认为get
 			data: options.data || {}, //接受请求的data
-			header: options.header || {}
+			header: options.header || {},
 			success: (res)=>{
-				if(res.data.code !=== 200){
+				if(res.data.code !== 200){
 					return uni.showToast({
 						title:res.data.msg
 					})

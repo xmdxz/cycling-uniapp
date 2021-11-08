@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import App from './App';
 import utils from '@/store/utils.js'
-const qiniu = require('qiniu-js')
+
+
 Vue.config.productionTip = false;
 
 App.mpType = 'app';
@@ -63,6 +64,6 @@ Vue.use(httpInterceptor, app);
 import httpApi from '@/common/http.api.js';
 Vue.use(httpApi, app);
 
-
-
+import {myRequest} from '@/common/request.js'
+Vue.prototype.$myRequest = myRequest
 app.$mount();
