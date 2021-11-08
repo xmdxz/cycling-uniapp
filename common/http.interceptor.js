@@ -3,14 +3,14 @@
 const baseUrl = 'http://localhost:5678'
 //这里表示不需要添加token的接口
 const excludeHeader = [
-	'/login','/registry'
+	'/login', '/registry'
 ]
 const install = (Vue, vm) => {
 	Vue.prototype.$u.http.setConfig({
 		baseUrl: baseUrl,
 		dataType: 'json',
 		originalData: true,
-		showLoading:false
+		showLoading: false
 		// 如果将此值设置为true，拦截回调中将会返回服务端返回的所有数据response，而不是response.data
 		// 设置为true后，就需要在this.$u.http.interceptor.response进行多一次的判断，请打印查看具体值
 		// originalData: true, 
@@ -23,9 +23,11 @@ const install = (Vue, vm) => {
 	Vue.prototype.$u.http.interceptor.request = (config) => {
 		//路径不需要添加token
 		if (excludeHeader.indexOf(config.url) === -1) {
-			config.header.Token = vm.$store.state.token;
+			// 登录未整合，先使用固定token值
+			// config.header.token = vm.$store.state.token;
+			config.header.token =
+				'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZSI6MTYzNjM2MTU5NDY4MywiaWQiOiIxIiwiZXhwIjoxNjM2OTY2Mzk0fQ.6RM5wwRFuMRsk60zRZltDuFTUOPGwnVUXgrfByU-RrE'
 		}
-		console.log(config)
 
 		// 方式一，存放在vuex的token，假设使用了uView封装的vuex方式，见：https://uviewui.com/components/globalVariable.html
 		// config.header.token = vm.token;
@@ -46,9 +48,9 @@ const install = (Vue, vm) => {
 	Vue.prototype.$u.http.interceptor.response = (res) => {
 		// 如果把originalData设置为了true，这里得到将会是服务器返回的所有的原始数据
 		// 判断可能变成了res.statueCode，或者res.data.code之类的，请打印查看结果
-		if (res.code == 200) {
+		if (res.data.code === 200 && res.statusCode === 200) {
 			// 如果把originalData设置为了true，这里return回什么，this.$u.post的then回调中就会得到什么
-			return res.data;
+			return res.data.data;
 		} else return false;
 	}
 }

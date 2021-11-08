@@ -45,15 +45,8 @@
 		},
 		methods: {
 			async getUploadToken() {
-				const res = await this.$myRequest({
-					url: '/utils/getUploadToken',
-					method: 'GET',
-					header: {
-						token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZSI6MTYzNjI1NDM5ODQwNywiaWQiOiIxIiwiZXhwIjoxNjM2MjU1MDAzfQ.vlJiS9CMoNHeg49xFU0tIHHcfCeBArANx7mff7xA8sA',
-					}
-				})
-				this.uploadToken = res.data.data
-				console.log(this.uploadToken)
+				// 异步获取token
+				let token =await this.$u.api.getUploadToken()
 			},
 			async public() {
 				const options = {
