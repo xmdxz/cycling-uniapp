@@ -4,6 +4,7 @@
 			<view class="img">
 				<u-avatar :src="src" size="200" :show-sex="true" :show-level="true" @click="toPerson()"></u-avatar>
 				<view class="username">向恶势力低头！</view>
+				<view class="personnSign">这个人很懒，什么也没留下.....</view>
 			</view>
 			<u-gap height="20" bg-color="#e2e2e2"></u-gap>
 			<u-grid :col="4">
@@ -28,7 +29,8 @@
 			<u-cell-group>
 				<!-- <u-cell-item icon="level" title="成就"></u-cell-item>
 				<u-cell-item icon="order" title="路书"></u-cell-item> -->
-				<u-cell-item icon="star" title="收藏"></u-cell-item>
+				<u-cell-item icon="star" title="收藏" @click="toOther('collect')"></u-cell-item>
+				<u-cell-item icon="list" title="我发布的" @click="toOther('myPost')"></u-cell-item>
 				<!-- <u-cell-item icon="car" title="车队"></u-cell-item> -->
 				<u-cell-item icon="account" title="个人与设置" @click="toSetting()"></u-cell-item>
 			</u-cell-group>
@@ -51,6 +53,11 @@ export default {
 		this.tabBarList = store.state.vuex_tabbar
 	},
 	methods: {
+		toOther(e){
+			uni.navigateTo({
+				url: './' + e
+			})
+		},
 		toSetting() {
 			uni.navigateTo({
 				url: './setting'
@@ -108,5 +115,11 @@ export default {
 	font-weight: bold;
 	margin-top: 10rpx;
 	margin-left: 40rpx;
+}
+.personnSign{
+	font-size: small;
+	margin: 10rpx auto;
+	margin-bottom: 0;
+	color: #909399;
 }
 </style>

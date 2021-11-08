@@ -170,6 +170,24 @@
 		    
 		}
 		
+        ,{
+            "path" : "pages/my/collect",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "收藏",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/my/myPost",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我发布的",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	//分包注册页面
 	// "subPackages": [{
