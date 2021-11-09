@@ -59,9 +59,10 @@ export default {
 			})
 		},
 		toSetting() {
-			uni.navigateTo({
-				url: './setting'
-			});
+			// uni.navigateTo({
+			// 	url: './setting'
+			// });
+			this.$Router.push('/pages/my/setting')
 		},
 		toPerson: function() {
 			uni.navigateTo({

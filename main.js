@@ -1,7 +1,10 @@
 import Vue from 'vue';
 import App from './App';
 import utils from '@/store/utils.js'
+import {router,RouterMount} from "@/common/router.js"
 
+// 使用路由插件
+Vue.use(router)
 // const qiniu = require('qiniu-js')
 
 Vue.config.productionTip = false;
@@ -67,4 +70,6 @@ Vue.use(httpApi, app);
 
 import {myRequest} from '@/common/request.js'
 Vue.prototype.$myRequest = myRequest
+
+RouterMount(app,router,'#app')
 app.$mount();
