@@ -62,7 +62,7 @@ export default {
 			// uni.navigateTo({
 			// 	url: './setting'
 			// });
-			this.$Router.push('/pages/my/setting')
+			this.$Router.push({name:'setting'})
 		},
 		toPerson: function() {
 			uni.navigateTo({
