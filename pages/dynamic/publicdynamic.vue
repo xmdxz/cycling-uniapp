@@ -35,7 +35,8 @@
 				action: '',
 				uploadToken: '',
 				putExtra: {},
-				config: {}
+				config: {},
+				imgPushList: []
 			}
 		},
 		onLoad() {
@@ -46,9 +47,14 @@
 		methods: {
 			async getUploadToken() {
 				// 异步获取token
-				let token =await this.$u.api.getUploadToken()
+				this.uploadToken = await this.$u.api.getUploadToken()
 			},
 			async public() {
+				this.uploadImg()
+				
+			},
+			
+			async uploadImg(){
 				const options = {
 					quality: 0.8,
 					noCompressIfLarger: true
@@ -57,24 +63,24 @@
 				let files = this.$refs.uUpload.lists
 				console.log(files)
 				//循环遍历每一个文件，上传到七牛云
-				for(let i=0;i<files.length;i++){
+				for (let i = 0; i < files.length; i++) {
 					let currentFile = files[i].file
 					qiniu.compressImage(currentFile, options).then(data => {
-						const observable = qiniu.upload(data.dist, null, this.uploadToken, this.putExtra, this.config)
+						const observable = qiniu.upload(data.dist, null, this.uploadToken, this.putExtra, this
+							.config)
 						const subscription = observable.subscribe({
-							next: (result)=>{
+							next: (result) => {
 								console.warn(result)
 							},
-							error: ()=>{
+							error: () => {
 								console.log('upload error')
 							},
-							complete: (res)=>{
-								console.log(res)
+							complete: (res) => {
+								this.imgPushList.push(res.key)
 							}
 						}) // 上传开始
 					})
 				}
-				
 				
 			}
 		}
