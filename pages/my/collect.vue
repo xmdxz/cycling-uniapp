@@ -143,6 +143,116 @@ export default {
 					commentitems:[
 				
 					]
+				},
+				{
+					id:0,
+					avatar:'/static/img/1.jpg',
+					contentuser:'向恶势力低头！',
+					contentlevel:'asd',
+					contenttext:'阿斯顿撒',
+					contenttime:'2021-13-131-2',
+					commentitems:[
+				
+					]
+				},
+				{
+					id:0,
+					avatar:'/static/img/1.jpg',
+					contentuser:'向恶势力低头！',
+					contentlevel:'asd',
+					contenttext:'阿斯顿撒',
+					contenttime:'2021-13-131-2',
+					commentitems:[
+				
+					]
+				},
+				{
+					id:0,
+					avatar:'/static/img/1.jpg',
+					contentuser:'向恶势力低头！',
+					contentlevel:'asd',
+					contenttext:'阿斯顿撒',
+					contenttime:'2021-13-131-2',
+					commentitems:[
+				
+					]
+				},
+				{
+					id:0,
+					avatar:'/static/img/1.jpg',
+					contentuser:'向恶势力低头！',
+					contentlevel:'asd',
+					contenttext:'阿斯顿撒',
+					contenttime:'2021-13-131-2',
+					commentitems:[
+				
+					]
+				},
+				{
+					id:0,
+					avatar:'/static/img/1.jpg',
+					contentuser:'向恶势力低头！',
+					contentlevel:'asd',
+					contenttext:'阿斯顿撒',
+					contenttime:'2021-13-131-2',
+					commentitems:[
+				
+					]
+				},
+				{
+					id:0,
+					avatar:'/static/img/1.jpg',
+					contentuser:'向恶势力低头！',
+					contentlevel:'asd',
+					contenttext:'阿斯顿撒',
+					contenttime:'2021-13-131-2',
+					commentitems:[
+				
+					]
+				},
+				{
+					id:0,
+					avatar:'/static/img/1.jpg',
+					contentuser:'向恶势力低头！',
+					contentlevel:'asd',
+					contenttext:'阿斯顿撒',
+					contenttime:'2021-13-131-2',
+					commentitems:[
+				
+					]
+				},
+				{
+					id:0,
+					avatar:'/static/img/1.jpg',
+					contentuser:'向恶势力低头！',
+					contentlevel:'asd',
+					contenttext:'阿斯顿撒',
+					contenttime:'2021-13-131-2',
+					commentitems:[
+				
+					]
+				},
+				{
+					id:0,
+					avatar:'/static/img/1.jpg',
+					contentuser:'向恶势力低头！',
+					contentlevel:'asd',
+					contenttext:'阿斯顿撒',
+					contenttime:'2021-13-131-2',
+					commentitems:[
+				
+					]
+				},
+				{
+					id:0,
+					avatar:'/static/img/1.jpg',
+					contentuser:'向恶势力低头！',
+					contentlevel:'asd',
+					contenttext:'阿斯顿撒',
+					contenttime:'2021-13-131-2',
+					commentitems:[
+				
+					]
 				}
 			],
 			current: 0,
@@ -173,7 +283,7 @@ export default {
 	},
 	//加载更多
 	onReachBottom(){
-
+		console.log("asd")
 	},
 };
 </script>

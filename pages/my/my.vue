@@ -3,25 +3,25 @@
 		<view>
 			<view class="img">
 				<u-avatar :src="src" size="200" :show-sex="true" :show-level="true" @click="toPerson()"></u-avatar>
-				<view class="username">向恶势力低头！</view>
-				<view class="personnSign">这个人很懒，什么也没留下.....</view>
+				<view class="username">{{ownInfo.username}}</view>
+				<view class="personnSign">{{ownInfo.introduction}}</view>
 			</view>
 			<u-gap height="20" bg-color="#e2e2e2"></u-gap>
 			<u-grid :col="4">
 				<u-grid-item>
 					<view class="grid-text">0</view>
-					<view class="grid-text">获赞</view>
+					<view class="grid-text">{{relatedCount.praisedCount}}</view>
 				</u-grid-item>
-				<u-grid-item @click="info(1)">
-					<view class="grid-text">0</view>
+				<u-grid-item @click="info(0)">
+					<view class="grid-text">{{relatedCount.focusCount}}</view>
 					<view class="grid-text">关注</view>
 				</u-grid-item>
-				<u-grid-item @click="info(2)">
-					<view class="grid-text">0</view>
+				<u-grid-item @click="info(1)">
+					<view class="grid-text">{{relatedCount.fansCount}}</view>
 					<view class="grid-text">粉丝</view>
 				</u-grid-item>
 				<u-grid-item>
-					<view class="grid-text">0</view>
+					<view class="grid-text">{{relatedCount.visitorCount}}</view>
 					<view class="grid-text">访客</view>
 				</u-grid-item>
 			</u-grid>
@@ -40,19 +40,29 @@
 </template>
 
 <script>
-import store from '../../store/index.js';
 export default {
 	data() {
 		return {
 			src: '../../static/img/1.jpg',
 			tabBarCurrent: 0,
-			tabBarList: []
+			tabBarList: [],
+			ownInfo:{},
+			relatedCount:{
+				fansCount:0,
+				focusCount:0,
+				praisedCount:0,
+				visitorCount:0
+			}
 		};
 	},
 	onLoad(){
-		this.tabBarList = store.state.vuex_tabbar
+		let that = this
+		this.tabBarList = this.$store.state.vuex_tabbar
+		this.$u.api.getOwnInfo().then(res => {that.ownInfo = res;console.log(res)})
+		this.$u.api.getRelatedCount().then(res => {that.relatedCount = res;console.log(res)})
 	},
 	methods: {
+		
 		toOther(e){
 			uni.navigateTo({
 				url: './' + e
