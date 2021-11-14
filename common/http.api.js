@@ -7,13 +7,45 @@ const install = (Vue, vm) => {
 	// 动态相关Api
 	// 获取七牛云上传token
 	let getUploadToken = (params = {}) => vm.$u.get(uploadTokenUrl, params)
-	
+
 	// 发布动态
 	let publicDynamic = (params = {}) => vm.$u.post(publicDynamicUrl,params)
+
+	//获取用户信息
+	let getUserInfo = (params = {}) => vm.$u.get("/user/getUserInfo", null)
+
+	//获取我的界面的用户信息
+	let getOwnInfo = (params = {}) => vm.$u.get("/user/getOwnInfo", null)
+
+	//获取各类统计数
+	let getRelatedCount = (params = {}) => vm.$u.get("/user/getRelatedCount", null)
+
+	//更新信息
+	let updateInfo = (params = {}) => vm.$u.put("/user/updateInfo", params)
+
+	//获取粉丝
+	let getFansOrFocusedAndSimple = (params = {}) => vm.$u.get(params.url, {
+		minId: params.minId,
+		num: params.num
+	})
+
+	let cancelFocused = (params = {}) => vm.$u.delete("/user/cancelFocused?id=" + params, null)
+
+	let focus = (params = {}) => vm.$u.put("/user/focus?focusedUserId=" + params, null)
+
+
+
 	// 将各个定义的接口名称，统一放进对象挂载到vm.$u.api(因为vm就是this，也即this.$u.api)下
 	vm.$u.api = {
 		getUploadToken,
-		publicDynamic
+		publicDynamic,
+		getUserInfo,
+		getOwnInfo,
+		getRelatedCount,
+		updateInfo,
+		getFansOrFocusedAndSimple,
+		cancelFocused,
+		focus
 	};
 }
 

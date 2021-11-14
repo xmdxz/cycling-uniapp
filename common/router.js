@@ -49,6 +49,7 @@ const router = createRouter({
 		},
 		{
 			path:'/pages/dynamic/index',
+			aliasPath:'/',
 			name:'dynamic'
 		},
 		{
