@@ -121,7 +121,6 @@
 					})
 				} else {
 					console.log("账号 =>", phone, "密码 =>", password)
-<<<<<<< HEAD
 					that.$u.api.userLogin({
 						phone: phone,
 						password: password
@@ -130,10 +129,6 @@
 						let token = res.header.authorization
 						that.$u.vuex('vuex_token', token)
 					})
-=======
-					let res = await this.$u.api.userLogin(this.$qs.stringify(postData))
-					console.log(res)
->>>>>>> 990f0a61521a975a51d0feafd5f97980b205db22
 				}
 
 			}
