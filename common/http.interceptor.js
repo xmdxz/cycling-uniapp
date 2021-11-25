@@ -22,12 +22,18 @@ const install = (Vue, vm) => {
 	});
 	// 请求拦截，配置Token等参数 
 	Vue.prototype.$u.http.interceptor.request = (config) => {
+
+		//判断是否是post请求如果是改变其默认Content-type
+		if (config.method === 'POST') {
+			config.header['Content-Type'] = 'application/x-www-form-urlencoded'
+		}
 		//路径不需要添加token
 		if (excludeHeader.indexOf(config.url) === -1) {
+			//把vuex中的token存入请求的header中
+			config.header.token = vm.vuex_token;
 			// 登录未整合，先使用固定token值
-			// config.header.token = vm.$store.state.token;
-			config.header.token =
-				'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZSI6MTYzNjcyMDIxODI1NywiaWQiOiIxIiwiZXhwIjoxNjM3MzI1MDE4fQ.4ascaxtgtafWHda6A_Yyv2MXpQ93_mmS9CzvGM_tx4A'
+			// config.header.token =
+			// 	'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZSI6MTYzNjcyMDIxODI1NywiaWQiOiIxIiwiZXhwIjoxNjM3MzI1MDE4fQ.4ascaxtgtafWHda6A_Yyv2MXpQ93_mmS9CzvGM_tx4A'
 		}
 
 		// 方式一，存放在vuex的token，假设使用了uView封装的vuex方式，见：https://uviewui.com/components/globalVariable.html
@@ -51,7 +57,12 @@ const install = (Vue, vm) => {
 		// 判断可能变成了res.statueCode，或者res.data.code之类的，请打印查看结果
 		if (res.data.code === 200 && res.statusCode === 200) {
 			// 如果把originalData设置为了true，这里return回什么，this.$u.post的then回调中就会得到什么
-			return res.data.data;
+			if ('data' in res.data)
+				return res.data.data;
+			else if (!('data' in res.data))
+				if (res.data.msg == '登录成功')
+					return res;
+			return res.data;
 		} else return false;
 	}
 }
