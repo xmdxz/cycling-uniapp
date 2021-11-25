@@ -124,6 +124,20 @@
         "appid" : ""
     },
     "h5" : {
+		"devServer":{
+				"port":8080,
+				"disableHostCheck":true,
+				"proxy":{
+					"/ssm":{
+						"target":"http://localhost:5678",
+						"changeOrigin":true,
+						"secure": false,
+						"pathRewrite":{
+							"^/ssm": ""
+						}
+					}
+				}
+			},
         "template" : "template.h5.html",
         "router" : {
             "mode" : "hash",

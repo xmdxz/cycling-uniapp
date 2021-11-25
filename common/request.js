@@ -1,5 +1,5 @@
-//定义统一请求url
-const BASE_URL = 'http://localhost:5678'
+//定义统一后端请求url头部  带/ssm/*的请求都认为是后端的请求
+const BASE_URL = '/ssm'
 //暴露一个myRequest方法，使用options接受传过来的参数
 export const myRequest = (options) => {
 	//异步封装接口，使用promise处理异步请求

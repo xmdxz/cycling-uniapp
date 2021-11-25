@@ -284,8 +284,8 @@ export default {
 @import "../../libs/css/style.components.scss";
 	
 .u-field {
-	font-size: 28rpx;
-	padding: 20rpx 28rpx;
+	font-size: 35rpx;
+	padding: 39rpx 8rpx;
 	text-align: left;
 	position: relative;
 	color: $u-main-color;
@@ -353,7 +353,7 @@ export default {
 .u-field__input-wrap {
 	position: relative;
 	overflow: hidden;
-	font-size: 28rpx;
+	font-size: 35rpx;
 	height: 48rpx;
 	flex: 1;
 	width: auto;
