@@ -1,37 +1,30 @@
 <template>
 	<view class="wrap">
-		<view class="top" style="height: 10rpx;"></view>
+		<view class="top" style="height: 120rpx;"></view>
 		<view class="content">
 			<view class="title">欢迎来到骑行</view>
 			<view class="title_tiny">要想骑行,优先骑行</view>
 			<view class="u-demo-area">
-				<u-field
-					v-model="mobile"
-					label="账号"
-					placeholder="请输入账号"
-					type="text"
-				>
+				<u-field v-model="phone" label="账号" placeholder="请输入账号" type="text" @input="getPhone()">
 				</u-field>
-				<u-field
-					v-model="code"
-					label="密码"
-					placeholder="请输入密码"
-				>
+				<u-field v-model="password" label="密码" placeholder="请输入密码" type="text" :password=true
+					@input="getPassword()">
 				</u-field>
 			</view>
-		    <view class="u-demo-area" style="margin-top: 50rpx;">
-		    	<u-button @click="btnClick" data-name="3333"   shape="circle" size="default" ripple="true"  type="success">登录</u-button>
-		    </view>
-			<view style="text-align: center;margin-top: 36rpx;">
+			<view class="u-demo-area" style="margin-top: 66rpx;">
+				<u-button @click="userlogin()" data-name="3333" shape="circle" size="default" type="success">登录
+				</u-button>
+			</view>
+			<view style="text-align: center;margin-top: 39rpx;">
 				<text style="color: #00BFFF">忘记密码</text>
 			</view>
 		</view>
 		<view class="buttom">
-			<view style="padding-top: 200rpx ;"></view>
-			<u-divider type="primary" borderColor="#808080" bg-color="#F7F7F7" @click="click"
-			half-width="250" color="#696969" font-size="30">其他登录方式</u-divider>			
+			<view style="padding-top: 156rpx ;"></view>
+			<u-divider type="primary" borderColor="#808080" bg-color="#F7F7F7" @click="click" half-width="250"
+				color="#696969" font-size="30">其他登录方式</u-divider>
 			<view class="loginType">
-				
+
 				<view class="wechat item">
 					<view class="icon">
 						<u-icon size="70" name="weixin-fill" color="rgb(83,194,64)"></u-icon>
@@ -59,14 +52,16 @@
 			</view>
 			<view class="hint">
 				<view class="agreement">
-					
+
 					<view class="agreement-text">
 						<u-checkbox v-model="check" @change="checkboxChange" style="margin-left:20rpx ;">
-							我已阅读并同意
-							<text class="link">《注册协议》</text>和
-							<text class="link">《隐私政策》</text>
+							<text style="font-size: 28rpx">我已阅读并同意</text>
+							<text class="link" style="font-size: 28rpx">《注册协议》</text><text
+								style="font-size: 28rpx">和</text>
+							<text class="link" style="font-size: 28rpx">《隐私政策》</text>
 						</u-checkbox>
-						<view style="text-align: center;margin-top: 20rpx;">骑行网@2021 All Rights Resved</view>
+						<view style="text-align: center;margin-top: 20rpx;font-size: 23rpx;">骑行网@2021 All Rights Resved
+						</view>
 					</view>
 				</view>
 			</view>
@@ -79,19 +74,48 @@
 	export default {
 		data() {
 			return {
-				tel: ''
+				phone: "",
+				password: "",
+				erroMessage: "账号不能为空",
+				check: false
 			}
 		},
-		computed: {
-			inputStyle() {
-				let style = {};
-				if (this.tel) {
-					style.color = "#fff";
-					style.backgroundColor = this.$u.color['warning'];
+		onLoad() {
+			console.log("进入登陆页面")
+		},
+		methods: {
+
+			//获得输入的手机号
+			getPhone: function(e) {
+				let that = this
+				that.phone = event.target.value
+			},
+			//获取输入的密码
+			getPassword: function() {
+				let that = this
+				that.password = event.target.value
+			},
+
+			//用户登录
+			userlogin: function() {
+				let that = this
+				let phone = this.phone
+				let password = this.password
+				if (phone.length == 0 || phone.split(" ").join("").length == 0 || password.length == 0 || password
+					.split(" ").join("").length == 0) {
+					console.log("请输入账号密码")
+				} else {
+					console.log("账号 =>", phone, "密码 =>", password)
+					that.$u.api.userLogin().then(res => {
+						console.log("返回的结果", res)
+					})
 				}
-				return style;
+
 			}
+
+
 		}
+
 	};
 </script>
 
@@ -102,7 +126,7 @@
 		height: 100vh;
 
 		.content {
-			width: 600rpx;
+			width: 620rpx;
 			margin: 80rpx auto 0;
 
 			.title {
@@ -178,9 +202,9 @@
 				.agreement {
 					display: flex;
 					align-items: center;
-					
+
 					.agreement-text {
-					     
+
 						color: $u-tips-color;
 					}
 				}

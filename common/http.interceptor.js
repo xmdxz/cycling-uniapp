@@ -1,6 +1,7 @@
 // 这里的vm，就是我们在vue文件里面的this，所以我们能在这里获取vuex的变量，比如存放在里面的token
 // 同时，我们也可以在此使用getApp().globalData，如果你把token放在getApp().globalData的话，也是可以使用的
-const baseUrl = 'http://localhost:5678'
+//后端请求的url头部  带/ssm/*的请求都认为是后端的请求
+const baseUrl = '/ssm'
 //这里表示不需要添加token的接口
 const excludeHeader = [
 	'/login', '/registry'
