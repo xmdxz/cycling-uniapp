@@ -27,7 +27,7 @@ const install = (Vue, vm) => {
 			// 登录未整合，先使用固定token值
 			// config.header.token = vm.$store.state.token;
 			config.header.token =
-				'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZSI6MTYzNzI4MzUxMzY1MywiaWQiOiIxIiwiZXhwIjoxNjM3ODg4MzEzfQ.pfi87EEAatao579_1112xtv9p9iMifR57B0seTCzjlQ'
+				'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZSI6MTYzNzg0MDE0ODE4OCwiaWQiOiIxIiwiZXhwIjoxNjM4NDQ0OTQ4fQ.3_v5X2MrYW4c564sZECvNms5Zm-YnqwwXeoo4-Np8-I'
 		}
 
 		// 方式一，存放在vuex的token，假设使用了uView封装的vuex方式，见：https://uviewui.com/components/globalVariable.html

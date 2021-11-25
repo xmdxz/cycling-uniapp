@@ -32,7 +32,7 @@
 							<u-tag text="新建话题" type="success" mode="light" shape="circle"></u-tag>
 						</view>
 						<view class="topic-item" v-for="item in topicList">
-							<u-tag :text="item.topicName" type="info" mode="light" shape="circle"></u-tag>
+							<u-tag :text="item.topicName" type="info" mode="light" shape="circle" @click="addTopicSelected(item)"></u-tag>
 						</view>
 						
 						<view class="next-topic">
@@ -40,7 +40,11 @@
 						</view>
 					</view>
 					<view class="topic-selected">
-						
+						<view class="topic-item" v-for="item in topicSelectedList">
+							<u-tag :text="item.topicName" type="error" mode="light" shape="squire" :closeable="true"
+							@close="deleteTopicSelected(item)"
+							></u-tag>
+						</view>
 					</view>
 				</view>
 			</u-popup>
@@ -134,13 +138,33 @@
 					pageSize: this.pageSize
 				})
 				console.log(res)
-				if	(res.length === 0){
+				if	(res.length < this.pageSize){
 					this.$refs.noDataToast.show({
 						title: '没有话题了哦'
 					})
 				}
 				
 				this.topicList = res
+			},
+			
+			addTopicSelected(item){
+				if(this.topicSelectedList.length>2){
+					this.$refs.noDataToast.show({
+						title: '最多添加三个话题哦'
+					})
+					return 
+				}
+				this.topicSelectedList.push(item)
+			},
+			
+			deleteTopicSelected(item){
+				for(let i=0;i<this.topicSelectedList.length;i++){
+					if(this.topicSelectedList[i].id === item.id){
+						console.log(i)
+						this.topicSelectedList.splice(i,1)
+					}
+				}
+				console.log(this.topicSelectedList)
 			}
 		}
 	}
@@ -201,16 +225,25 @@
 	.next-topic{
 		margin: 10rpx 0;
 	}
-	.topic-item {
+	.topic-content .topic-item {
 		margin: 10rpx 10rpx 10rpx 0;
 		/* margin-bottom: 10rpx; */
 	}
 
 	.topic-selected {
+		padding-top: 5rpx;
+		padding-left: 5rpx;
 		position: absolute;
 		bottom: 0;
 		width: 100%;
 		height: 150rpx;
 		background-color: #E4E7ED;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+	}
+	
+	.topic-selected .topic-item{
+		margin: 0rpx 5rpx 0 0;
 	}
 </style>
