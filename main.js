@@ -38,6 +38,10 @@ import English from '@/common/locales/en.js';
 // VueI18n
 import VueI18n from '@/common/vue-i18n.min.js';
 
+
+
+
+
 // VueI18n
 Vue.use(VueI18n);
 
@@ -70,6 +74,9 @@ Vue.use(httpApi, app);
 
 import {myRequest} from '@/common/request.js'
 Vue.prototype.$myRequest = myRequest
+
+const qs = require('qs')
+Vue.prototype.$qs = qs
 
 RouterMount(app,router,'#app')
 app.$mount();

@@ -71,6 +71,7 @@
 </template>
 
 <script>
+	
 	export default {
 		data() {
 			return {
@@ -97,18 +98,21 @@
 			},
 
 			//用户登录
-			userlogin: function() {
+			async userlogin() {
 				let that = this
 				let phone = this.phone
 				let password = this.password
+				let postData = {
+					'phone': phone,
+					'password': password
+				}
 				if (phone.length == 0 || phone.split(" ").join("").length == 0 || password.length == 0 || password
 					.split(" ").join("").length == 0) {
 					console.log("请输入账号密码")
 				} else {
 					console.log("账号 =>", phone, "密码 =>", password)
-					that.$u.api.userLogin().then(res => {
-						console.log("返回的结果", res)
-					})
+					let res = await this.$u.api.userLogin(this.$qs.stringify(postData))
+					console.log(res)
 				}
 
 			}
