@@ -74,6 +74,7 @@
 </template>
 
 <script>
+	
 	export default {
 		data() {
 			return {
@@ -100,10 +101,14 @@
 			},
 
 			//用户登录
-			userlogin: function() {
+			async userlogin() {
 				let that = this
 				let phone = this.phone
 				let password = this.password
+				let postData = {
+					'phone': phone,
+					'password': password
+				}
 				if (phone.length == 0 || phone.split(" ").join("").length == 0 || password.length == 0 || password
 					.split(" ").join("").length == 0) {
 					console.log("请输入账号密码")
@@ -116,6 +121,7 @@
 					})
 				} else {
 					console.log("账号 =>", phone, "密码 =>", password)
+<<<<<<< HEAD
 					that.$u.api.userLogin({
 						phone: phone,
 						password: password
@@ -124,6 +130,10 @@
 						let token = res.header.authorization
 						that.$u.vuex('vuex_token', token)
 					})
+=======
+					let res = await this.$u.api.userLogin(this.$qs.stringify(postData))
+					console.log(res)
+>>>>>>> 990f0a61521a975a51d0feafd5f97980b205db22
 				}
 
 			}
