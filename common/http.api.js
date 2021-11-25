@@ -11,6 +11,9 @@ const install = (Vue, vm) => {
 	// 发布动态
 	let publicDynamic = (params = {}) => vm.$u.post(publicDynamicUrl,params)
 
+	// 获取所有话题
+	let getAllTopic = (params = {}) => vm.$u.get('/topic/findAll',params)
+	
 	//获取用户信息
 	let getUserInfo = (params = {}) => vm.$u.get("/user/getUserInfo", null)
 
@@ -39,6 +42,7 @@ const install = (Vue, vm) => {
 	vm.$u.api = {
 		getUploadToken,
 		publicDynamic,
+		getAllTopic,
 		getUserInfo,
 		getOwnInfo,
 		getRelatedCount,
