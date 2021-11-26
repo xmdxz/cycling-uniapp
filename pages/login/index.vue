@@ -132,6 +132,9 @@
 								position: 'bottom',
 								icon: true
 							})
+							uni.redirectTo({
+								url: '../dynamic/index'
+							})
 							uni.hideLoading();
 						} else if (msg == "该手机号未注册") {
 							that.$refs.uToast.show({
@@ -152,8 +155,6 @@
 							})
 							uni.hideLoading();
 						}
-
-
 					})
 				}
 
