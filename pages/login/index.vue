@@ -18,6 +18,9 @@
 			<view style="text-align: center;margin-top: 39rpx;">
 				<text style="color: #00BFFF">忘记密码</text>
 			</view>
+			<view>
+				<u-toast ref="uToast" />
+			</view>
 		</view>
 		<view class="buttom">
 			<view style="padding-top: 156rpx ;"></view>
@@ -109,10 +112,23 @@
 				if (phone.length == 0 || phone.split(" ").join("").length == 0 || password.length == 0 || password
 					.split(" ").join("").length == 0) {
 					console.log("请输入账号密码")
+					this.$refs.uToast.show({
+						title: '请输入账号密码',
+						// 如果不传此type参数，默认为default，也可以手动写上 type: 'default'
+						type: 'error',
+						position: 'bottom',
+						icon: false
+					})
 				} else {
 					console.log("账号 =>", phone, "密码 =>", password)
-					let res = await this.$u.api.userLogin(this.$qs.stringify(postData))
-					console.log(res)
+					that.$u.api.userLogin({
+						phone: phone,
+						password: password
+					}).then(res => {
+						console.log("返回的结果", res)
+						let token = res.header.authorization
+						that.$u.vuex('vuex_token', token)
+					})
 				}
 
 			}
