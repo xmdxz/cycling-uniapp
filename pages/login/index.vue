@@ -128,6 +128,9 @@
 						console.log("返回的结果", res)
 						let token = res.header.authorization
 						that.$u.vuex('vuex_token', token)
+						uni.redirectTo({
+							url: '../dynamic/index'
+						})
 					})
 				}
 
