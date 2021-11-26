@@ -11,9 +11,9 @@
 				<u-upload ref="uUpload" :action="action" :auto-upload="false" max-count="3"></u-upload>
 			</view>
 			<view class="tags">
-				<u-field type="text" label="话题" placeholder="合适的话题能增加曝光哦" disabled
+				<u-field type="text" label="话题" :placeholder="topicPlaceholder" disabled
 					right-icon="arrow-right" icon="attach" input-align="right" @click="showTopic()"></u-field>
-				<u-field v-model="position" type="text" label="地点" placeholder="添加地理位置可以提升曝光哦～" disabled
+				<u-field v-model="position" type="text" label="地点" :placeholder="regionPlaceholder" @click="showRegion()" disabled
 					right-icon="arrow-right" icon="map" input-align="right"></u-field>
 			</view>
 			<view class="btn-pub">
@@ -42,6 +42,7 @@
 					<view class="topic-selected">
 						<view class="topic-item" v-for="item in topicSelectedList">
 							<u-tag :text="item.topicName" type="error" mode="light" shape="squire" :closeable="true"
+							size="mini"
 							@close="deleteTopicSelected(item)"
 							></u-tag>
 						</view>
@@ -51,6 +52,13 @@
 			
 		</view>
 		<u-toast ref="noDataToast"></u-toast>
+		
+		<u-picker mode="region" v-model="regionShow" :safe-area-inset-bottom="true"
+		@confirm="getRegionData"
+		:default-region="regionSelected"
+		></u-picker>
+		
+		
 	</view>
 </template>
 
@@ -72,7 +80,25 @@
 				topicShow: false,
 				searchTopic: '',
 				pageNum: 1,
-				pageSize: 3
+				pageSize: 3,
+				regionShow: false,
+				regionSelected: [],
+				
+			}
+		},
+		computed:{
+			topicPlaceholder: function(){
+				if(this.topicSelectedList.length>0){
+					return "当前已选择"+this.topicSelectedList.length+"个话题"
+				}
+				return "合适的话题可以增加曝光率哦~"
+			},
+			
+			regionPlaceholder: function(){
+				if(this.regionSelected.length==0){
+					return "添加地理位置可以提升曝光哦~"
+				}
+				return this.regionSelected[0]+"-"+this.regionSelected[1]+"-"+this.regionSelected[2]
 			}
 		},
 		onLoad() {
@@ -85,12 +111,15 @@
 				// 异步获取token
 				this.uploadToken = await this.$u.api.getUploadToken()
 			},
-			async public() {
-				this.uploadImg()
-
+			public() {
+			    this.uploadImg()
+				console.log(this.imgPushList)
+				this.$u.api.publicDynamic({
+					
+				})
 			},
 
-			async uploadImg() {
+		    uploadImg() {
 				const options = {
 					quality: 0.8,
 					noCompressIfLarger: true
@@ -106,13 +135,20 @@
 							.config)
 						const subscription = observable.subscribe({
 							next: (result) => {
+								uni.showLoading({
+									title:'正在上传第'+(i+1)+'张图片'
+								})
 								console.warn(result)
 							},
 							error: () => {
 								console.log('upload error')
 							},
 							complete: (res) => {
+								uni.showLoading({
+									title:'第'+(i+1)+'张图片上传成功'
+								})
 								this.imgPushList.push(res.key)
+								uni.hideLoading()
 							}
 						}) // 上传开始
 					})
@@ -132,12 +168,12 @@
 			
 			async nextTopic(){
 				this.pageNum++;
-				console.log(this.pageNum)
+				
 				let res = await this.$u.api.getAllTopic({
 					pageNum: this.pageNum,
 					pageSize: this.pageSize
 				})
-				console.log(res)
+				
 				if	(res.length < this.pageSize){
 					this.$refs.noDataToast.show({
 						title: '没有话题了哦'
@@ -148,11 +184,23 @@
 			},
 			
 			addTopicSelected(item){
+				// 判断话题不能添加超过3个
 				if(this.topicSelectedList.length>2){
 					this.$refs.noDataToast.show({
 						title: '最多添加三个话题哦'
 					})
 					return 
+				}
+				
+				// 判断话题是否已添加过
+				for(let i=0;i<this.topicSelectedList.length;i++){
+					
+					if(this.topicSelectedList[i].id === item.id){
+						this.$refs.noDataToast.show({
+							title: '当前话题已添加了哦'
+						})
+						return 
+					}
 				}
 				this.topicSelectedList.push(item)
 			},
@@ -165,7 +213,19 @@
 					}
 				}
 				console.log(this.topicSelectedList)
+			},
+			
+			showRegion(){
+				this.regionShow = true
+			},
+			getRegionData(e){
+				this.regionSelected = []
+				this.regionSelected.push(e.province.label)
+				this.regionSelected.push(e.city.label)
+				this.regionSelected.push(e.area.label)
+				
 			}
+			
 		}
 	}
 </script>
@@ -233,11 +293,12 @@
 	.topic-selected {
 		padding-top: 5rpx;
 		padding-left: 5rpx;
+		padding-bottom: 20rpx;
 		position: absolute;
 		bottom: 0;
 		width: 100%;
-		height: 150rpx;
-		background-color: #E4E7ED;
+		height: 130rpx;
+		background-color: #F9F9F9;
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: flex-start;
@@ -245,5 +306,6 @@
 	
 	.topic-selected .topic-item{
 		margin: 0rpx 5rpx 0 0;
+		height: 40rpx;
 	}
 </style>
