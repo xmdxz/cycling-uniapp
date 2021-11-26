@@ -1,60 +1,58 @@
 <template>
 	<view>
 		<u-sticky><u-tabs :list="list" :current="current" :is-scroll="false" :item-width="windowWidth" @change="changeTabs"></u-tabs></u-sticky>
-		<!-- <view class="u-card-wrap">
-			<u-card @click="click" @head-click="headClick" :title="title" :sub-title="subTitle" :thumb="thumb" :padding="padding" :border="border">
-				<view class="" slot="body"> 
-					<view class="u-body-item u-flex u-border-bottom u-col-between u-p-t-0">
-						<view class="u-body-item map"><map id="map" :latitude="latitude" :longitude="longitude" :polyline="lineArray" ></map></view>
-						<view class="u-body-item-title u-line-2">
-							凤凰山山路骑行，环山公路骑行。一起感受速度与激情的碰撞，山路速降，32km长速降赛道。
-						</view>
-						
-					</view>
-				</view>
-				<view class="" slot="foot">
-						<u-tag class="tags" :text="text" :type="type" :shape="shape" :closeable="false" :mode="mode_tag" :show="true" :size="size" />
-						<u-tag class="tags" text="风景" type="success" :shape="shape" :closeable="false" :mode="mode_tag" :show="true" :size="size" />
-						<u-tag class="tags" text="耐力" type="warning" :shape="shape" :closeable="false" :mode="mode_tag" :show="true" :size="size" />
-						<view class="more">
-							<u-icon @click="mores()" name="more-dot-fill"></u-icon>
-						</view>
-				</view>
-			</u-card>
-		</view> -->
 		<view v-if="current == 0">
-			0
-			<view class="more"><u-loadmore @loadmore="loadmoreByCollect()" :status="activity" /></view>
-		</view>
-		<view v-if="current == 1">
-			<view v-for="(item, index) in dynamicList" :key="index" @click="toDynamic(item.id)">
+			<u-empty text="动态列表为空" :show="dynamic.show" mode="list"></u-empty>
+			<view v-for="(item, index) in dynamic.list" :key="index" @click="toDynamic(item.id)">
 				<view class="content-item">
 					<view class="content-header">
-						<u-avatar :src="item.avatar" style="vertical-align: middle;"></u-avatar>
-						<view class="content-authorinfo">	
-						<text class="content-user">{{ item.contentuser }}</text>	
-						<text class="content-level">{{ item.contentlevel }}</text>
-						</view>
+						<text class="content-title">{{ item.title }}</text>
 					</view>
-					<view class="content-text">{{ item.contenttext }}</view>
+					<view class="content-text">{{ item.body }}</view>
 					<view class="content-time">
-						<text>{{ item.contenttime }}</text>
+						<u-avatar class="avatar" :src="item.src" size="50"></u-avatar>
+						<text>{{ item.username }}</text>
+						<text>{{ item.time }}</text>
 					</view>
-					<view class="content-comment">
-						<view class="comment-item" v-for="(item, index) in item.commentitems" :key="index">
-							<view class="comment-user">{{ item.user }}:</view>
-							<view class="comment-text">{{ item.text }}</view>
-						</view>
-					</view>
+					<u-divider :use-slot="false" height="60" half-width="100%"></u-divider>
 				</view>
 			</view>
-			<view class="more"><u-loadmore @loadmore="loadmoreByDynamic()" :status="dynamic" /></view>
+			<view class="more"><u-loadmore @loadmore="loadmoreByDynamic()" :status="dynamic.more" /></view>
+		</view>
+		<view v-if="current == 1">
+			<u-empty text="活动列表为空" :show="activity.show" mode="list"></u-empty>
+			<view v-for="(item, index) in activity.list" :key="index" @click="toDynamic(item.id)">
+				<view class="content-item">
+					<view class="content-header">
+						<text class="content-title">{{ item.title }}</text>
+					</view>
+					<view class="content-text">{{ item.body }}</view>
+					<view class="content-time">
+						<u-avatar class="avatar" :src="item.src" size="50"></u-avatar>
+						<text>{{ item.username }}</text>
+						<text>{{ item.time }}</text>
+					</view>
+					<u-divider :use-slot="false" height="60" half-width="100%"></u-divider>
+				</view>
+			</view>
+			<view class="more"><u-loadmore @loadmore="loadmoreByActive()" :status="activity.more" /></view>
+		</view>
+		<view ref="card" style="visibility: hidden;">
+			<view class="content-item">
+				<view class="content-header"><text class="content-title">测试</text></view>
+				<view class="content-text">测试</view>
+				<view class="content-time">
+					<u-avatar class="avatar" size="50"></u-avatar>
+					<text>测试</text>
+					<text>测试</text>
+				</view>
+				<u-divider :use-slot="false" height="60" half-width="100%"></u-divider>
+			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-import app from '../../App.vue';
 export default {
 	data() {
 		return {
@@ -66,225 +64,116 @@ export default {
 					name: '活动'
 				}
 			],
-			dynamicList:[
-				{
-					id:0,
-					avatar:'/static/img/1.jpg',
-					contentuser:'向恶势力低头！',
-					contentlevel:'asd',
-					contenttext:'阿斯顿撒',
-					contenttime:'2021-13-131-2',
-					commentitems:[
-
-					]
-				},
-				{
-					id:0,
-					avatar:'/static/img/1.jpg',
-					contentuser:'向恶势力低头！',
-					contentlevel:'asd',
-					contenttext:'阿斯顿撒',
-					contenttime:'2021-13-131-2',
-					commentitems:[
-				
-					]
-				},
-				{
-					id:0,
-					avatar:'/static/img/1.jpg',
-					contentuser:'向恶势力低头！',
-					contentlevel:'asd',
-					contenttext:'阿斯顿撒',
-					contenttime:'2021-13-131-2',
-					commentitems:[
-				
-					]
-				},
-				{
-					id:0,
-					avatar:'/static/img/1.jpg',
-					contentuser:'向恶势力低头！',
-					contentlevel:'asd',
-					contenttext:'阿斯顿撒',
-					contenttime:'2021-13-131-2',
-					commentitems:[
-				
-					]
-				},
-				{
-					id:0,
-					avatar:'/static/img/1.jpg',
-					contentuser:'向恶势力低头！',
-					contentlevel:'asd',
-					contenttext:'阿斯顿撒',
-					contenttime:'2021-13-131-2',
-					commentitems:[
-				
-					]
-				},
-				{
-					id:0,
-					avatar:'/static/img/1.jpg',
-					contentuser:'向恶势力低头！',
-					contentlevel:'asd',
-					contenttext:'阿斯顿撒',
-					contenttime:'2021-13-131-2',
-					commentitems:[
-				
-					]
-				},
-				{
-					id:0,
-					avatar:'/static/img/1.jpg',
-					contentuser:'向恶势力低头！',
-					contentlevel:'asd',
-					contenttext:'阿斯顿撒',
-					contenttime:'2021-13-131-2',
-					commentitems:[
-				
-					]
-				},
-				{
-					id:0,
-					avatar:'/static/img/1.jpg',
-					contentuser:'向恶势力低头！',
-					contentlevel:'asd',
-					contenttext:'阿斯顿撒',
-					contenttime:'2021-13-131-2',
-					commentitems:[
-				
-					]
-				},
-				{
-					id:0,
-					avatar:'/static/img/1.jpg',
-					contentuser:'向恶势力低头！',
-					contentlevel:'asd',
-					contenttext:'阿斯顿撒',
-					contenttime:'2021-13-131-2',
-					commentitems:[
-				
-					]
-				},
-				{
-					id:0,
-					avatar:'/static/img/1.jpg',
-					contentuser:'向恶势力低头！',
-					contentlevel:'asd',
-					contenttext:'阿斯顿撒',
-					contenttime:'2021-13-131-2',
-					commentitems:[
-				
-					]
-				},
-				{
-					id:0,
-					avatar:'/static/img/1.jpg',
-					contentuser:'向恶势力低头！',
-					contentlevel:'asd',
-					contenttext:'阿斯顿撒',
-					contenttime:'2021-13-131-2',
-					commentitems:[
-				
-					]
-				},
-				{
-					id:0,
-					avatar:'/static/img/1.jpg',
-					contentuser:'向恶势力低头！',
-					contentlevel:'asd',
-					contenttext:'阿斯顿撒',
-					contenttime:'2021-13-131-2',
-					commentitems:[
-				
-					]
-				},
-				{
-					id:0,
-					avatar:'/static/img/1.jpg',
-					contentuser:'向恶势力低头！',
-					contentlevel:'asd',
-					contenttext:'阿斯顿撒',
-					contenttime:'2021-13-131-2',
-					commentitems:[
-				
-					]
-				},
-				{
-					id:0,
-					avatar:'/static/img/1.jpg',
-					contentuser:'向恶势力低头！',
-					contentlevel:'asd',
-					contenttext:'阿斯顿撒',
-					contenttime:'2021-13-131-2',
-					commentitems:[
-				
-					]
-				},
-				{
-					id:0,
-					avatar:'/static/img/1.jpg',
-					contentuser:'向恶势力低头！',
-					contentlevel:'asd',
-					contenttext:'阿斯顿撒',
-					contenttime:'2021-13-131-2',
-					commentitems:[
-				
-					]
-				},
-				{
-					id:0,
-					avatar:'/static/img/1.jpg',
-					contentuser:'向恶势力低头！',
-					contentlevel:'asd',
-					contenttext:'阿斯顿撒',
-					contenttime:'2021-13-131-2',
-					commentitems:[
-				
-					]
-				},
-				{
-					id:0,
-					avatar:'/static/img/1.jpg',
-					contentuser:'向恶势力低头！',
-					contentlevel:'asd',
-					contenttext:'阿斯顿撒',
-					contenttime:'2021-13-131-2',
-					commentitems:[
-				
-					]
-				}
-			],
+			dynamic: {
+				list: [],
+				more: 'loadmore',
+				show: true
+			},
+			activity: {
+				list: [],
+				more: 'loadmore',
+				show: true
+			},
+			current: 0,
+			num: 0,
 			current: 0,
 			windowWidth: 0,
-			activity:'loadmore',
-			dynamic:'loadmore'
+			interface: null
 		};
+	},
+	watch: {
+		'dynamic.list': {
+			handler(data) {
+				if (data.length === 0) {
+					this.dynamic.show = true;
+				} else {
+					this.dynamic.show = false;
+				}
+			}
+		},
+		'active.list': {
+			handler(data) {
+				if (data.length === 0) {
+					this.activity.show = true;
+				} else {
+					this.activity.show = false;
+				}
+			}
+		}
 	},
 	methods: {
 		changeTabs(e) {
 			this.current = e;
+			let x = this.current === 0 ? 'dynamic' : 'activity';
+			if (this[x].list.length === 0) {
+				this.getList();
+			}
 		},
-		toDynamic(e){
+		toDynamic(e) {
 			uni.navigateTo({
-				url:'../dynamic/dynamicdetail?dynamicId=' + e
-			})
+				url: '../dynamic/dynamicdetail?dynamicId=' + e
+			});
 		},
-		loadmoreByCollect(){
-			console.log("sad")
+		loadmoreByActive() {
+			this.getList()
 		},
 		//点击加载更多
-		loadmoreByDynamic(){
-			console.log("ee")
+		loadmoreByDynamic() {
+			this.getList()
 		},
+		async getList() {
+			let type = this.current === 0 ? 'dynamic' : 'activity';
+			this[type].more = 'loading';
+			let list = this[type].list;
+			let minId = list.length === 0 ? null : list[0].id;
+			let result = await this.$u.api[this.interface]({ minId: minId, num: this.num, type: this.current });
+			if (result.length <= this.num) {
+				this[type].more = 'nomore';
+			} else {
+				this[type].more = 'loadmore';
+			}
+		}
 	},
-	onLoad() {
-		this.windowWidth = app.globalData.windowWidth;
+	onLoad(e) {
+		let type = this.$Route.query.type;
+		if (typeof type === 'undefined') {
+			uni.showToast({
+				title: '非法跳转',
+				icon: 'error',
+				success(e) {
+					uni.navigateBack();
+				}
+			});
+		}
+		this.windowWidth = getApp().globalData.windowWidth;
+		let title = type === 0 ? '我的收藏' : '我的发布';
+		if (type === 0) {
+			(title = '我的收藏'), (this.interface = 'getCollect');
+		} else if (type === 1) {
+			(title = '我的发布'), (this.interface = 'getPublish');
+		} else {
+			uni.showToast({
+				title: '非法跳转',
+				icon: 'error',
+				success(e) {
+					uni.navigateBack();
+				}
+			});
+		}
+		uni.setNavigationBarTitle({
+			title: title
+		});
 	},
 	//加载更多
-	onReachBottom(){
-		console.log("asd")
+	onReachBottom() {
+		this.getList();
 	},
+	onReady() {
+		let that = this;
+		this.num = Math.round(getApp().globalData.windowHeight / this.$refs.card.$el.scrollHeight + 10);
+		this.$refs.card.$el.remove();
+		this.getList();
+	}
 };
 </script>
 
@@ -295,96 +184,39 @@ export default {
 .content-item {
 	width: 100%;
 }
+.content-title {
+	font-weight: 600;
+	font-size: 35rpx;
+	margin-right: 30rpx;
+}
 .content-item .content-header {
 	margin-left: 30upx;
 	margin-top: 10upx;
 	display: flex;
 	justify-content: flex-start;
 }
-
-.content-header .content-authorinfo {
-	margin-top: 5upx;
-	margin-left: 20upx;
-	display: flex;
-	flex-direction: column;
-}
-
-.content-header .content-authorinfo .content-user {
-	font-size: 30upx;
-}
-
-.content-header .content-authorinfo .content-level {
-	font-size: 25upx;
-	color: #82848a;
+.content-item .avatar {
+	vertical-align: middle;
+	margin-right: 10rpx;
 }
 
 .content-item .content-text {
 	width: 90%;
+	color: #999999;
 	margin: 0 auto;
-	margin-top: 10upx;
-	display: -webkit-box;
-	-webkit-line-clamp: 3;
-	-webkit-box-orient: vertical;
+	margin-top: 10rpx;
+	font-size: 30rpx;
 	overflow: hidden;
 	text-overflow: ellipsis;
-}
-
-.content-item .content-imgs {
-	width: 90%;
-	margin: 0 auto;
-	margin-top: 10upx;
-	height: 202upx;
-	display: flex;
-	justify-content: space-between;
-	flex-direction: row;
-	flex-wrap: wrap;
-}
-
-.content-imgs .content-img {
-	width: 30%;
-	height: 200upx;
-}
-
-.content-item .content-imgs::after {
-	content: '';
-	width: 30%;
+	white-space: nowrap;
 }
 
 .content-item .content-time {
 	width: 90%;
 	margin: 0 auto;
 	margin-top: 10upx;
-	text-align: right;
+	text-align: left;
 	font-size: 25upx;
 	color: #909399;
-}
-
-.content-item .content-comment {
-	width: 100%;
-	margin-top: 10upx;
-	padding: 10upx 40upx;
-	background-color: rgb(245, 250, 250);
-}
-
-.content-comment .comment-item {
-	display: flex;
-}
-
-.comment-item .comment-user {
-	font-size: 25upx;
-	color: #2b85e4;
-	font-weight: bold;
-}
-
-.comment-item .comment-text {
-	flex: 1;
-	word-break: break-all;
-	margin-left: 10upx;
-	font-size: 25upx;
-	display: -webkit-box;
-	-webkit-line-clamp: 2;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-	text-overflow: ellipsis;
 }
 </style>

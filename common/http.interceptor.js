@@ -22,18 +22,15 @@ const install = (Vue, vm) => {
 	});
 	// 请求拦截，配置Token等参数 
 	Vue.prototype.$u.http.interceptor.request = (config) => {
-
 		//判断是否是post请求如果是改变其默认Content-type
-		if (config.method === 'POST') {
+		if(config.method === 'POST'){
 			config.header['Content-Type'] = 'application/x-www-form-urlencoded'
 		}
 		//路径不需要添加token
 		if (excludeHeader.indexOf(config.url) === -1) {
 			//把vuex中的token存入请求的header中
 			config.header.token = vm.vuex_token;
-			// 登录未整合，先使用固定token值
-			// config.header.token =
-			// 	'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZSI6MTYzNjcyMDIxODI1NywiaWQiOiIxIiwiZXhwIjoxNjM3MzI1MDE4fQ.4ascaxtgtafWHda6A_Yyv2MXpQ93_mmS9CzvGM_tx4A'
+			// config.header.token = vm.$store.state.token;
 		}
 
 		// 方式一，存放在vuex的token，假设使用了uView封装的vuex方式，见：https://uviewui.com/components/globalVariable.html

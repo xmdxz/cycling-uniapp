@@ -9,8 +9,8 @@
 			<u-gap height="20" bg-color="#e2e2e2"></u-gap>
 			<u-grid :col="4">
 				<u-grid-item>
-					<view class="grid-text">0</view>
 					<view class="grid-text">{{relatedCount.praisedCount}}</view>
+					<view class="grid-text">获赞</view>
 				</u-grid-item>
 				<u-grid-item @click="info(0)">
 					<view class="grid-text">{{relatedCount.focusCount}}</view>
@@ -29,8 +29,8 @@
 			<u-cell-group>
 				<!-- <u-cell-item icon="level" title="成就"></u-cell-item>
 				<u-cell-item icon="order" title="路书"></u-cell-item> -->
-				<u-cell-item icon="star" title="收藏" @click="toOther('collect')"></u-cell-item>
-				<u-cell-item icon="list" title="我发布的" @click="toOther('myPost')"></u-cell-item>
+				<u-cell-item icon="star" title="收藏" @click="toOther(0)"></u-cell-item>
+				<u-cell-item icon="list" title="我发布的" @click="toOther(1)"></u-cell-item>
 				<!-- <u-cell-item icon="car" title="车队"></u-cell-item> -->
 				<u-cell-item icon="account" title="个人与设置" @click="toSetting()"></u-cell-item>
 			</u-cell-group>
@@ -58,15 +58,12 @@ export default {
 	onLoad(){
 		let that = this
 		this.tabBarList = this.$store.state.vuex_tabbar
-		this.$u.api.getOwnInfo().then(res => {that.ownInfo = res;console.log(res)})
-		this.$u.api.getRelatedCount().then(res => {that.relatedCount = res;console.log(res)})
+		this.$u.api.getOwnInfo().then(res => {that.ownInfo = res})
+		this.$u.api.getRelatedCount().then(res => {that.relatedCount = res})
 	},
 	methods: {
-		
 		toOther(e){
-			uni.navigateTo({
-				url: './' + e
-			})
+			this.$Router.push({name:'collect',params:{type:e}})
 		},
 		toSetting() {
 			// uni.navigateTo({
