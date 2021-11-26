@@ -90,6 +90,15 @@ const store = new Vuex.Store({
 			}
 			// 保存变量到本地，见顶部函数定义
 			saveLifeData(saveKey, state[saveKey])
+		},
+		deleteToken(){
+			let that = this
+			uni.removeStorage({
+				key:'lifeData',
+				success(e){
+					that.state.vuex_token = null
+				}
+			})
 		}
 	}
 })

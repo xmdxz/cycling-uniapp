@@ -3,7 +3,7 @@
 		// 此处globalData为了演示其作用，不是uView框架的一部分
 		globalData: {
 			windowWidth:0,
-			windowHeight:0
+			windowHeight:0,
 		},
 		onLaunch() {
 			let that = this

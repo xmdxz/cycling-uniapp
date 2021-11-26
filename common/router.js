@@ -2,6 +2,7 @@ import {
 	RouterMount,
 	createRouter
 } from 'uni-simple-router';
+import store from "@/store";
 
 const router = createRouter({
 	platform: process.env.VUE_APP_PLATFORM,
@@ -22,10 +23,6 @@ const router = createRouter({
 		{
 			path:'/pages/my/info',
 			name:'info'
-		},
-		{
-			path:'/pages/my/myPost',
-			name:'myPost'
 		},
 		{
 			path:'/pages/my/person',
@@ -83,8 +80,24 @@ const router = createRouter({
 		
 	]
 });
+const needTokenPages = [
+	'my','account','collect','info','person','setting','thirdBing'
+]
 //全局路由前置守卫
 router.beforeEach((to, from, next) => {
+	if(needTokenPages.indexOf(to.name) != -1 && to.name != 'login'){
+		let token = store.state.vuex_token
+		if(token === null || token === '' || typeof token === 'undefined'){
+			uni.showToast({
+				title:'asdasd',
+				duration:20000
+			})
+			next({
+				path:'/pages/login/index',
+				NAVTYPE:'replace'
+			})
+		}
+	}
 	next();
 });
 // 全局路由后置守卫

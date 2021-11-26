@@ -1,18 +1,22 @@
 <template>
 	<view class="u-collapse-item" :style="[itemStyle]">
-		<view :hover-stay-time="200" class="u-collapse-head" @tap.stop="headClick" :hover-class="hoverClass" :style="[headStyle]">
+		<view :hover-stay-time="200" class="u-cell" @tap.stop="headClick" :hover-class="hoverClass" :style="[headStyle]">
 			<block v-if="!$slots['title-all']">
 				<view v-if="!$slots['title']" class="u-collapse-title u-line-1" :style="[{ textAlign: align ? align : 'left' },
 					isShow && activeStyle && !arrow ? activeStyle : '']">
 					{{ title }}
 				</view>
 				<slot v-else name="title" />
+				<u-loading mode="circle" :show="showLoading"></u-loading>
 				<view class="u-icon-wrap">
 					<u-icon v-if="arrow" :color="arrowColor" :class="{ 'u-arrow-down-icon-active': isShow }"
 					 class="u-arrow-down-icon" name="arrow-down"></u-icon>
 				</view>
+				
 			</block>
+			
 			<slot v-else name="title-all" />
+			
 		</view>
 		<view class="u-collapse-body" :style="[{
 				height: isShow ? height + 'px' : '0'
@@ -42,6 +46,11 @@
 	export default {
 		name: "u-collapse-item",
 		props: {
+			//加载框
+			showLoading:{
+				type: Boolean,
+				default: false
+			},
 			// 标题
 			title: {
 				type: String,
@@ -161,7 +170,21 @@
 
 <style lang="scss" scoped>
 	@import "../../libs/css/style.components.scss";
-	
+	.u-cell {
+		@include vue-flex;
+		align-items: center;
+		position: relative;
+		/* #ifndef APP-NVUE */
+		box-sizing: border-box;
+		/* #endif */
+		width: 100%;
+		padding: 26rpx 32rpx;
+		font-size: 28rpx;
+		line-height: 54rpx;
+		color: $u-content-color;
+		background-color: #fff;
+		text-align: left;
+	}
 	.u-collapse-head {
 		position: relative;
 		@include vue-flex;

@@ -29,11 +29,13 @@
 		},
 		methods: {
 			logOut(){
+				let that = this
 				uni.showModal({
 					title:"您确定退出登录?",
 					success(res) {
 						if(res.confirm){
-							//退出登录逻辑
+							that.$store.commit('deleteToken')
+							that.$Router.replace({name:'login'})
 						}
 					}
 				})

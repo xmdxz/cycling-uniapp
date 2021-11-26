@@ -35,10 +35,23 @@ const install = (Vue, vm) => {
 		num: params.num
 	})
 
-	let cancelFocused = (params = {}) => vm.$u.delete("/user/cancelFocused?id=" + params, null)
+	let cancelFocused = (params = {}) => vm.$u.delete("/user/cancelFocused?" + putAndDeleteParams(params), null)
 
 	let focus = (params = {}) => vm.$u.put("/user/focus?focusedUserId=" + params, null)
-
+	
+	let putAndDeleteParams = (params) => { 
+		let result = ""
+		for(let i in params){
+			result += "&" + i + "=" + params[i]
+		}
+		return result
+	}
+	
+	//获取我的发布
+	let getPublish = (params = {}) => vm.$u.get("/user/getPublish",params)
+	
+	//获取我的收藏
+	let getCollect = (params = {}) => vm.$u.get("/user/getCollect",params)
 
 
 	// 将各个定义的接口名称，统一放进对象挂载到vm.$u.api(因为vm就是this，也即this.$u.api)下
@@ -53,7 +66,9 @@ const install = (Vue, vm) => {
 		updateInfo,
 		getFansOrFocusedAndSimple,
 		cancelFocused,
-		focus
+		focus,
+		getPublish,
+		getCollect
 	};
 }
 
