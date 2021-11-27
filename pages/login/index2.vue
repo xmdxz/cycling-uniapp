@@ -48,11 +48,11 @@
 					</view>
 					QQ
 				</view>
-				<view class="QQ item">
+				<view class="QQ item" @click="passwordLogin()">
 					<view class="icon">
 						<u-icon size="70" name="phone-fill" color="rgb(17,183,233)"></u-icon>
 					</view>
-					验证码登录
+					密码登录
 				</view>
 			</view>
 			<view class="hint">
@@ -104,6 +104,13 @@
 				console.log(e);
 				let that = this
 				that.check = e.value
+			},
+			//密码登录
+			passwordLogin:function()
+			{
+				uni.redirectTo({
+					url: './index'
+				})
 			},
 			//自动填写验证码
 			getCode: function() {

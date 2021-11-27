@@ -46,7 +46,7 @@
 					</view>
 					QQ
 				</view>
-				<view class="QQ item">
+				<view class="QQ item" @click="codeLogin()">
 					<view class="icon">
 						<u-icon size="70" name="phone-fill" color="rgb(17,183,233)"></u-icon>
 					</view>
@@ -102,6 +102,13 @@
 				console.log(e);
 				let that = this
 				that.check = e.value
+			},
+			//密码登录
+			codeLogin:function()
+			{
+				uni.redirectTo({
+					url: './index2'
+				})
 			},
 			//用户登录
 			async userlogin() {
