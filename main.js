@@ -2,7 +2,7 @@ import Vue from 'vue';
 import App from './App';
 import utils from '@/store/utils.js'
 import {router,RouterMount} from "@/common/router.js"
-
+import "lib-flexible"
 // 使用路由插件
 Vue.use(router)
 // const qiniu = require('qiniu-js')

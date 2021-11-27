@@ -1,6 +1,6 @@
 <template>
 	<view class="wrap">
-		<view class="top" style="height: 120rpx;"></view>
+		<view id="top"></view>
 		<view class="content">
 			<view class="title">欢迎来到骑行</view>
 			<view class="title_tiny">要想骑行,优先骑行</view>
@@ -11,19 +11,19 @@
 					@input="getPassword()">
 				</u-field>
 			</view>
-			<view class="u-demo-area" style="margin-top: 66rpx;">
+			<view class="u-demo-area" id="u-demo-area-id">
 				<u-button @click="userlogin()" data-name="3333" shape="circle" size="default" type="success">登录
 				</u-button>
 			</view>
-			<view style="text-align: center;margin-top: 39rpx;">
-				<text style="color: #00BFFF">忘记密码</text>
+			<view id="forget">
+				<text style="color: #00BFFF">忘记密码?</text>
 			</view>
 			<view>
 				<u-toast ref="uToast" />
 			</view>
 		</view>
 		<view class="buttom">
-			<view style="padding-top: 156rpx ;"></view>
+			<view id="buttom-1"></view>
 			<u-divider type="primary" borderColor="#808080" bg-color="#F7F7F7" @click="click" half-width="250"
 				color="#696969" font-size="30">其他登录方式</u-divider>
 			<view class="loginType">
@@ -57,13 +57,13 @@
 				<view class="agreement">
 
 					<view class="agreement-text">
-						<u-checkbox v-model="check" @change="checkboxChange" style="margin-left:20rpx ;">
-							<text style="font-size: 28rpx">我已阅读并同意</text>
-							<text class="link" style="font-size: 28rpx">《注册协议》</text><text
-								style="font-size: 28rpx">和</text>
-							<text class="link" style="font-size: 28rpx">《隐私政策》</text>
+						<u-checkbox v-model="check" @change="checkboxChange" id="agreement-text-1">
+							<text id="agreement-text-text1">我已阅读并同意</text>
+							<text class="link" id="agreement-text-text1">《注册协议》</text><text
+								id="agreement-text-text1">和</text>
+							<text class="link" id="agreement-text-text1">《隐私政策》</text>
 						</u-checkbox>
-						<view style="text-align: center;margin-top: 20rpx;font-size: 23rpx;">骑行网@2021 All Rights Resved
+						<view id="agreement-text-text2">骑行网@2021 All Rights Resved
 						</view>
 					</view>
 				</view>
@@ -74,13 +74,11 @@
 </template>
 
 <script>
-	
 	export default {
 		data() {
 			return {
 				phone: "",
 				password: "",
-				erroMessage: "账号不能为空",
 				check: false
 			}
 		},
@@ -103,21 +101,17 @@
 			//用户登录
 			async userlogin() {
 				let that = this
-				let phone = this.phone
-				let password = this.password
-				let postData = {
-					'phone': phone,
-					'password': password
-				}
+				let phone = that.phone
+				let password = that.password
 				if (phone.length == 0 || phone.split(" ").join("").length == 0 || password.length == 0 || password
 					.split(" ").join("").length == 0) {
 					console.log("请输入账号密码")
-					this.$refs.uToast.show({
-						title: '请输入账号密码',
+					that.$refs.uToast.show({
+						title: '请输入账号和密码',
 						// 如果不传此type参数，默认为default，也可以手动写上 type: 'default'
 						type: 'error',
 						position: 'bottom',
-						icon: false
+						icon: true
 					})
 				} else {
 					console.log("账号 =>", phone, "密码 =>", password)
@@ -125,9 +119,42 @@
 						phone: phone,
 						password: password
 					}).then(res => {
-						console.log("返回的结果", res)
-						let token = res.header.authorization
-						that.$u.vuex('vuex_token', token)
+						uni.showLoading();
+						let msg = res.data.msg
+						console.log(msg)
+						if (msg == "登录成功") {
+							let token = res.header.authorization
+							that.$u.vuex('vuex_token', token)
+							that.$refs.uToast.show({
+								title: msg,
+								// 如果不传此type参数，默认为default，也可以手动写上 type: 'default'
+								type: 'success',
+								position: 'bottom',
+								icon: true
+							})
+							uni.redirectTo({
+								url: '../dynamic/index'
+							})
+							uni.hideLoading();
+						} else if (msg == "该手机号未注册") {
+							that.$refs.uToast.show({
+								title: msg,
+								// 如果不传此type参数，默认为default，也可以手动写上 type: 'default'
+								type: 'error',
+								position: 'bottom',
+								icon: true
+							})
+							uni.hideLoading();
+						} else if (msg == "输入的密码错误") {
+							that.$refs.uToast.show({
+								title: msg,
+								// 如果不传此type参数，默认为default，也可以手动写上 type: 'default'
+								type: 'error',
+								position: 'bottom',
+								icon: true
+							})
+							uni.hideLoading();
+						}
 					})
 				}
 
@@ -140,6 +167,37 @@
 </script>
 
 <style lang="scss" scoped>
+	#agreement-text-text2 {
+		text-align: center;
+		margin-top: 20rpx;
+		font-size: 23rpx;
+	}
+
+	#agreement-text-text1 {
+		font-size: 28rpx;
+	}
+
+	#agreement-text-1 {
+		margin-left: 39rpx;
+	}
+
+	#top {
+		height: 120rpx;
+	}
+
+	#u-demo-area-id {
+		margin-top: 66rpx;
+	}
+
+	#buttom-1 {
+		padding-top: 156rpx;
+	}
+
+	#forget {
+		text-align: center;
+		margin-top: 39rpx;
+	}
+
 	.wrap {
 		font-size: 28rpx;
 		background-color: #F7F7F7;

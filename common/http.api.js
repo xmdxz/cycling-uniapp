@@ -7,6 +7,11 @@ const install = (Vue, vm) => {
 
 	//用户登录
 	let userLogin = (params = {}) => vm.$u.post("/login", params)
+	
+	//用户登录
+	let userLogin2 = (params = {}) => vm.$u.post("/login2", params)
+	//获取验证码
+	let getCode = (params = {}) => vm.$u.get("/code?phone="+params, null)
 	// 动态相关Api
 	// 获取七牛云上传token
 	let getUploadToken = (params = {}) => vm.$u.get(uploadTokenUrl, params)
@@ -57,6 +62,8 @@ const install = (Vue, vm) => {
 	// 将各个定义的接口名称，统一放进对象挂载到vm.$u.api(因为vm就是this，也即this.$u.api)下
 	vm.$u.api = {
 		userLogin,
+		userLogin2,
+		getCode,
 		getUploadToken,
 		publicDynamic,
 		getAllTopic,

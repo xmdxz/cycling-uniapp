@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<u-navbar back-text="返回" title="发布动态"></u-navbar>
+		<u-navbar back-text="返回" title="发布动态" ></u-navbar>
 		<view class="public-content">
 			<view class="public-title">
 				<u-input v-model="title" type="text" placeholder="写标题,能吸引更多人看哦" maxlength="20" />
@@ -42,7 +42,7 @@
 					<view class="topic-selected">
 						<view class="topic-item" v-for="item in topicSelectedList">
 							<u-tag :text="item.topicName" type="error" mode="light" shape="squire" :closeable="true"
-							size="mini"
+							
 							@close="deleteTopicSelected(item)"
 							></u-tag>
 						</view>
@@ -100,24 +100,50 @@
 			}
 		},
 		onLoad() {
+			console.log(getCurrentPages())
 			//获取上传token
 			this.getUploadToken()
-
+			
 		},
 		methods: {
 			async getUploadToken() {
 				// 异步获取token
 				this.uploadToken = await this.$u.api.getUploadToken()
 			},
-			public() {
-			    this.uploadImg()
+			async public() {
+				if(this.$refs.uUpload.lists.length>0){
+					this.uploadImg()
+				}
+			    
 				console.log(this.imgPushList)
-				this.$u.api.publicDynamic({
-					
+				let topicSelectedIdList = []
+				
+				for(let i=0;i<this.topicSelectedList.length;i++){
+					topicSelectedIdList.push(this.topicSelectedList[i].id)
+				}
+				let res = await this.$u.api.publicDynamic({
+					title: this.title,
+					content: this.content,
+					position: this.regionSelected[0]+'-'+this.regionSelected[1]+'-'+this.regionSelected[2],
+					topicId: topicSelectedIdList,
+					imgName: this.imgPushList
 				})
+				console.log(res)
+				if(res.code===200){
+					setTimeout(function(){
+						uni.showToast({
+							title:'发布成功',
+							icon:'success'
+						})
+					},1000)
+					uni.redirectTo({
+						url: './index'
+					})
+				}
+				
 			},
 
-		    uploadImg() {
+		    async uploadImg() {
 				const options = {
 					quality: 0.8,
 					noCompressIfLarger: true
@@ -133,25 +159,19 @@
 							.config)
 						const subscription = observable.subscribe({
 							next: (result) => {
-								uni.showLoading({
-									title:'正在上传第'+(i+1)+'张图片'
-								})
+								
 								console.warn(result)
 							},
 							error: () => {
 								console.log('upload error')
 							},
 							complete: (res) => {
-								uni.showLoading({
-									title:'第'+(i+1)+'张图片上传成功'
-								})
 								this.imgPushList.push(res.key)
 								uni.hideLoading()
 							}
 						}) // 上传开始
 					})
 				}
-
 			},
 			async showTopic() {
 				this.pageNum = 1

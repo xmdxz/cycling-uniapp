@@ -23,7 +23,7 @@ const install = (Vue, vm) => {
 	// 请求拦截，配置Token等参数 
 	Vue.prototype.$u.http.interceptor.request = (config) => {
 		//判断是否是post请求如果是改变其默认Content-type
-		if(config.method === 'POST'){
+		if (config.method === 'POST') {
 			config.header['Content-Type'] = 'application/x-www-form-urlencoded'
 		}
 		//路径不需要添加token
@@ -60,6 +60,8 @@ const install = (Vue, vm) => {
 				if (res.data.msg == '登录成功')
 					return res;
 			return res.data;
+		} else if (res.statusCode  === 200) {
+			return res;
 		} else return false;
 	}
 }
