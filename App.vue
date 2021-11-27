@@ -7,11 +7,9 @@
 		},
 		onLaunch() {
 			let that = this
-			console.log('App Launch');
 			// 获取本地存储的token
 			let token = uni.getStorageSync('lifeData').vuex_token;
 			if (token) {
-				console.log("本地存在token")
 				//存在则关闭启动页进入首页
 				uni.reLaunch({
 					url: "/pages/dynamic/index",

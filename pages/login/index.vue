@@ -56,7 +56,7 @@
 			<view class="hint">
 				<view class="agreement">
 
-					<view class="agreement-text">
+					<view class="agreement-text" id="agreement-text-2">
 						<u-checkbox v-model="check" @change="checkboxChange" id="agreement-text-1">
 							<text id="agreement-text-text1">我已阅读并同意</text>
 							<text class="link" id="agreement-text-text1">《注册协议》</text><text
@@ -104,8 +104,7 @@
 				that.check = e.value
 			},
 			//密码登录
-			codeLogin:function()
-			{
+			codeLogin: function() {
 				uni.redirectTo({
 					url: './index2'
 				})
@@ -115,7 +114,7 @@
 				let that = this
 				let phone = that.phone
 				let password = that.password
-				let check=that.check
+				let check = that.check
 				if (phone.length == 0 || phone.split(" ").join("").length == 0 || password.length == 0 || password
 					.split(" ").join("").length == 0) {
 					console.log("请输入账号密码")
@@ -145,7 +144,7 @@
 									icon: true
 								})
 								uni.hideLoading();
-							}else{
+							} else {
 								let token = res.header.authorization
 								that.$u.vuex('vuex_token', token)
 								that.$refs.uToast.show({
@@ -159,7 +158,7 @@
 									url: '../dynamic/index'
 								})
 								uni.hideLoading();
-								}
+							}
 						} else if (msg == "该手机号未注册") {
 							that.$refs.uToast.show({
 								title: msg,
@@ -203,6 +202,10 @@
 
 	#agreement-text-1 {
 		margin-left: 39rpx;
+	}
+
+	#agreement-text-2 {
+		margin: 0 auto;
 	}
 
 	#top {
