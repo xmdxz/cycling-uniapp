@@ -100,7 +100,7 @@
 			//自动填写验证码
 			getCode: function() {
 				let that = this
-				that.$u.api.getCode().then(res => {
+				that.$u.api.getCode(that.phone).then(res => {
 					console.log("验证码",res)
 					that.password = res.msg
 				})

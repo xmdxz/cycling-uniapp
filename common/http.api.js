@@ -9,7 +9,7 @@ const install = (Vue, vm) => {
 	let userLogin = (params = {}) => vm.$u.post("/login", params)
 	
 	//获取验证码
-	let getCode = (params = {}) => vm.$u.get("/code", null)
+	let getCode = (params = {}) => vm.$u.get("/code?phone="+params, null)
 	// 动态相关Api
 	// 获取七牛云上传token
 	let getUploadToken = (params = {}) => vm.$u.get(uploadTokenUrl, params)
