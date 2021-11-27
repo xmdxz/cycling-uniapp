@@ -57,8 +57,6 @@
 		@confirm="getRegionData"
 		:default-region="regionSelected"
 		></u-picker>
-		
-		
 	</view>
 </template>
 
