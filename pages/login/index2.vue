@@ -122,7 +122,7 @@
 					})
 				} else {
 					console.log("账号 =>", phone, "密码 =>", password)
-					that.$u.api.userLogin({
+					that.$u.api.userLogin2({
 						phone: phone,
 						password: password
 					}).then(res => {
