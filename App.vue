@@ -2,11 +2,32 @@
 	export default {
 		// 此处globalData为了演示其作用，不是uView框架的一部分
 		globalData: {
-			windowWidth:0,
-			windowHeight:0,
+			windowWidth: 0,
+			windowHeight: 0,
 		},
 		onLaunch() {
 			let that = this
+			console.log('App Launch');
+			// 获取本地存储的token
+			let token = uni.getStorageSync('lifeData').vuex_token;
+			if (token) {
+				console.log("本地存在token")
+				//存在则关闭启动页进入首页
+				uni.reLaunch({
+					url: "/pages/dynamic/index",
+					success: () => {
+						// plus.navigator.closeSplashscreen();
+					}
+				})
+			} else {
+				//不存在则跳转至登录页
+				uni.reLaunch({
+					url: "/pages/login/index",
+					success: () => {
+						// plus.navigator.closeSplashscreen();
+					}
+				})
+			}
 			// 1.1.0版本之前关于http拦截器代码，已平滑移动到/common/http.interceptor.js中
 			// 注意，需要在/main.js中实例化Vue之后引入如下(详见文档说明)：
 			// import httpInterceptor from '@/common/http.interceptor.js'
@@ -16,7 +37,7 @@
 			 * h5，app-plus(nvue下也为app-plus)，mp-weixin，mp-alipay......
 			 */
 			uni.getSystemInfo({
-				success(e){
+				success(e) {
 					that.globalData.windowHeight = e.windowHeight
 					that.globalData.windowWidth = e.windowWidth
 				}
