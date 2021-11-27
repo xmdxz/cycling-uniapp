@@ -4,7 +4,7 @@
 const baseUrl = '/ssm'
 //这里表示不需要添加token的接口
 const excludeHeader = [
-	'/login', '/registry'
+	'/login', '/registry','login2'
 ]
 const install = (Vue, vm) => {
 	Vue.prototype.$u.http.setConfig({
