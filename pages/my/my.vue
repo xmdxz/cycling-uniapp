@@ -61,6 +61,11 @@ export default {
 		this.$u.api.getOwnInfo().then(res => {that.ownInfo = res})
 		this.$u.api.getRelatedCount().then(res => {that.relatedCount = res})
 	},
+	onShow(){
+		let that = this
+		this.$u.api.getOwnInfo().then(res => {that.ownInfo = res})
+		this.$u.api.getRelatedCount().then(res => {that.relatedCount = res})
+	},
 	methods: {
 		toOther(e){
 			this.$Router.push({name:'collect',params:{type:e}})
