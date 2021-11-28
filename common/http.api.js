@@ -22,6 +22,9 @@ const install = (Vue, vm) => {
 	// 获取所有话题
 	let getAllTopic = (params = {}) => vm.$u.get('/topic/findAll',params)
 	
+	// 搜索话题
+	let getTopicByName = (params = {}) => vm.$u.get('/topic/findByTopicName',params)
+
 	//获取用户信息
 	let getUserInfo = (params = {}) => vm.$u.get("/user/getUserInfo", null)
 
@@ -67,6 +70,7 @@ const install = (Vue, vm) => {
 		getUploadToken,
 		publicDynamic,
 		getAllTopic,
+		getTopicByName,
 		getUserInfo,
 		getOwnInfo,
 		getRelatedCount,

@@ -98,10 +98,14 @@
 				//路线信息：
 				lineArray:[{//指定一系列坐标点，从数组第一项连线至最后一项
 								　　　　points:[
-								       　　{latitude: 35.60533428584,longitude: 110.7165097138},
-								      　　 {latitude: 35.60543428965,longitude: 110.7175097139},
+										   {latitude: 35.60533428584,longitude: 110.7165097138},
+										   {latitude: 35.60543428965,longitude: 110.7175097139},
 										   {latitude: 35.60585428965,longitude: 110.7177097439},
 										   {latitude: 35.604434289658,longitude: 110.7175097139},
+										    // [35.60533428584,110.7165097138],
+										    // [35.60543428965,110.7175097139],
+										   	// [35.60585428965,110.7177097439],
+										   	// [35.604434289658,110.7175097139],
 								　　　　],
 								　　　　color:"#0000AA",//线的颜色
 								　　　　width:2,//线的宽度
@@ -168,7 +172,8 @@
 			},
 			headClick(){
 				event.stopPropagation();
-				alert("click headClick");
+				let res = this.$u.api.getallactive();
+				console.log(res)
 			},
 			confirm(e) {
 				console.log(e);

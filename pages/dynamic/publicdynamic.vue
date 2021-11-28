@@ -244,6 +244,12 @@
 				this.regionSelected.push(e.city.label)
 				this.regionSelected.push(e.area.label)
 				
+			},
+
+			searchTopics(){
+				this.$u.api.getTopicByName({
+
+				})
 			}
 			
 		}
@@ -309,7 +315,7 @@
 		margin: 10rpx 10rpx 10rpx 0;
 		/* margin-bottom: 10rpx; */
 	}
-
+	
 	.topic-selected {
 		padding-top: 5rpx;
 		padding-left: 5rpx;
