@@ -46,7 +46,7 @@
 					</view>
 					QQ
 				</view>
-				<view class="QQ item">
+				<view class="QQ item" @click="codeLogin()">
 					<view class="icon">
 						<u-icon size="70" name="phone-fill" color="rgb(17,183,233)"></u-icon>
 					</view>
@@ -56,7 +56,7 @@
 			<view class="hint">
 				<view class="agreement">
 
-					<view class="agreement-text">
+					<view class="agreement-text" id="agreement-text-2">
 						<u-checkbox v-model="check" @change="checkboxChange" id="agreement-text-1">
 							<text id="agreement-text-text1">我已阅读并同意</text>
 							<text class="link" id="agreement-text-text1">《注册协议》</text><text
@@ -97,12 +97,24 @@
 				let that = this
 				that.password = event.target.value
 			},
-
+			//获取是否勾选协议
+			checkboxChange(e) {
+				console.log(e);
+				let that = this
+				that.check = e.value
+			},
+			//密码登录
+			codeLogin: function() {
+				uni.redirectTo({
+					url: './index2'
+				})
+			},
 			//用户登录
 			async userlogin() {
 				let that = this
 				let phone = that.phone
 				let password = that.password
+				let check = that.check
 				if (phone.length == 0 || phone.split(" ").join("").length == 0 || password.length == 0 || password
 					.split(" ").join("").length == 0) {
 					console.log("请输入账号密码")
@@ -123,19 +135,30 @@
 						let msg = res.data.msg
 						console.log(msg)
 						if (msg == "登录成功") {
-							let token = res.header.authorization
-							that.$u.vuex('vuex_token', token)
-							that.$refs.uToast.show({
-								title: msg,
-								// 如果不传此type参数，默认为default，也可以手动写上 type: 'default'
-								type: 'success',
-								position: 'bottom',
-								icon: true
-							})
-							uni.redirectTo({
-								url: '../dynamic/index'
-							})
-							uni.hideLoading();
+							if (!check) {
+								that.$refs.uToast.show({
+									title: "请先阅读协议",
+									// 如果不传此type参数，默认为default，也可以手动写上 type: 'default'
+									type: 'error',
+									position: 'bottom',
+									icon: true
+								})
+								uni.hideLoading();
+							} else {
+								let token = res.header.authorization
+								that.$u.vuex('vuex_token', token)
+								that.$refs.uToast.show({
+									title: msg,
+									// 如果不传此type参数，默认为default，也可以手动写上 type: 'default'
+									type: 'success',
+									position: 'bottom',
+									icon: true
+								})
+								uni.redirectTo({
+									url: '../dynamic/index'
+								})
+								uni.hideLoading();
+							}
 						} else if (msg == "该手机号未注册") {
 							that.$refs.uToast.show({
 								title: msg,
@@ -179,6 +202,10 @@
 
 	#agreement-text-1 {
 		margin-left: 39rpx;
+	}
+
+	#agreement-text-2 {
+		margin: 0 auto;
 	}
 
 	#top {

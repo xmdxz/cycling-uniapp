@@ -1,8 +1,11 @@
 import Vue from 'vue';
 import App from './App';
-import utils from '@/store/utils.js'
 import {router,RouterMount} from "@/common/router.js"
-import "lib-flexible"
+import filters from '@/common/filters.js'
+Object.keys(filters).forEach(key => {
+	Vue.filter(key,filters[key])
+})
+Vue.prototype.filters = filters
 // 使用路由插件
 Vue.use(router)
 // const qiniu = require('qiniu-js')
@@ -13,7 +16,6 @@ App.mpType = 'app';
 
 // 此处为演示Vue.prototype使用，非uView的功能部分
 Vue.prototype.vuePrototype = '枣红';
-Vue.prototype.utils = utils
 
 // 引入全局uView
 import uView from 'uview-ui';
