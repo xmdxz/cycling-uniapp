@@ -2,26 +2,26 @@
 	<view>
 		<view>
 			<view class="img">
-				<u-avatar :src="src" size="200" :show-sex="true" :show-level="true" @click="toPerson()"></u-avatar>
-				<view class="username">{{ownInfo.username}}</view>
-				<view class="personnSign">{{ownInfo.introduction}}</view>
+				<u-avatar :src="ownInfo.avatar | appendUrlPrefix" size="200" :show-sex="true" :show-level="true" @click="showAvatar()"></u-avatar>
+				<view class="username">{{ ownInfo.username }}</view>
+				<view class="personnSign">{{ ownInfo.introduction }}</view>
 			</view>
 			<u-gap height="20" bg-color="#e2e2e2"></u-gap>
 			<u-grid :col="4">
 				<u-grid-item>
-					<view class="grid-text">{{relatedCount.praisedCount}}</view>
+					<view class="grid-text">{{ relatedCount.praisedCount }}</view>
 					<view class="grid-text">获赞</view>
 				</u-grid-item>
 				<u-grid-item @click="info(0)">
-					<view class="grid-text">{{relatedCount.focusCount}}</view>
+					<view class="grid-text">{{ relatedCount.focusCount }}</view>
 					<view class="grid-text">关注</view>
 				</u-grid-item>
 				<u-grid-item @click="info(1)">
-					<view class="grid-text">{{relatedCount.fansCount}}</view>
+					<view class="grid-text">{{ relatedCount.fansCount }}</view>
 					<view class="grid-text">粉丝</view>
 				</u-grid-item>
 				<u-grid-item>
-					<view class="grid-text">{{relatedCount.visitorCount}}</view>
+					<view class="grid-text">{{ relatedCount.visitorCount }}</view>
 					<view class="grid-text">访客</view>
 				</u-grid-item>
 			</u-grid>
@@ -43,67 +43,59 @@
 export default {
 	data() {
 		return {
-			src: '../../static/img/1.jpg',
 			tabBarCurrent: 0,
 			tabBarList: [],
-			ownInfo:{},
-			relatedCount:{
-				fansCount:0,
-				focusCount:0,
-				praisedCount:0,
-				visitorCount:0
+			ownInfo: {
+				avatar: '../../static/img/qixing.jpg'
+			},
+			relatedCount: {
+				fansCount: 0,
+				focusCount: 0,
+				praisedCount: 0,
+				visitorCount: 0
 			}
 		};
 	},
-	onLoad(){
-		let that = this
-		this.tabBarList = this.$store.state.vuex_tabbar
-		this.$u.api.getOwnInfo().then(res => {that.ownInfo = res})
-		this.$u.api.getRelatedCount().then(res => {that.relatedCount = res})
+	onLoad() {
+		let that = this;
+		this.tabBarList = this.$store.state.vuex_tabbar;
+		this.$u.api.getOwnInfo().then(res => {
+			if (res.avatar == null || res.avatar === '' || typeof res.avatar === 'undefined') {
+				delete res.avatar;
+			}
+			that.ownInfo = { ...that.ownInfo, ...res };
+		});
+		this.$u.api.getRelatedCount().then(res => {
+			that.relatedCount = res;
+		});
 	},
-	onShow(){
-		let that = this
-		this.$u.api.getOwnInfo().then(res => {that.ownInfo = res})
-		this.$u.api.getRelatedCount().then(res => {that.relatedCount = res})
+	onShow() {
+		let that = this;
+		this.$u.api.getOwnInfo().then(res => {
+			if (res.avatar == null || res.avatar === '' || typeof res.avatar === 'undefined') {
+				delete res.avatar;
+			}
+			that.ownInfo = { ...that.ownInfo, ...res };
+		});
+		this.$u.api.getRelatedCount().then(res => {
+			that.relatedCount = res;
+		});
 	},
 	methods: {
-		toOther(e){
-			this.$Router.push({name:'collect',params:{type:e}})
+		toOther(e) {
+			this.$Router.push({ name: 'collect', params: { type: e } });
 		},
 		toSetting() {
 			// uni.navigateTo({
 			// 	url: './setting'
 			// });
-			this.$Router.push({name:'setting'})
+			this.$Router.push({ name: 'setting' });
 		},
-		toPerson: function() {
-			uni.navigateTo({
-				url: './person'
-			});
-			// let that = this
-			// uni.chooseImage({
-			// 	count: 1,
-			// 	sizeType: 'original',
-			// 	success(e){
-			// 		/**
-			// 		 * 后端写好后，这里写上传
-			// 		 * uni.uploadFile({
-			// 			url:'路径',
-			// 			name:'想当于表单name',
-			// 			fileType:'image',
-			// 			filePath:e.tempFilePaths[0],
-			// 			header:{
-			// 				//用户唯一标识。
-			// 			}
-			// 			success(e){
-
-			// 			}
-			// 		})
-			// 		 */
-			// 		console.log(e.tempFilePaths[0])
-			// 		that.src = e.tempFilePaths[0]
-			// 	}
-			// })
+		showAvatar: function() {
+			let that = this
+			uni.previewImage({
+				urls:new Array(that.filters['appendUrlPrefix'](that.ownInfo.avatar))
+			})
 		},
 		info: function(e) {
 			uni.navigateTo({
@@ -129,7 +121,7 @@ export default {
 	margin-top: 10rpx;
 	margin-left: 40rpx;
 }
-.personnSign{
+.personnSign {
 	font-size: small;
 	margin: 10rpx auto;
 	margin-bottom: 0;

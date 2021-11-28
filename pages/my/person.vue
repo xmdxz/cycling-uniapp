@@ -1,7 +1,7 @@
 <template>
-	<view v-if="info != null">
+	<view>
 		<u-cell-group title="个人资料">
-			<u-cell-item title="头像" @click="avatar()"><u-avatar class="img" size="100" slot="right-icon"></u-avatar></u-cell-item>
+			<u-cell-item title="头像" @click="avatar()"><u-avatar class="img" :src="info.avatar | appendUrlPrefix" size="100" slot="right-icon"></u-avatar></u-cell-item>
 			<u-cell-item title="昵称" :value="info.username" @click="change('昵称')"></u-cell-item>
 			<u-cell-item title="个性签名" :value="info.introduction" @click="change('个性签名')"></u-cell-item>
 			<u-cell-item title="性别" :value="info.sex === -1 ? '保密' : info.sex === 0 ? '男' : '女'" @click="showOneLevel('sex')"></u-cell-item>
@@ -22,10 +22,21 @@
 </template>
 
 <script>
+const qiniu = require('qiniu-js');
 export default {
 	data() {
 		return {
-			info: null,
+			info: {
+				username: '',
+				sex: -1,
+				height: '',
+				weight: '',
+				birthday: '',
+				address: '',
+				avatar: '../../static/img/qixing.jpg',
+				introduction: '',
+				phone: ''
+			},
 			show: false,
 			showBirthday: false,
 			input: {
@@ -144,18 +155,42 @@ export default {
 			this.input.label = e;
 			this.input.placeholder = '请输入' + e;
 		},
-		avatar() {
+		async avatar() {
+			const options = {
+				quality: 0.8,
+				noCompressIfLarger: true
+			};
 			let that = this;
 			uni.chooseImage({
 				count: 1,
 				sizeType: 'original',
-				success(e) {
-					let path = e.tempFilePaths[0];
-					that.info.url = path;
+				async success(e) {
+					let token = await that.$u.api.getUploadToken();
+					uni.showLoading();
+					qiniu.compressImage(e.tempFiles[0], options).then(data => {
+						const observable = qiniu.upload(data.dist, null, token, {}, {});
+						const subscription = observable.subscribe({
+							next: result => {},
+							error: () => {
+								console.log('upload error');
+							},
+							async complete(res) {
+								let x = await that.$u.api.updateInfo({ avatar: res.key });
+								uni.hideLoading();
+								if (x > 0) {
+									that.info.avatar = res.key;
+								} else {
+									uni.showToast({
+										title: '上传失败，请重试！',
+										icon: 'error'
+									});
+								}
+							}
+						}); // 上传开始
+					});
 				}
 			});
 		},
-
 		showOneLevel(e) {
 			let that = this;
 			that.list = [];
@@ -240,7 +275,10 @@ export default {
 				that.default_height[0] = that.list_height.findIndex(function(e) {
 					return e.label == info.height;
 				});
-				that.info = res;
+				if (res.avatar == null || res.avatar === '' || typeof res.avatar === 'undefined') {
+					delete res.avatar;
+				}
+				that.info = { ...that.info, ...res };
 			}
 		});
 	}

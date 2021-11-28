@@ -2,8 +2,9 @@
 	export default {
 		// 此处globalData为了演示其作用，不是uView框架的一部分
 		globalData: {
-			windowWidth: 0,
-			windowHeight: 0,
+			windowWidth:0,
+			windowHeight:0,
+			imageUrlPrefix:'http://r1zo2fr1j.hn-bkt.clouddn.com/'
 		},
 		onLaunch() {
 			let that = this

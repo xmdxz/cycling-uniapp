@@ -2,6 +2,7 @@
 	<view>
 		
 		<u-cell-group title="账户与安全" >
+			<u-cell-item title="个人信息" @click="toPerson()"  ></u-cell-item>
 			<u-cell-item title="第三方绑定" @click="toSetting(0)"  ></u-cell-item>
 			<u-cell-item title="账户安全" @click="toSetting(1)"></u-cell-item>
 		</u-cell-group>
@@ -28,6 +29,11 @@
 			}
 		},
 		methods: {
+			toPerson: function() {
+				uni.navigateTo({
+					url: './person'
+				});
+			},
 			logOut(){
 				let that = this
 				uni.showModal({
