@@ -41,9 +41,6 @@ import English from '@/common/locales/en.js';
 import VueI18n from '@/common/vue-i18n.min.js';
 
 
-
-
-
 // VueI18n
 Vue.use(VueI18n);
 
