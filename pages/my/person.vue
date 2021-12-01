@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<u-cell-group title="个人资料">
-			<u-cell-item title="头像" @click="avatar()"><u-avatar class="img" :src="info.avatar | appendUrlPrefix" size="100" slot="right-icon"></u-avatar></u-cell-item>
+			<u-cell-item title="头像" @click="avatar()"><u-avatar class="img" :src="info.avatar" size="100" slot="right-icon"></u-avatar></u-cell-item>
 			<u-cell-item title="昵称" :value="info.username" @click="change('昵称')"></u-cell-item>
 			<u-cell-item title="个性签名" :value="info.introduction" @click="change('个性签名')"></u-cell-item>
 			<u-cell-item title="性别" :value="info.sex === -1 ? '保密' : info.sex === 0 ? '男' : '女'" @click="showOneLevel('sex')"></u-cell-item>
@@ -165,20 +165,23 @@ export default {
 				count: 1,
 				sizeType: 'original',
 				async success(e) {
+					let file = e.tempFiles[0]
+					let type = file.type.split('/')
+					let fileName = that.$u.generateUUID()+'.'+type[type.length-1]
 					let token = await that.$u.api.getUploadToken();
 					uni.showLoading();
-					qiniu.compressImage(e.tempFiles[0], options).then(data => {
-						const observable = qiniu.upload(data.dist, null, token, {}, {});
+					qiniu.compressImage(file, options).then(data => {
+						const observable = qiniu.upload(data.dist, fileName, token, {}, {});
 						const subscription = observable.subscribe({
 							next: result => {},
 							error: () => {
 								console.log('upload error');
 							},
 							async complete(res) {
-								let x = await that.$u.api.updateInfo({ avatar: res.key });
+								let x = await that.$u.api.updateInfo({ avatar: fileName });
 								uni.hideLoading();
 								if (x > 0) {
-									that.info.avatar = res.key;
+									that.info.avatar = that.filters['appendUrlPrefix'](res.key);
 								} else {
 									uni.showToast({
 										title: '上传失败，请重试！',
@@ -277,6 +280,8 @@ export default {
 				});
 				if (res.avatar == null || res.avatar === '' || typeof res.avatar === 'undefined') {
 					delete res.avatar;
+				}else{
+					res.avatar = that.filters['appendUrlPrefix'](res.avatar)
 				}
 				that.info = { ...that.info, ...res };
 			}

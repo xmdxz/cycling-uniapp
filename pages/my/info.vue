@@ -6,7 +6,7 @@
 			<u-card v-for="(item, index) in focused.list" :key="index" margin="1rpx 1rpx 0rpx 0rpx" :show-head="false" :show-foot="false" :border="false">
 				<view slot="body">
 					<view class="u-body-item u-flex u-border-bottom u-col-between u-p-t-0 card">
-						<u-avatar class="img" :src="item.avatar" size="100" :show-sex="true"></u-avatar>
+						<u-avatar class="img" :src="item.avatar" size="100" :show-sex="item.sex != -1" :sex-icon="item.sex === 0 ? 'man' : 'woman'"></u-avatar>
 						<view class="u-body-item-title u-line-2 card-content">
 							<view style="font-weight: bold;font-size: larger;">{{ item.username }}</view>
 							<view style="color:#82848A;font-size: smaller;margin-top: 10rpx">{{ item.introduction }}</view>
@@ -30,7 +30,7 @@
 			<u-card v-for="(item, index) in fans.list" :key="index" margin="1rpx 1rpx 0rpx 0rpx" :show-head="false" :show-foot="false" :border="false">
 				<view slot="body">
 					<view class="u-body-item u-flex u-border-bottom u-col-between u-p-t-0 card">
-						<u-avatar class="img" :src="item.avatar" size="100" :show-sex="true"></u-avatar>
+						<u-avatar class="img" :src="item.avatar" size="100" :show-sex="item.sex != -1" :sex-icon="item.sex === 0 ? 'man' : 'woman'"></u-avatar>
 						<view class="u-body-item-title u-line-2 card-content">
 							<view style="font-weight: bold;font-size: larger;">{{ item.username }}</view>
 							<view style="color:#82848A;font-size: smaller;margin-top: 10rpx">{{ item.introduction }}</view>
