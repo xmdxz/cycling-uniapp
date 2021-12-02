@@ -25,7 +25,6 @@
 			</view>
 		</view>
 		<view class="buttom">
-			<view id="buttom-1"></view>
 			<u-divider type="primary" borderColor="#808080" bg-color="#F7F7F7" @click="click" half-width="250"
 				color="#696969" font-size="30">其他登录方式</u-divider>
 			<view class="loginType">
@@ -223,9 +222,6 @@
 		margin-top: 66rpx;
 	}
 
-	#buttom-1 {
-		padding-top: 156rpx;
-	}
 
 	#forget {
 		text-align: center;
@@ -288,6 +284,9 @@
 		}
 
 		.buttom {
+			position: absolute;
+			width: 100%;
+			bottom: 15rpx;
 			.loginType {
 				display: flex;
 				padding: 36rpx 50rpx 20rpx 50rpx;

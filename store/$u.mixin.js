@@ -1,12 +1,14 @@
-import { mapState } from 'vuex'
+import {
+	mapState
+} from 'vuex'
 import store from "@/store"
 
 // 尝试将用户在根目录中的store/index.js的vuex的state变量，全部加载到全局变量中
 let $uStoreKey = [];
-try{
+try {
 	$uStoreKey = store.state ? Object.keys(store.state) : [];
-}catch(e){
-	
+} catch (e) {
+
 }
 
 module.exports = {
@@ -16,9 +18,23 @@ module.exports = {
 		// 如果要修改vuex的state的version变量为1.0.1 => this.$u.vuex('version', '1.0.1')
 		this.$u.vuex = (name, value) => {
 			this.$store.commit('$uStore', {
-				name,value
+				name,
+				value
 			})
 		}
+		this.$u.generateUUID = () => {
+			var d = new Date().getTime();
+			if (window.performance && typeof window.performance.now === "function") {
+				d += performance.now(); //use high-precision timer if available
+			}
+			var uuid = 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+				var r = (d + Math.random() * 16) % 16 | 0;
+				d = Math.floor(d / 16);
+				return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+			});
+			return uuid;
+		}
+
 	},
 	computed: {
 		// 将vuex的state中的所有变量，解构到全局混入的mixin中

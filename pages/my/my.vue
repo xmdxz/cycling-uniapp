@@ -2,11 +2,18 @@
 	<view>
 		<view>
 			<view class="img">
-				<u-avatar :src="ownInfo.avatar | appendUrlPrefix" size="200" :show-sex="true" :show-level="true" @click="showAvatar()"></u-avatar>
+				<u-avatar
+					:src="ownInfo.avatar"
+					size="200"
+					:show-sex="ownInfo.sex != -1"
+					:sex-icon="ownInfo.sex === 0 ? 'man' : 'woman'"
+					:show-level="true"
+					@click="showAvatar()"
+				></u-avatar>
 				<view class="username">{{ ownInfo.username }}</view>
 				<view class="personnSign">{{ ownInfo.introduction }}</view>
 			</view>
-			<u-gap height="20" bg-color="#e2e2e2"></u-gap>
+			<u-gap height="10" bg-color="#e2e2e2"></u-gap>
 			<u-grid :col="4">
 				<u-grid-item>
 					<view class="grid-text">{{ relatedCount.praisedCount }}</view>
@@ -25,7 +32,7 @@
 					<view class="grid-text">访客</view>
 				</u-grid-item>
 			</u-grid>
-			<u-gap height="20" bg-color="#e2e2e2"></u-gap>
+			<u-gap height="10" bg-color="#e2e2e2"></u-gap>
 			<u-cell-group>
 				<!-- <u-cell-item icon="level" title="成就"></u-cell-item>
 				<u-cell-item icon="order" title="路书"></u-cell-item> -->
@@ -62,6 +69,8 @@ export default {
 		this.$u.api.getOwnInfo().then(res => {
 			if (res.avatar == null || res.avatar === '' || typeof res.avatar === 'undefined') {
 				delete res.avatar;
+			} else {
+				res.avatar = that.filters['appendUrlPrefix'](res.avatar);
 			}
 			that.ownInfo = { ...that.ownInfo, ...res };
 		});
@@ -74,6 +83,8 @@ export default {
 		this.$u.api.getOwnInfo().then(res => {
 			if (res.avatar == null || res.avatar === '' || typeof res.avatar === 'undefined') {
 				delete res.avatar;
+			} else {
+				res.avatar = that.filters['appendUrlPrefix'](res.avatar);
 			}
 			that.ownInfo = { ...that.ownInfo, ...res };
 		});
@@ -92,10 +103,10 @@ export default {
 			this.$Router.push({ name: 'setting' });
 		},
 		showAvatar: function() {
-			let that = this
+			let that = this;
 			uni.previewImage({
-				urls:new Array(that.filters['appendUrlPrefix'](that.ownInfo.avatar))
-			})
+				urls: new Array(that.ownInfo.avatar)
+			});
 		},
 		info: function(e) {
 			uni.navigateTo({
