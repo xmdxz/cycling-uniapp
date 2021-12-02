@@ -1,5 +1,5 @@
 <template>
-	<view class="wrap">
+	<view class="wrap" >
 		<view id="top"></view>
 		<view class="content">
 			<view class="title">欢迎来到骑行</view>
@@ -22,8 +22,8 @@
 				<u-toast ref="uToast" />
 			</view>
 		</view>
-		<view class="buttom">
-			<view id="buttom-1"></view>
+
+		<view class="buttom" >
 			<u-divider type="primary" borderColor="#808080" bg-color="#F7F7F7" @click="click" half-width="250"
 				color="#696969" font-size="30">其他登录方式</u-divider>
 			<view class="loginType">
@@ -53,10 +53,10 @@
 					验证码登录
 				</view>
 			</view>
-			<view class="hint">
-				<view class="agreement">
+			<view class="hint" >
+				<view class="agreement" >
 
-					<view class="agreement-text" id="agreement-text-2">
+					<view class="agreement-text" id="agreement-text-2" >
 						<u-checkbox v-model="check" @change="checkboxChange" id="agreement-text-1">
 							<text id="agreement-text-text1">我已阅读并同意</text>
 							<text class="link" id="agreement-text-text1">《注册协议》</text><text
@@ -68,7 +68,6 @@
 					</view>
 				</view>
 			</view>
-
 		</view>
 	</view>
 </template>
@@ -216,9 +215,6 @@
 		margin-top: 66rpx;
 	}
 
-	#buttom-1 {
-		padding-top: 156rpx;
-	}
 
 	#forget {
 		text-align: center;
@@ -281,6 +277,9 @@
 		}
 
 		.buttom {
+			 position: absolute;
+			 width: 100%;
+			 bottom: 15rpx;
 			.loginType {
 				display: flex;
 				padding: 36rpx 50rpx 20rpx 50rpx;
