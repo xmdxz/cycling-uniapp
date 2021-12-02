@@ -58,6 +58,10 @@ const router = createRouter({
 			name:'publicdynamic'
 		},
 		{
+			path: '/pages/dynamic/public',
+			name: 'public'
+		},
+		{
 			path:'/pages/dynamic/search',
 			name:'search'
 		},

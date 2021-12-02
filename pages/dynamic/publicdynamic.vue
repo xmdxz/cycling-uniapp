@@ -1,6 +1,11 @@
 <template>
   <view>
-    <u-navbar back-text="返回" title="发布动态"></u-navbar>
+    <u-navbar
+      back-text="返回"
+      title="发布动态"
+      :is-back="true"
+      :custom-back="toBackPage"
+    ></u-navbar>
     <view class="public-content">
       <view class="public-title">
         <u-input
@@ -169,7 +174,6 @@ export default {
     },
   },
   onLoad() {
-    console.log(getCurrentPages());
     //获取上传token
     this.getUploadToken();
   },
@@ -343,6 +347,13 @@ export default {
         pageSize: this.pageSize,
       });
       this.topicList = res;
+    },
+
+    // 页面返回处理
+    toBackPage() {
+      uni.switchTab({
+        url: "./index",
+      });
     },
   },
 };
