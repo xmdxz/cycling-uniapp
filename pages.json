@@ -2,16 +2,8 @@
   "easycom": {
     "^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
   },
-  // "condition": { //模式配置，仅开发期间生效
-  // 	"current": 0, //当前激活的模式(list 的索引项)
-  // 	"list": [{
-  // 		"name": "test", //模式名称
-  // 		"path": "pages/componentsC/test/index", //启动页面，必选
-  // 		"query": "uuid=c4bba940-f69e-11ea-a419-6bafda9d09git 5e&__id__=1" //启动参数，在页面的onLoad函数里面得到
-  // 	}]
-  // },
+
   "pages": [
-    //动态界面
     {
       "path": "pages/dynamic/index",
       "style": {
@@ -19,13 +11,13 @@
         "enablePullDownRefresh": false
       }
     },
-	{
-		"path":"pages/dynamic/public",
-		"style":{
-			"navigationBarTitleText": "",
-			"enablePullDownRefresh": false
-		}
-	},
+    {
+      "path": "pages/dynamic/public",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    },
     {
       "path": "pages/dynamic/dynamicdetail",
       "style": {
@@ -152,42 +144,16 @@
         "navigationBarTitleText": "收藏",
         "enablePullDownRefresh": false
       }
+    },
+    {
+      "path": "pages/dynamic/public",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
     }
-      ,{
-            "path" : "pages/dynamic/public",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
-  //分包注册页面
-  // "subPackages": [{
-  // 		//留下一个作为示例
-  // 		// "root": "pages/componentsC",
-  // 		// "pages": [
-  // 		// 	// test-测试
-  // 		// 	{
-  // 		// 		"path": "test/index",
-  // 		// 		"style": {
-  // 		// 			"navigationBarTitleText": "Test"
-  // 		// 			// "navigationStyle": "custom" ,// 隐藏系统导航栏
-  // 		// 			// "navigationBarTextStyle": "white" // 状态栏字体为白色
-  // 		// 		}
-  // 		// 	},
-  // 		// ]
-  // 	}
+  ],
 
-  // ],
-  // "preloadRule": {
-  // 	//留下一个示例
-  // 	// "pages/example/components": {
-  // 	// 	"network": "all",
-  // 	// 	"packages": ["pages/componentsA", "pages/componentsB", "pages/componentsC"]
-  // 	// }
-  // },
   "globalStyle": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uView",

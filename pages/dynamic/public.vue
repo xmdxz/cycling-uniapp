@@ -27,7 +27,7 @@
 				})
 			},
 			toPublicDynamic(){
-				uni.navigateTo({
+				uni.redirectTo({
 					url: './publicdynamic'
 				})
 			}
@@ -37,7 +37,7 @@
 
 <style>
 	.public-mask {
-		width: 80%;
+		width: 90%;
 		height: 100%;
 		margin: 0 auto;
 		display: flex;
@@ -52,7 +52,7 @@
 	.public-mask .public-dynamic,
 	.public-activity {
 		width: 60%;
-		height: 350rpx;
+		height: 400rpx;
 		border-radius: 129px;
 		background: #f3f2f2;
 		box-shadow: 22px 22px 44px #e0dfdf,
