@@ -4,7 +4,7 @@
 const baseUrl = '/ssm'
 //这里表示不需要添加token的接口
 const excludeHeader = [
-	'/login', '/registry','login2'
+	'/login', '/registry', 'login2'
 ]
 const install = (Vue, vm) => {
 	Vue.prototype.$u.http.setConfig({
@@ -59,9 +59,14 @@ const install = (Vue, vm) => {
 				if (res.data.msg == '登录成功')
 					return res;
 			return res.data;
-		} else if (res.statusCode  === 200) {
+		} else if (res.statusCode === 200) {
 			return res;
-		} else return false;
+		} else {
+			console.log("请求被拦截")
+			//token验证失败(token不对或者token过期) 返回登录页面并删除本地token
+			vm.$store.commit('deleteToken')//删除本地token
+			vm.$Router.push({ name: 'login' });
+		};
 	}
 }
 
