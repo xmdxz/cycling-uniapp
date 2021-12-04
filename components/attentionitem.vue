@@ -2,7 +2,7 @@
 	<view @click="toDynamic">
 		<view class="content-item">
 			<view class="content-header">
-				<u-avatar :src="avatar" style="vertical-align: middle;"></u-avatar>
+				<u-avatar :src="avatar" style="vertical-align: middle;" size="mini"></u-avatar>
 				<view class="content-authorinfo">
 				<text class="content-user">{{contentuser}}</text>
 				<text class="content-level">{{contentlevel}}</text>
@@ -17,13 +17,13 @@
 			<view class="content-time">
 				<text>{{contenttime}}</text>
 			</view>
-			<view class="content-comment">
+			<!-- <view class="content-comment">
 				<view class="comment-item" v-for="(item,index) in commentitems" :key="index">
 					<view class="comment-user">{{item.user}}:</view>
 					<view class="comment-text">{{item.text}}</view>
 				</view>
 				
-			</view>
+			</view> -->
 			<view class="content-menu">
 				<u-grid :col="3" :border="false">
 						<u-grid-item>
@@ -37,7 +37,7 @@
 						</u-grid-item>
 					</u-grid>
 			</view>
-			<view class="diver" style="width: 100%;height: 25upx;background-color: #DCDFE6;"></view>
+			<view class="diver" style="width: 100%;height: 15upx;background-color: #f3f3f3;"></view>
 		</view>
 	</view>
 </template>
