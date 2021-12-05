@@ -18,6 +18,9 @@ const install = (Vue, vm) => {
 
 	// 发布动态
 	let publicDynamic = (params = {}) => vm.$u.post(publicDynamicUrl,params)
+	
+	// 获取推荐动态
+	let getDynamicByRecommend = (params = {}) => vm.$u.post('/dynamic/getDynamicRecommend',params)
 
 	// 获取所有话题
 	let getAllTopic = (params = {}) => vm.$u.get('/topic/findAll',params)
@@ -71,6 +74,7 @@ const install = (Vue, vm) => {
 		publicDynamic,
 		getAllTopic,
 		getTopicByName,
+		getDynamicByRecommend,
 		getUserInfo,
 		getOwnInfo,
 		getRelatedCount,
