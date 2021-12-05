@@ -50,6 +50,8 @@ const install = (Vue, vm) => {
 
 	let focus = (params = {}) => vm.$u.put("/user/focus?focusedUserId=" + params, null)
 	
+	//用户注销
+	let accountCancellation = (params = {}) => vm.$u.delete("/user/accountCancellation",params)
 	let putAndDeleteParams = (params) => { 
 		let result = ""
 		for(let i in params){
@@ -83,7 +85,8 @@ const install = (Vue, vm) => {
 		cancelFocused,
 		focus,
 		getPublish,
-		getCollect
+		getCollect,
+		accountCancellation
 	};
 }
 
