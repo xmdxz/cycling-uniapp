@@ -74,12 +74,16 @@ const router = createRouter({
 			name:'login2'
 		},
 		{
-			path:'/pages/running/prepare',
-			name:'prepare'
+			path:'/pages/ride/finish',
+			name:'finish'
 		},
 		{
-			path:'/pages/running/run',
+			path:'/pages/ride/run',
 			name:'run'
+		},
+		{
+			path:'/pages/ride/prepare',
+			name:'prepare'
 		},
 		
 	]

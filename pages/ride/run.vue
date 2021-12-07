@@ -1,13 +1,15 @@
 <template>
 	<view>
 		<view class="floatingMessage">
+			<button @click="uniGPS">start</button>
 			<button @click="amap.start">start</button>
 			<button @click="amap.stop">stop</button>
 			<button @click="amap.removePol">消除路径</button>
 			<button @click="amap.initAllRoute">绘制总骑行路径</button>
+			<button @click="amap.toFinish">结束骑行</button>
 		</view>
 		<view class="amap-container">
-			<view id="amap" class="amap" :change:prop="amap.updateEcharts">
+			<view id="amap" class="amap" :prop="oldAllRoute" :change:prop="amap.updateEcharts">
 			</view>
 			<!--:prop="option"-->
 		</view>
@@ -31,20 +33,37 @@
 				<view class="item right">{{distance}}</view>
 			</view>
 		</view>
-
+		<u-tabbar v-model="tabBarCurrent" :list="tabBarList" :mid-button="true" mid-button-size="90"></u-tabbar>
 	</view>
+	
+	
 </template>
 
 <script>
+	import store from "../../store/index.js"
 	export default {
 		data() {
 			return {
+				rabBarList:null,
+				
 				speed: 3.25,
 				hour: 0,
 				minute: 0,
 				second: 0,
 				distance: 0.0,
 
+				oldAllRoute:null,
+			}
+		},
+		onLoad() {
+			this.tabBarList = store.state.vuex_tabbar
+			var that = this
+			console.log("load")
+			//获取从路书传来的路线数据
+			var oldAllRoute = null;
+			oldAllRoute = uni.getStorageSync("allRoute");
+			if(oldAllRoute!=null && oldAllRoute!=''){
+				that.oldAllRoute = JSON.parse(oldAllRoute);
 			}
 		},
 		mounted() {},
@@ -58,6 +77,21 @@
 				} else {
 					return false;
 				}
+			},
+			/*
+				获取结束时的时间
+			*/
+			getDate(){
+				var that = this;
+				var d = new Date();
+				var string = "";
+				var minutes = d.getMinutes();
+				if(minutes<10){
+					minutes = "0"+minutes;
+				}
+				string += d.getFullYear()+"/"+d.getMonth()+"/"+d.getDate();
+				string += "  "+d.getHours()+":"+minutes
+				that.date = string;
 			},
 			/*
 				从renderjs获取时间数据并渲染到前台，1s
@@ -75,7 +109,49 @@
 				var that = this
 				that.distance = data.dis //设置距离
 				that.speed = data.spd
-			}
+			},
+			uniGPS() {
+				this.handleNotice()
+				setInterval(function(){
+					uni.getLocation({
+						type: 'wgs84', //返回可以用于uni.openLocation的经纬度
+						success: function(res) {
+							const latitude = res.latitude;
+							const longitude = res.longitude;
+							console.log(longitude + " " +latitude);
+						}
+					})
+				},1000);
+			},
+			handleNotice() {
+				let system = uni.getSystemInfoSync(); // 获取系统信息
+				console.log(JSON.stringify(system));
+				if (system.platform === 'android') { // 判断平台
+					console.log("android")
+					var context = plus.android.importClass("android.content.Context");
+					var locationManager = plus.android.importClass("android.location.LocationManager");
+					var main = plus.android.runtimeMainActivity();
+					var mainSvr = main.getSystemService(context.LOCATION_SERVICE);
+					//if (mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER)) {
+					uni.showModal({
+						title: '提示',
+						content: '请打开定位服务功能',
+						//showCancel: false, // 不显示取消按钮
+						success: () => {
+							if (!mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER)) {
+								var Intent = plus.android.importClass('android.content.Intent');
+								var Settings = plus.android.importClass('android.provider.Settings');
+								var intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+								main.startActivity(intent); // 打开系统设置GPS服务页面
+							} else {
+								console.log('GPS功能已开启');
+							}
+						}
+					});
+					
+				}
+			},
+			
 		}
 
 	}
@@ -96,12 +172,18 @@
 					lng: 112.585069,
 					lat: 37.430841
 				}],
+				
+				startPosition:null,
+				endPosition:null,
+				
+				rideWeather:null,
+				
+				oldAllRoute:null,
+				
 				//整个骑行过程中的路径信息数据，为二维数组[[lng,lat],[lng,lat]]
 				allRoute: [],
 				longitude: null, //地理位置的经度
 				latitude: null, //地理位置的纬度
-				startRideWeather: {}, //起点的天气对象
-				endRideWeather: {}, //终点的天气对象
 
 				nowMarker: null, //当前位置的标记点	
 
@@ -116,15 +198,7 @@
 				minute: 0,
 				second: 0,
 				distance: 0.0,
-
 			}
-		},
-		onLoad(params) {
-			//this.option += JSON.parse(params.data);	
-			this.uniGPS();
-		},
-		beforeMount() {
-			this.handleNotice();
 		},
 		mounted() {
 			var that = this
@@ -156,7 +230,7 @@
 				监听 service 层数据变更
 			*/
 			updateEcharts(newValue, oldValue, ownerInstance, instance) {
-				// console.log(oldValue)
+				
 			},
 			start(event, ownerInstance) {
 				var that = this
@@ -174,12 +248,12 @@
 					//记录上次坐标的位置信息
 					var lastLng = that.longitude
 					var lastLat = that.latitude
-
-					that.createPolyline(); //描绘实时路线
-
+					
 					that.onTimeGetLocaltion(); //获取实时位置
 					/* that.longitude += 0.0002;
 					that.latitude += 0.0002; */
+
+					that.createPolyline(); //描绘实时路线
 
 					that.createNowMarker(that.longitude, that.latitude) //绘制当前坐标的标记点
 
@@ -256,7 +330,13 @@
 				//初始化mapUI
 				initAMapUI();
 				alert("initAMapUI")
-
+				
+				//如果传递有路线，则绘制路线
+				if(that.oldAllRoute!=null && that.oldAllRoute!=''){
+					console.log("initLine")
+					that.initLine();
+				}
+				
 				//创建当前位置的图标点
 				that.createNowMarker(that.longitude, that.latitude);
 				console.log("创建nowMarker成功")
@@ -439,8 +519,8 @@
 				}
 				that.pol = new AMap.Polyline({
 					path: that.allRoute,
-					borderWeight: 6, // 线条宽度，默认为 1
-					strokeColor: 'red', // 线条颜色
+					borderWeight: 2, // 线条宽度，默认为 1
+					strokeColor: 'blue', // 线条颜色
 					lineJoin: 'round', // 折线拐点连接处样式
 					lineCap: 'round',
 					isOutline: true, //边框
@@ -511,10 +591,27 @@
 				var navg0 = pathSimplifierIns.createPathNavigator(0, //关联第1条轨迹
 					{
 						loop: true, //循环播放
-						speed: 200
+						speed: 20
 					});
 				navg0.start();
 
+			},
+			
+			/*
+				将从路书选择的路线绘制
+			*/
+			initLine(){
+				var that = this
+				// 创建折线实例
+				var polyline = new AMap.Polyline({
+				    path: that.oldAllRoute,  
+				    strokeWeight: 6, // 线条宽度
+				    strokeColor: 'red', // 线条颜色
+				    lineJoin: 'round' ,// 折线拐点连接处样式
+					lineCap:'round',	//折线两端线帽的绘制样式
+					showDir:true,	//线上的箭头
+				});
+				that.map.add(polyline);
 			},
 
 			/*
@@ -535,48 +632,49 @@
 					}
 				}, 1000);
 			},
-
-
-			handleNotice() {
-				let system = uni.getSystemInfoSync(); // 获取系统信息
-				console.log(JSON.stringify(system));
-				if (system.platform === 'android') { // 判断平台
-					console.log("android")
-					var context = plus.android.importClass("android.content.Context");
-					var locationManager = plus.android.importClass("android.location.LocationManager");
-					var main = plus.android.runtimeMainActivity();
-					var mainSvr = main.getSystemService(context.LOCATION_SERVICE);
-					//if (mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER)) {
-					uni.showModal({
-						title: '提示',
-						content: '请打开定位服务功能',
-						//showCancel: false, // 不显示取消按钮
-						success: () => {
-							if (!mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER)) {
-								var Intent = plus.android.importClass('android.content.Intent');
-								var Settings = plus.android.importClass('android.provider.Settings');
-								var intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-								main.startActivity(intent); // 打开系统设置GPS服务页面
-							} else {
-								console.log('GPS功能已开启');
-							}
-						}
-					});
-					//}
-				}
-				// uni.navigateTo({
-				// 		url: './../tabBar-3/notice/notice_list?type=1&userId='+_self.userInfo.userId
-				// });
+			
+			/*
+				结束骑行，跳转到finish页面
+			*/
+			toFinish(){
+				var that = this;
+				var rm = {
+					speed: that.speed,
+					hour: that.hour,
+					minute: that.minute,
+					second: that.second,
+					distance: that.distance,
+				};
+				/**
+					模拟路线
+				*/
+				var ar = [
+					[112.590189,37.42093],
+					[112.589862,37.420964],
+					[112.58984,37.421033]
+				]
+				
+				//var allRoute = JSON.stringify(that.allRoute); //所有的路线坐标信息
+				/**
+				 *	模拟路线 
+				 */
+				var allRoute = JSON.stringify(ar);
+				var rideWeather = JSON.stringify(that.rideWeather);
+				var rideMess = JSON.stringify(rm);	//骑行信息，例如速度、时间
+				uni.navigateTo({
+					url:'./finish?rideMess='+rideMess+'&rideWeather='+rideWeather+'&allRoute='+allRoute
+				})
 			},
+
+			
 			uniGPS() {
 				uni.getLocation({
-					type: 'gcj02', //返回可以用于uni.openLocation的经纬度
+					type: 'wgs84', //返回可以用于uni.openLocation的经纬度
 					success: function(res) {
 						const latitude = res.latitude;
 						const longitude = res.longitude;
-
-						console.log('当前位置的经度：' + longitude);
-						console.log('当前位置的纬度：' + latitude);
+						alert('当前位置的经度：' + longitude);
+						alert('当前位置的纬度：' + latitude);
 					}
 				})
 			}
@@ -592,6 +690,16 @@
 
 
 <style lang="scss" scoped>
+	
+	//去除高德logo
+	.amap-logo{
+		display: none;
+		opacity:0 !important;
+	}
+	.amap-copyright {
+	    opacity:0;
+	}
+	
 	#amap {
 		width: 750rpx; //750rpx直接全屏
 		height: 90vh;

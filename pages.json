@@ -88,7 +88,7 @@
       }
     },
     {
-      "path": "pages/running/run",
+      "path": "pages/ride/finish",
       "style": {
         "navigationStyle": "custom",
         "navigationBarTitleText": "",
@@ -97,7 +97,7 @@
       }
     },
     {
-      "path": "pages/running/prepare",
+      "path": "pages/ride/prepare",
       "style": {
         "navigationStyle": "custom",
         "navigationBarTitleText": "",
@@ -105,6 +105,15 @@
         "enablePullDownRefresh": false
       }
     },
+	{
+	  "path": "pages/ride/run",
+	  "style": {
+	    "navigationStyle": "custom",
+	    "navigationBarTitleText": "",
+	    "navigationBarTextStyle": "white",
+	    "enablePullDownRefresh": false
+	  }
+	},
     {
       "path": "pages/login/index",
       "style": {

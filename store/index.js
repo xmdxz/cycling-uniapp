@@ -60,7 +60,7 @@ const store = new Vuex.Store({
 				iconPath: "/static/ico/骑行.png",
 				selectedIconPath: "/static/ico/骑行选中.png",
 				text: '骑行',
-				pagePath: '/pages/running/prepare'
+				pagePath: '/pages/ride/prepare'
 			},
 			{
 				iconPath: "/static/ico/我的.png",
