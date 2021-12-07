@@ -88,9 +88,9 @@
 			
 			//获取从路书传来的路线数据
 			console.log("load")
-			var allRoute = null;
-			//uni.removeStorageSync('allRoute')
-			console.log(allRoute)
+			var rou = that.getRoute();
+			console.log(rou)
+
 			if(allRoute!=null && allRoute!=''){
 				that.allRoute = JSON.parse(allRoute);
 			}
@@ -98,6 +98,13 @@
 		mounted() {
 		},
 		methods:{
+			async getRoute(){
+				var mes = await this.$u.api.getRideRoute({});
+				console.log(mes)
+				var a1 = mes.toArray()
+				console.log(a1)
+				return mes.result;
+			},
 			uniGPS() {
 				var that = this
 				//setInterval(function(){
