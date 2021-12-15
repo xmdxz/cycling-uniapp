@@ -3,6 +3,7 @@
 		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
 	},
 
+<<<<<<< HEAD
 	"pages": [{
 			"path": "pages/dynamic/index",
 			"style": {
@@ -136,6 +137,151 @@
 				"enablePullDownRefresh": false
 			}
 		},
+=======
+  "pages": [
+    {
+      "path": "pages/dynamic/index",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/dynamic/public",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/dynamic/dynamicdetail",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "",
+        "navigationBarTextStyle": "white",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/dynamic/search",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "",
+        "navigationBarTextStyle": "white",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/dynamic/publicdynamic",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTextStyle": "white",
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/my/my",
+      "style": {
+        "navigationBarTitleText": "我的",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/my/info",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/my/setting",
+      "style": {
+        "navigationBarTitleText": "设置",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/my/person",
+      "style": {
+        "navigationBarTitleText": "个人信息",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/my/thirdBind",
+      "style": {
+        "navigationBarTitleText": "第三方绑定",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/my/account",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/ride/finish",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "",
+        "navigationBarTextStyle": "white",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/ride/prepare",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "",
+        "navigationBarTextStyle": "white",
+        "enablePullDownRefresh": false
+      }
+    },
+	{
+	  "path": "pages/ride/run",
+	  "style": {
+	    "navigationStyle": "custom",
+	    "navigationBarTitleText": "",
+	    "navigationBarTextStyle": "white",
+	    "enablePullDownRefresh": false
+	  }
+	},
+    {
+      "path": "pages/login/index",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "",
+        "navigationBarTextStyle": "white",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/login/index2",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "",
+        "navigationBarTextStyle": "white",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/activity/index",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/activity/addactivity",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    },
+>>>>>>> 62d87bcb7d6e990acc8819908e37f7d6dc8d80ca
 
 		{
 			"path": "pages/my/collect",
