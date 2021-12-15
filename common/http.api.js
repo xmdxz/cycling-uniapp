@@ -22,6 +22,15 @@ const install = (Vue, vm) => {
 	// 获取推荐动态
 	let getDynamicByRecommend = (params = {}) => vm.$u.post('/dynamic/getDynamicRecommend',params)
 
+	// 获取关注的人的动态
+	let getDynamicByAttention = (params = {}) => vm.$u.post('/dynamic/getDynamicByAttention',params)
+	
+	// 根据动态id获取动态详情
+	let getDynamicById = (params = {}) => vm.$u.post('/dynamic/getDynaminById',params)
+	
+	// 根据动态内容搜索
+	let getDynamicByContent = (params = {}) => vm.$u.post('/dynamic/getDynamicByContent',params)
+
 	// 获取所有话题
 	let getAllTopic = (params = {}) => vm.$u.get('/topic/findAll',params)
 	
@@ -77,6 +86,9 @@ const install = (Vue, vm) => {
 		getAllTopic,
 		getTopicByName,
 		getDynamicByRecommend,
+		getDynamicByAttention,
+		getDynamicById,
+		getDynamicByContent,
 		getUserInfo,
 		getOwnInfo,
 		getRelatedCount,

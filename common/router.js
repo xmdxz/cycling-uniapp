@@ -81,6 +81,10 @@ const router = createRouter({
 			path:'/pages/running/run',
 			name:'run'
 		},
+		{
+			path: '/pages/dynamic/searchresult',
+			name: 'searchresult'
+		}
 		
 	]
 });

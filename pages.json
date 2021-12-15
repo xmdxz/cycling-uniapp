@@ -1,201 +1,206 @@
 {
-  "easycom": {
-    "^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
-  },
+	"easycom": {
+		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
+	},
 
-  "pages": [
-    {
-      "path": "pages/dynamic/index",
-      "style": {
-        "navigationBarTitleText": "",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/dynamic/public",
-      "style": {
-        "navigationBarTitleText": "",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/dynamic/dynamicdetail",
-      "style": {
-        "navigationStyle": "custom",
-        "navigationBarTitleText": "",
-        "navigationBarTextStyle": "white",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/dynamic/search",
-      "style": {
-        "navigationStyle": "custom",
-        "navigationBarTitleText": "",
-        "navigationBarTextStyle": "white",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/dynamic/publicdynamic",
-      "style": {
-        "navigationStyle": "custom",
-        "navigationBarTextStyle": "white",
-        "navigationBarTitleText": "",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/my/my",
-      "style": {
-        "navigationBarTitleText": "我的",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/my/info",
-      "style": {
-        "navigationBarTitleText": "",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/my/setting",
-      "style": {
-        "navigationBarTitleText": "设置",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/my/person",
-      "style": {
-        "navigationBarTitleText": "个人信息",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/my/thirdBind",
-      "style": {
-        "navigationBarTitleText": "第三方绑定",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/my/account",
-      "style": {
-        "navigationBarTitleText": "",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/running/run",
-      "style": {
-        "navigationStyle": "custom",
-        "navigationBarTitleText": "",
-        "navigationBarTextStyle": "white",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/running/prepare",
-      "style": {
-        "navigationStyle": "custom",
-        "navigationBarTitleText": "",
-        "navigationBarTextStyle": "white",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/login/index",
-      "style": {
-        "navigationStyle": "custom",
-        "navigationBarTitleText": "",
-        "navigationBarTextStyle": "white",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/login/index2",
-      "style": {
-        "navigationStyle": "custom",
-        "navigationBarTitleText": "",
-        "navigationBarTextStyle": "white",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/activity/index",
-      "style": {
-        "navigationBarTitleText": "",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/activity/addactivity",
-      "style": {
-        "navigationBarTitleText": "",
-        "enablePullDownRefresh": false
-      }
-    },
+	"pages": [{
+			"path": "pages/dynamic/index",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/dynamic/public",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/dynamic/dynamicdetail",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "",
+				"navigationBarTextStyle": "white",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/dynamic/search",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "",
+				"navigationBarTextStyle": "white",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/dynamic/publicdynamic",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "white",
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/my",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/info",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/setting",
+			"style": {
+				"navigationBarTitleText": "设置",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/person",
+			"style": {
+				"navigationBarTitleText": "个人信息",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/thirdBind",
+			"style": {
+				"navigationBarTitleText": "第三方绑定",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/account",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/running/run",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "",
+				"navigationBarTextStyle": "white",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/running/prepare",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "",
+				"navigationBarTextStyle": "white",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/login/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "",
+				"navigationBarTextStyle": "white",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/login/index2",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "",
+				"navigationBarTextStyle": "white",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/activity/index",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/activity/addactivity",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
 
-    {
-      "path": "pages/my/collect",
-      "style": {
-        "navigationBarTitleText": "收藏",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/dynamic/public",
-      "style": {
-        "navigationBarTitleText": "",
-        "enablePullDownRefresh": false
-      }
-    }
-  ],
+		{
+			"path": "pages/my/collect",
+			"style": {
+				"navigationBarTitleText": "收藏",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/dynamic/public",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/dynamic/searchresult",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		}
+	],
 
-  "globalStyle": {
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uView",
-    "navigationBarBackgroundColor": "#FFFFFF",
-    "backgroundColor": "#FFFFFF"
-  },
-  "tabBar": {
-    "color": "#909399",
-    "selectedColor": "#303133",
-    "backgroundColor": "#FFFFFF",
-    "borderStyle": "black",
-    "list": [
-      {
-        "pagePath": "pages/dynamic/index",
-        "iconPath": "static/ico/首页_动态灰.png",
-        "selectedIconPath": "static/ico/首页_动态亮.png",
-        "text": "动态"
-      },
-      {
-        "pagePath": "pages/activity/index",
-        "iconPath": "static/ico/活动.png",
-        "selectedIconPath": "static/ico/活动选中.png",
-        "text": "活动"
-      },
-      {
-        "pagePath": "pages/dynamic/public",
-        "iconPath": "static/ico/发布",
-        "selectedIconPath": "static/ico/发布选中.png",
-        "text": "发布"
-      },
-      {
-        "pagePath": "pages/running/prepare",
-        "iconPath": "static/ico/骑行.png",
-        "selectedIconPath": "static/ico/骑行选中.png",
-        "text": "骑行"
-      },
-      {
-        "pagePath": "pages/my/my",
-        "iconPath": "static/ico/我的.png",
-        "selectedIconPath": "static/ico/我的选中.png",
-        "text": "我的"
-      }
-    ]
-  }
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uView",
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"backgroundColor": "#FFFFFF"
+	},
+	"tabBar": {
+		"color": "#909399",
+		"selectedColor": "#303133",
+		"backgroundColor": "#FFFFFF",
+		"borderStyle": "black",
+		"list": [{
+				"pagePath": "pages/dynamic/index",
+				"iconPath": "static/ico/首页_动态灰.png",
+				"selectedIconPath": "static/ico/首页_动态亮.png",
+				"text": "动态"
+			},
+			{
+				"pagePath": "pages/activity/index",
+				"iconPath": "static/ico/活动.png",
+				"selectedIconPath": "static/ico/活动选中.png",
+				"text": "活动"
+			},
+			{
+				"pagePath": "pages/dynamic/public",
+				"iconPath": "static/ico/发布",
+				"selectedIconPath": "static/ico/发布选中.png",
+				"text": "发布"
+			},
+			{
+				"pagePath": "pages/running/prepare",
+				"iconPath": "static/ico/骑行.png",
+				"selectedIconPath": "static/ico/骑行选中.png",
+				"text": "骑行"
+			},
+			{
+				"pagePath": "pages/my/my",
+				"iconPath": "static/ico/我的.png",
+				"selectedIconPath": "static/ico/我的选中.png",
+				"text": "我的"
+			}
+		]
+	}
 }

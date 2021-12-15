@@ -2,7 +2,8 @@
 	<view>
 		<u-navbar back-text="返回" title="搜索"></u-navbar>
 		<view class="search">
-			<u-search shape="round" :clearabled="true" placeholder="请输入要搜索的动态" input-align="center"></u-search>
+			<u-search shape="round" :clearabled="true" placeholder="请输入要搜索的动态" input-align="center"
+				v-model="searchContent" @search="search()" @custom="search()"></u-search>
 		</view>
 		<view class="history-search">
 			<view class="history-hint">
@@ -45,11 +46,19 @@
 	export default {
 		data() {
 			return {
-
+				searchContent: ''
 			}
 		},
 		methods: {
-
+			search(){
+				console.log(1)
+				uni.navigateTo({
+					url:'./searchresult?content='+this.searchContent,
+					success() {
+						
+					}
+				})
+			}
 		}
 	}
 </script>

@@ -2,11 +2,13 @@
 	<view>
 	
 	<view class="content-main">
-		<u-sticky>
+		<u-sticky :enable="stickyEnable">
 			<view class="stickt">
 				<view class="search">
-					<u-avatar :src="src" size="mini"></u-avatar>
-					<u-search class="u-m-l-20" placeholder="请输入要搜索的动态" disabled :show-action="false" @click="toSearch()"></u-search>
+					<!-- <u-avatar :src="src" size="mini"></u-avatar> -->
+					<u-search class="" placeholder="请输入要搜索的动态" disabled :show-action="false" @click="toSearch()">
+					</u-search>
+					<u-button class="search-btn" shape="circle" size="medium">搜索</u-button>
 				</view>
 				
 				<view>
@@ -27,18 +29,11 @@
 						<scroll-view scroll-y style="height: 100%;width: 100%;margin-top: 20upx;">
 							<view class="swiper-div">
 								<view class="content" style="margin-bottom: 100upx;">
-									<attentionitem :avatar="src" contentuser="admin" contentlevel="王者" 
-									contenttext="今日西湖边骑行,神清气爽!"
-									contenttime="发布时间:2021年7月28号13时40分" :imgs="imgList"></attentionitem>
-									<attentionitem :avatar="src" contentuser="admin" contentlevel="王者"
-									contenttext="今日西湖边骑行,神清气爽!"
-									contenttime="发布时间:2021年7月28号13时40分" :imgs="imgList"></attentionitem>
-									<attentionitem :avatar="src" contentuser="admin" contentlevel="王者"
-									contenttext="今日西湖边骑行,神清气爽!"
-									contenttime="发布时间:2021年7月28号13时40分" :imgs="imgList"></attentionitem>
-									<attentionitem :avatar="src" contentuser="admin" contentlevel="王者"
-									contenttext="今日西湖边骑行,神清气爽!"
-									contenttime="发布时间:2021年7月28号13时40分" :imgs="imgList"></attentionitem>
+									<attentionitem v-for="(item,index) in attentionList" :avatar="item.avatar" :contentuser="item.username" :contentlevel="item.level" 
+									:contenttext="item.content"
+									:key="index"
+									contenttime="发布时间:2021年7月28号13时40分" :imgs="item.imgs" :id="item.id"></attentionitem>
+									
 
 								</view>
 							</view>
@@ -232,6 +227,7 @@
 		},
 		data() {
 			return {
+				stickyEnable:true,
 				list: [{
 					name: '关注'
 				}, {
@@ -239,6 +235,7 @@
 				}, {
 					name: '附近'
 				}],
+				attentionList: [],
 				imgList: ['/static/img/1.jpg', '/static/img/2.jpg', '/static/img/3.jpg'],
 				textList: ['最新通知:发布动态需要遵守社区规定,不得发布违法违规内容'],
 				flowList: [],
@@ -364,7 +361,15 @@
 		onLoad() {
 			this.addRandomData()
 			this.addRandomDataTwo()
+			this.getDynamicByAttention()
 			this.tabBarList = store.state.vuex_tabbar
+		},
+		onShow() {
+			
+			this.stickyEnable = true
+		},
+		onHide() {
+			this.stickyEnable = false
 		},
 		// onReachBottom() {
 		// 	this.loadStatus = 'loading'
@@ -380,6 +385,13 @@
 					url:"./search"
 				})
 			},
+			async getDynamicByAttention(){
+				let res = await this.$u.api.getDynamicByAttention({
+					
+				})
+				this.attentionList = res
+			},
+			
 			onreachBottom(){
 				this.loadStatus = 'loading'
 				//模拟数据加载
@@ -388,7 +400,6 @@
 					this.loadStatus = 'loadmore'
 				}, 1000)
 			},
-			
 			onreachBottomTwo(){
 				console.log("加载中")
 				this.loadStatusTwo = 'loading'
@@ -423,9 +434,9 @@
 					// item.id = this.$u.guid();
 					this.flowList.push(item);
 				}
-				let res = await this.$u.api.getDynamicByRecommend({
-				})
-				console.log(res)
+				// let res = await this.$u.api.getDynamicByRecommend({
+				// })
+				// console.log(res)
 			},
 			
 			addRandomDataTwo() {
@@ -459,8 +470,20 @@
 		margin: 0 auto;
 		display: flex;
 		flex-wrap: nowrap;
+		border: 4rpx solid #DD6161;
+		border-radius: 35rpx;
 	}
 	
+	
+	.content-main .search-btn{
+		width: 200rpx;
+		height: 71rpx;
+		background-color: #DD6161;
+		color: #ffffff;
+		position: absolute;
+		top: 0rpx;
+		right: 39rpx;
+	}
 	.content-main .stickt{
 		width: 100%;
 		height: auto;

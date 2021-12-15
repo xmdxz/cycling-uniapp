@@ -3,17 +3,17 @@
 		<u-navbar back-text="返回" title="动态详情"></u-navbar>
 		<view class="content-item">
 			<view class="content-header">
-				<u-avatar :src="avatar" style="vertical-align: middle;" size="large"></u-avatar>
+				<u-avatar :src="avatar|appendUrlPrefix" style="vertical-align: middle;" size="large"></u-avatar>
 				<view class="content-authorinfo">
-					<text class="content-user">admin</text>
-					<text class="content-level">骑行王者</text>
+					<text class="content-user">{{username}}</text>
+					<text class="content-level">{{level}}</text>
 				</view>
 			</view>
 			<view class="content-text">
-				本周日2021年7月28日-2021年8月30将举办大型骑行活动,欢迎大家前来参加
+				{{content}}
 			</view>
 			<view class="content-imgs">
-				<image v-for="(item,index) in imgs" :src="item" :key="index" class="content-img"></image>
+				<image v-for="(item,index) in imgs" :src="item.imageUrl|appendUrlPrefix" :key="index" class="content-img"></image>
 			</view>
 			<view class="content-time">
 				<text>2021年7月19日13时40分</text>
@@ -27,23 +27,23 @@
 					<u-section title="热门回复" :right="false"></u-section>
 				</view>
 				<view class="comment-items">
-					<view class="comment-item">
+					<view class="comment-item" v-for="(item,index) in comments" :key="index">
 						<view class="comment-header">
-							<u-avatar :src="src" style="vertical-align: middle" size="mini"></u-avatar>
-							<text class="comment-user">左迁户</text>
+							<u-avatar :src="item.commentAvatar|appendUrlPrefix" style="vertical-align: middle" size="mini"></u-avatar>
+							<text class="comment-user">{{item.commentUsername}}</text>
 							<view style="float: right;margin-top: 15upx;margin-right: 45upx;">
 								<u-icon name="thumb-up" size="35"></u-icon>
 							</view>
 						</view>
 						<view class="comment-text">
-							大力支持,到时候一定参加!大力支持,到时候一定参加!大力支持,到时候一定参加!大力支持,到时候一定参加!大力支持,到时候一定参加!大力支持,到时候一定参加!
+							{{item.commentContent}}
 						</view>
 						<view class="comment-time">
-							1小时前
+							{{item.commentTime}}
 						</view>
 					</view>
 
-					<view class="comment-item">
+					<!-- <view class="comment-item">
 						<view class="comment-header">
 							<u-avatar :src="src" style="vertical-align: middle" size="mini"></u-avatar>
 							<text class="comment-user">张三</text>
@@ -57,39 +57,11 @@
 						<view class="comment-time">
 							1小时前
 						</view>
-					</view>
+					</view> -->
 
-					<view class="comment-item">
-						<view class="comment-header">
-							<u-avatar :src="src" style="vertical-align: middle" size="mini"></u-avatar>
-							<text class="comment-user">李四</text>
-							<view style="float: right;margin-top: 15upx;margin-right: 45upx;">
-								<u-icon name="thumb-up" size="35"></u-icon>
-							</view>
-						</view>
-						<view class="comment-text">
-							支持支持！
-						</view>
-						<view class="comment-time">
-							1小时前
-						</view>
-					</view>
+					
 
-					<view class="comment-item">
-						<view class="comment-header">
-							<u-avatar :src="src" style="vertical-align: middle" size="mini"></u-avatar>
-							<text class="comment-user">王五</text>
-							<view style="float: right;margin-top: 15upx;margin-right: 45upx;">
-								<u-icon name="thumb-up" size="35"></u-icon>
-							</view>
-						</view>
-						<view class="comment-text">
-							支持支持！支持支持！啦啦啦啦啦啦啦啦啦啦啦啦
-						</view>
-						<view class="comment-time">
-							1小时前
-						</view>
-					</view>
+					
 				</view>
 
 			</view>
@@ -114,16 +86,39 @@
 </template>
 
 <script>
+	import filters from '../../common/filters.js'
 	export default {
 		data() {
 			return {
-				imgs: ['/static/img/1.jpg', '/static/img/2.jpg', '/static/img/3.jpg'],
+				avatar: '',
+				level:'',
+				username: '',
+				content: '',
+				imgs: [],
+				comments: [],
 				popupShow: false,
-				commentValue: ''
+				commentValue: '',
+				dynamicId: 0,
 			}
 		},
+		
+		onLoad(e) {
+			this.dynamicId = e.id
+			this.getDynamicDetailById();
+		},
 		methods: {
-
+			async getDynamicDetailById(){
+				let res = await this.$u.api.getDynamicById({
+					id: this.dynamicId
+				})
+				console.log(res)
+				this.avatar = res.avatar
+				this.level = res.level
+				this.username = res.username
+				this.content = res.content
+				this.imgs = res.imgs
+				this.comments = res.comments
+			}
 		}
 	}
 </script>

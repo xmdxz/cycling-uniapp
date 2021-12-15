@@ -2,7 +2,8 @@
 	<view @click="toDynamic">
 		<view class="content-item">
 			<view class="content-header">
-				<u-avatar :src="avatar" style="vertical-align: middle;" size="mini"></u-avatar>
+				<view style="display: none;">{{id}}</view>
+				<u-avatar :src="avatar|appendUrlPrefix" style="vertical-align: middle;" size="mini"></u-avatar>
 				<view class="content-authorinfo">
 				<text class="content-user">{{contentuser}}</text>
 				<text class="content-level">{{contentlevel}}</text>
@@ -12,7 +13,7 @@
 				{{contenttext}}
 			</view>
 			<view class="content-imgs">
-				<image v-for="(item,index) in imgs" :src="item" :key="index" class="content-img"></image>
+				<image v-for="(item,index) in imgs" :src="item.imageUrl|appendUrlPrefix" :key="index" class="content-img"></image>
 			</view>
 			<view class="content-time">
 				<text>{{contenttime}}</text>
@@ -24,7 +25,7 @@
 				</view>
 				
 			</view> -->
-			<view class="content-menu">
+			<!-- <view class="content-menu">
 				<u-grid :col="3" :border="false">
 						<u-grid-item>
 							<u-icon name="heart" :size="30"></u-icon>
@@ -36,29 +37,32 @@
 							<u-icon name="share" :size="30"></u-icon>
 						</u-grid-item>
 					</u-grid>
-			</view>
+			</view> -->
 			<view class="diver" style="width: 100%;height: 15upx;background-color: #f3f3f3;"></view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import filters from '../common/filters.js'
 	export default {
 		name:"attentionitem",
-		props:['avatar','contentuser','contentlevel','imgs','contenttext','contenttime','commentitems'],
+		props:['avatar','contentuser','contentlevel','imgs','contenttext','contenttime','commentitems','id'],
 		data() {
 			return {
 				
 			};
 		},
+		
+		
 		methods:{
 			toDynamic(){
 				uni.navigateTo({
-					url:'/pages/dynamic/dynamicdetail',
-					animationType:'fade-in',
+					url:'/pages/dynamic/dynamicdetail?id='+this.id,
+					animationType:'pop-in',
 					animationDuration:1000,
 					success:(res)=>{
-						console.log(res)
+					
 					},
 					fail: (res) => {
 						console.log(res)
