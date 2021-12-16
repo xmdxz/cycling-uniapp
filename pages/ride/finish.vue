@@ -138,11 +138,14 @@
 			}
 		},
 		mounted() {
+			window._AMapSecurityConfig = {
+			    securityJsCode:'778235a053b07118a187f5ef22a48e65',
+			}
 			var that = this
 			//引入高德api
 			const script = document.createElement('script');
 			script.src =
-				'https://webapi.amap.com/maps?v=1.4.15&key=c53c3b4ab77aa34fc2f75b57004bbc10&plugin=AMap.Geolocation';
+				'https://webapi.amap.com/maps?v=1.4.15&key=31fc1704dff8d7ec2623319c245dcfe6&plugin=AMap.Geolocation';
 			script.onload = this.initAmap.bind(this)
 			document.head.appendChild(script);
 			

@@ -85,41 +85,12 @@
 		onLoad() {
 			this.tabBarList = store.state.vuex_tabbar	//引入tarBar
 			var that = this
-			
-			//获取从路书传来的路线数据
 			console.log("load")
-			var rou = that.getRoute();
-			console.log(rou)
-
-			if(allRoute!=null && allRoute!=''){
-				that.allRoute = JSON.parse(allRoute);
-			}
+			
 		},
 		mounted() {
 		},
 		methods:{
-			async getRoute(){
-				var mes = await this.$u.api.getRideRoute({});
-				console.log(mes)
-				var a1 = mes.toArray()
-				console.log(a1)
-				return mes.result;
-			},
-			uniGPS() {
-				var that = this
-				//setInterval(function(){
-					uni.getLocation({
-						type: 'wgs84', //返回可以用于uni.openLocation的经纬度
-						//type:"gcj02",
-						success: function(res) {
-							that.options.latitude = res.latitude;
-							that.options.longitude = res.longitude;
-							console.log(res.longitude + " " +res.latitude);
-						}
-					})
-					
-				//},1000);
-			},
 			setL(data){
 				var that = this
 				that.startLocation = data.startLocation1;
@@ -144,7 +115,8 @@
 				map: null,
 				mapUI: null,
 				
-				allRoute:null,	//总路线数组
+				allRoute:[],	//总路线数组
+				oldAllRoute1:null,
 				
 				nowLongitude:null,
 				nowLatitude:null,
@@ -168,46 +140,83 @@
 				nowCity:null,
 			}
 		},
+		onLoad() {
+			console.log("load2222")
+			this.init()
+		},
 		mounted() {
 			var that = this
-			
-			//如果传入路线数据，则初始化路线
-			if(that.allRoute!=null){
-				console.log("call setIsEnd")
-				//将前端控制数据置为true，显示目的地信息
-				that.$ownerInstance.callMethod('setIsEnd',{				
-					isEnd:true,
-				})
-				//将路线的起点和终点的位置提取出来
-				var len = that.allRoute.length
-				that.startLongitude = that.allRoute[0][0]
-				that.startLatitude = that.allRoute[0][1]
-				that.endLongitude = that.allRoute[len-1][0]
-				that.endLatitude = that.allRoute[len-1][1]
-			}
-			
-			
-			//引入高德api
-			const script = document.createElement('script');
-			script.src =
-				'https://webapi.amap.com/maps?v=1.4.15&key=c53c3b4ab77aa34fc2f75b57004bbc10&plugin=AMap.Geolocation';
-			script.onload = this.initAmap.bind(this)
-			document.head.appendChild(script);
 		
-			//引入UI组件库
-			const script2 = document.createElement('script')
-			script2.src = 'https://webapi.amap.com/ui/1.0/main-async.js'
-			document.head.appendChild(script2);
-			console.log("引入api")
-		
-			if (typeof window.AMap === 'function') {
-				console.log("before")
-				this.initAmap();
-			} else {
-				console.log("after")
-			}
+			
 		},
 		methods: {
+			async init(){
+				window._AMapSecurityConfig = {
+				    securityJsCode:'778235a053b07118a187f5ef22a48e65',
+				}
+				var that = this
+				//引入高德api
+				const script = document.createElement('script');
+				script.src =
+					'https://webapi.amap.com/maps?v=1.4.15&key=31fc1704dff8d7ec2623319c245dcfe6&plugin=AMap.Geolocation';
+				document.head.appendChild(script);
+						
+				//引入UI组件库
+				const script2 = document.createElement('script')
+				script2.src = 'https://webapi.amap.com/ui/1.0/main-async.js'
+				document.head.appendChild(script2);
+				console.log("引入api")
+				
+				//异步传入路线
+				await that.getRoute()
+				console.log(that.allRoute.length)
+				
+				//如果传入路线数据，则初始化路线
+				if(that.allRoute!=null){
+					console.log("call setIsEnd")
+					//将前端控制数据置为true，显示目的地信息
+					that.$ownerInstance.callMethod('setIsEnd',{				
+						isEnd:true,
+					})
+					//将路线的起点和终点的位置提取出来
+					var len = that.allRoute.length
+
+					that.startLongitude = that.allRoute[0][0]
+					that.startLatitude = that.allRoute[0][1]
+					that.endLongitude = that.allRoute[len-1][0]
+					that.endLatitude = that.allRoute[len-1][1]
+				}
+				
+				if (typeof window.AMap === 'function') {
+					console.log("before")
+					this.initAmap();
+				} else {
+					console.log("after")
+				}
+				
+			},
+			
+			/**
+			 * 异步从服务器获取路书的路线
+			 */
+			async getRoute(){
+				var that = this
+				var mes = await this.$u.api.getRideRoute({});
+				console.log(mes.data)
+				console.log(mes)
+				var route = mes;
+				/* for(var i=0;i<mes.length;i++){
+					route.push([mes[i][0],mes[i][1]])
+				} */
+				console.log("allRouteSet")
+				console.log(route)
+				if(route!=null && route!=''){
+					that.allRoute = route;
+					that.oldAllRoute1 = that.allRoute
+					console.log(that.oldAllRoute1)
+				}
+			},
+			
 			async initAmap() {
 				var that = this;
 			
@@ -219,7 +228,7 @@
 				that.map = new AMap.Map('amap', {
 					resizeEnable: true,
 					center: [that.nowLongitude, that.nowLatitude], //地图中心点
-					zoom: 17, //图显示的缩放级别
+					zoom: 7, //图显示的缩放级别
 				});
 				
 				//如果有传入的地图路线，则初始化路线以及起点和终点信息
@@ -402,18 +411,18 @@
 			
 			toRunning(){
 				var that = this;
-				var allRoute = null;
-				if(that.allRoute!=null && that.allRoute!=''){
-					allRoute = JSON.stringify(that.allRoute);
+				if(that.oldAllRoute1!=null && that.oldAllRoute1!=''){
+					console.log(that.oldAllRoute1)
+					uni.setStorageSync("allRoute",that.oldAllRoute1)
 				}
 				uni.navigateTo({
-					url:'./run?allRoute='+allRoute
+					url:'./run'
 				})
 			},
 			
 			changeAllRoute(newValue, oldValue, ownerVm, vm){
-				console.log(newValue)
-				console.log(oldValue)
+				//console.log(newValue)
+				//console.log(oldValue)
 			},
 		}
 	}

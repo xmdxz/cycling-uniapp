@@ -82,16 +82,13 @@ const router = createRouter({
 			name:'run'
 		},
 		{
-<<<<<<< HEAD
 			path: '/pages/dynamic/searchresult',
 			name: 'searchresult'
-		}
-=======
+		},
+		{
 			path:'/pages/ride/prepare',
 			name:'prepare'
 		},
->>>>>>> 62d87bcb7d6e990acc8819908e37f7d6dc8d80ca
-		
 	]
 });
 const needTokenPages = [

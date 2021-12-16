@@ -1,7 +1,6 @@
 <template>
 	<view>
 		<view class="floatingMessage">
-			<button @click="uniGPS">start</button>
 			<button @click="amap.start">start</button>
 			<button @click="amap.stop">stop</button>
 			<button @click="amap.removePol">消除路径</button>
@@ -11,7 +10,6 @@
 		<view class="amap-container">
 			<view id="amap" class="amap" :prop="oldAllRoute" :change:prop="amap.updateEcharts">
 			</view>
-			<!--:prop="option"-->
 		</view>
 		<view class="table">
 			<view class="line1 font1">
@@ -33,7 +31,6 @@
 				<view class="item right">{{distance}}</view>
 			</view>
 		</view>
-		<u-tabbar v-model="tabBarCurrent" :list="tabBarList" :mid-button="true" mid-button-size="90"></u-tabbar>
 	</view>
 	
 	
@@ -44,7 +41,6 @@
 	export default {
 		data() {
 			return {
-				rabBarList:null,
 				
 				speed: 3.25,
 				hour: 0,
@@ -56,15 +52,8 @@
 			}
 		},
 		onLoad() {
-			this.tabBarList = store.state.vuex_tabbar
 			var that = this
-			console.log("load")
-			//获取从路书传来的路线数据
-			var oldAllRoute = null;
-			oldAllRoute = uni.getStorageSync("allRoute");
-			if(oldAllRoute!=null && oldAllRoute!=''){
-				that.oldAllRoute = JSON.parse(oldAllRoute);
-			}
+			
 		},
 		mounted() {},
 		methods: {
@@ -165,20 +154,13 @@
 				mapUI: null,
 
 				geolocation: {}, //AMap.Geolocation对象，用来获取地理位置
-				option: [{
-					lng: 112.593841,
-					lat: 37.426783
-				}, {
-					lng: 112.585069,
-					lat: 37.430841
-				}],
 				
 				startPosition:null,
 				endPosition:null,
 				
 				rideWeather:null,
 				
-				oldAllRoute:null,
+				oldAllRoute:[],
 				
 				//整个骑行过程中的路径信息数据，为二维数组[[lng,lat],[lng,lat]]
 				allRoute: [],
@@ -186,6 +168,7 @@
 				latitude: null, //地理位置的纬度
 
 				nowMarker: null, //当前位置的标记点	
+				GaoDeRideInfo:null,	//高德自动导航信息
 
 				polylineInterval: null, //实时定位及路线的定时器
 				clockInterval: null, //时间数据的定时器
@@ -200,12 +183,34 @@
 				distance: 0.0,
 			}
 		},
+		onLoad(options) {
+			var that = this;
+			console.log("load rendjs")
+			
+			//获取从路书传来的路线数据
+			var route = uni.getStorageSync("allRoute")
+			console.log(route)
+			if(route!=null && route!=""){
+				console.log(route[0])
+				var r = [];
+				for(var i=0;i<route.length;i++){
+					r.push([route[i].lng,route[i].lat]);
+				}
+				console.log(r)
+				that.oldAllRoute = r;
+				console.log(that.oldAllRoute)
+			}
+		},
 		mounted() {
+			window._AMapSecurityConfig = {
+			    securityJsCode:'778235a053b07118a187f5ef22a48e65',
+			}
 			var that = this
+			
 			//引入高德api
 			const script = document.createElement('script');
 			script.src =
-				'https://webapi.amap.com/maps?v=1.4.15&key=c53c3b4ab77aa34fc2f75b57004bbc10&plugin=AMap.Geolocation';
+				'https://webapi.amap.com/maps?v=1.4.15&key=31fc1704dff8d7ec2623319c245dcfe6&plugin=AMap.Geolocation';
 			script.onload = this.initAmap.bind(this)
 			document.head.appendChild(script);
 
@@ -217,13 +222,10 @@
 
 			if (typeof window.AMap === 'function') {
 				console.log("before")
-				this.initAmap();
+				that.initAmap();
 			} else {
 				console.log("after")
 			}
-		},
-		created() {
-
 		},
 		methods: {
 			/*
@@ -308,17 +310,15 @@
 
 			async initAmap() {
 				var that = this;
-
+				console.log(that.oldAllRoute[0][0])
 				//使用await使地理地址获取后再进行地图初始化
 				var x = await that.initLocal();
 
 				//将第一次获取的位置信息填入，即初始化allRoute
-				alert("push before")
 				var pushLocal = [
 					[that.longitude, that.latitude]
 				];
 				that.allRoute = pushLocal
-				alert("push after")
 
 				//初始化地图组件
 				console.log("new amap")
@@ -327,20 +327,25 @@
 					center: [that.longitude, that.latitude], //地图中心点
 					zoom: 17, //图显示的缩放级别
 				});
+				
+				//创建当前位置的图标点
+				that.createNowMarker(that.longitude, that.latitude);
+				console.log("创建nowMarker成功")
+				
 				//初始化mapUI
 				initAMapUI();
-				alert("initAMapUI")
 				
 				//如果传递有路线，则绘制路线
 				if(that.oldAllRoute!=null && that.oldAllRoute!=''){
 					console.log("initLine")
 					that.initLine();
+					console.log(that.oldAllRoute[0][0])
+					
+					//如果当前位置与起始点距离过远，则开启导航至起始点
+					await that.toStartPoint(that.longitude,that.latitude,that.oldAllRoute[0][0],that.oldAllRoute[0][1]);
 				}
 				
-				//创建当前位置的图标点
-				that.createNowMarker(that.longitude, that.latitude);
-				console.log("创建nowMarker成功")
-
+				
 				//天气插件获取天气信息
 				that.map.plugin('AMap.Weather', () => {
 					var weather = new AMap.Weather();
@@ -401,7 +406,6 @@
 								'  精度：' + result.accuracy + ' 米');
 							that.longitude = result.position.getLng()
 							that.latitude = result.position.getLat()
-							alert(that.longitude + " " + that.latitude);
 							console.log(result.formattedAddress)
 							resolve('complete');
 						} else {
@@ -439,37 +443,47 @@
 				});
 				//})
 			},
+			
+			/**
+			 * 将当前位置进行导航至路线起始点
+			 */
+			async toStartPoint(startLng, startLat, endLng, endLat){
+				var that = this;
+				console.log("old[0][0]")
+				console.log(endLng)
+				that.planRide(startLng, startLat, endLng, endLat);
+			},
 
 			/*
 				高德规划骑行路线组件
 				传入起点经纬度和终点经纬度,自动规划路线
 			*/
-			planRide(stratLng, startLat, endLng, endLat) {
-				//Riding对象参数
-				var ridingOption = {
-					map: that.map,
-					policy: 1,
-					hideMarkers: false,
-					isOutline: true,
-					outlineColor: '#ffeeee',
-					autoFitView: true
-				}
+			planRide(startLng, startLat, endLng, endLat) {
+				var that = this
+				console.log(startLng+" "+startLat+" "+endLat+" "+endLat)
+
 				//使用高德路线规划的骑行Riding组件
 				that.map.plugin('AMap.Riding', () => {
-					let riding = new AMap.Riding(ridingOption);
-					//console.log(this.option[0].lng+" "+this.option[0].lat);
-					riding.search([stratLng, startLat], [endLng, endLat], function(status, result) {
+					let riding = new AMap.Riding({
+						map: that.map,
+						policy: 1,
+						hideMarkers: false,
+						isOutline: true,
+						outlineColor: '#ffeeee',
+						autoFitView: true
+					});
+					riding.search([startLng, startLat], [endLng, endLat], function(status, result) {
 						if (status === 'complete') {
 							console.log('绘制路线完成')
 							console.log(result)
-							that.rideInfo = result;
-							console.log("骑行起点为:" + that.rideInfo.origin);
-							console.log("骑行终点为:" + that.rideInfo.destination);
+							that.GaoDeRideInfo = result;
+							console.log("骑行起点为:" + that.GaoDeRideInfo.origin);
+							console.log("骑行终点为:" + that.GaoDeRideInfo.destination);
 							var rideTime = 0;
 							var rideDistance = 0;
-							for (var i = 0; i < that.rideInfo.routes.length; i++) {
-								rideTime += that.rideInfo.routes[i].time;
-								rideDistance += that.rideInfo.routes[i].distance;
+							for (var i = 0; i < that.GaoDeRideInfo.routes.length; i++) {
+								rideTime += that.GaoDeRideInfo.routes[i].time;
+								rideDistance += that.GaoDeRideInforoutes[i].distance;
 							}
 							console.log("预计骑行时间为:" + rideTime + "秒")
 							console.log("预计骑行总长度为:" + rideDistance + "米")
@@ -544,7 +558,6 @@
 						alert('当前环境不支持 Canvas！');
 						return;
 					}
-					console.log(111)
 					//绘制路线
 					that.initRoute(PathSimplifier);
 				});
@@ -665,19 +678,6 @@
 					url:'./finish?rideMess='+rideMess+'&rideWeather='+rideWeather+'&allRoute='+allRoute
 				})
 			},
-
-			
-			uniGPS() {
-				uni.getLocation({
-					type: 'wgs84', //返回可以用于uni.openLocation的经纬度
-					success: function(res) {
-						const latitude = res.latitude;
-						const longitude = res.longitude;
-						alert('当前位置的经度：' + longitude);
-						alert('当前位置的纬度：' + latitude);
-					}
-				})
-			}
 
 		},
 
