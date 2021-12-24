@@ -1,6 +1,6 @@
 <template>
 	<view class="body1">
-		<view class="amap-container">
+		<view class="container">
 			<view id="amap" class="amap" :prop="allRoute" :change:prop="amap.changeAllRoute"></view>
 			<view class="amap" style="background-color: #2C405A;"></view>
 		</view>
@@ -109,9 +109,11 @@
 </script>
 
 <script module="amap" lang="renderjs">
+	import importAPI from "../../static/common/js/AmapImport.js"
 	export default {
 		data() {
 			return {
+				resAmap:null,
 				map: null,
 				mapUI: null,
 				
@@ -141,32 +143,38 @@
 			}
 		},
 		onLoad() {
-			console.log("load2222")
-			this.init()
+			
 		},
 		mounted() {
 			var that = this
-		
+			//初始化骑行路线
+			this.init()
 			
 		},
 		methods: {
-			async init(){
-				window._AMapSecurityConfig = {
-				    securityJsCode:'778235a053b07118a187f5ef22a48e65',
+			
+			async importAMap() {
+				var that = this;
+				try {
+					that.resAmap = await importAPI();
+					//使用await使地理地址获取后再进行地图初始化
+					var x = await that.initLocal();
+					//初始化地图组件
+					console.log("new amap")
+					this.$nextTick(function(){
+						that.map = new that.resAmap.Map('amap', {
+							resizeEnable: true,
+							center: [that.nowLongitude, that.nowLatitude], //地图中心点
+							zoom: 15, //图显示的缩放级别
+						});				  
+					})
+				}catch(e){
+					console.log(e)
 				}
+			},
+			
+			async init(){
 				var that = this
-				//引入高德api
-				const script = document.createElement('script');
-				script.src =
-					'https://webapi.amap.com/maps?v=1.4.15&key=31fc1704dff8d7ec2623319c245dcfe6&plugin=AMap.Geolocation';
-				document.head.appendChild(script);
-						
-				//引入UI组件库
-				const script2 = document.createElement('script')
-				script2.src = 'https://webapi.amap.com/ui/1.0/main-async.js'
-				document.head.appendChild(script2);
-				console.log("引入api")
-				
 				//异步传入路线
 				await that.getRoute()
 				console.log(that.allRoute.length)
@@ -186,13 +194,8 @@
 					that.endLongitude = that.allRoute[len-1][0]
 					that.endLatitude = that.allRoute[len-1][1]
 				}
-				
-				if (typeof window.AMap === 'function') {
-					console.log("before")
-					this.initAmap();
-				} else {
-					console.log("after")
-				}
+				await this.importAMap()
+				await this.initAmap();
 				
 			},
 			
@@ -219,17 +222,7 @@
 			
 			async initAmap() {
 				var that = this;
-			
-				//使用await使地理地址获取后再进行地图初始化
-				var x = await that.initLocal();
-			
-				//初始化地图组件
-				console.log("new amap")
-				that.map = new AMap.Map('amap', {
-					resizeEnable: true,
-					center: [that.nowLongitude, that.nowLatitude], //地图中心点
-					zoom: 7, //图显示的缩放级别
-				});
+				console.log("initAmapMessage")
 				
 				//如果有传入的地图路线，则初始化路线以及起点和终点信息
 				if(that.allRoute!=null && that.allRoute!=''){
@@ -239,7 +232,7 @@
 					that.startCity = startCityMess.district			//起点的具体城市名，用来给天气查询函数传值
 					
 					var endCityMess = await that.getLocationByXY(that.endLongitude,that.endLatitude)
-					that.endLocation = await endCityMess.formattedAddress;	//终点具体位置
+					that.endLocation = endCityMess.formattedAddress;	//终点具体位置
 					that.endCity = endCityMess.district				//终点的具体城市名，用来给天气查询函数传值
 					//天气信息
 					that.startWeather = await that.getWeatherMess(that.startCity);

@@ -77,6 +77,9 @@ const install = (Vue, vm) => {
 	
 	//获取本次骑行的路线数组
 	let getRideRoute = (params = {}) => vm.$u.get("/ride/route",params)
+	
+	//保存骑行记录
+	let rideFinish = (params = {}) => vm.$u.post("/ride/finish",params)
 
 
 	// 将各个定义的接口名称，统一放进对象挂载到vm.$u.api(因为vm就是this，也即this.$u.api)下
@@ -102,7 +105,8 @@ const install = (Vue, vm) => {
 		getPublish,
 		getCollect,
 		accountCancellation,
-		getRideRoute
+		getRideRoute,
+		rideFinish
 	};
 }
 

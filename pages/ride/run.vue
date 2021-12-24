@@ -147,18 +147,20 @@
 </script>
 
 <script module="amap" lang="renderjs">
+	import importAPI from "../../static/common/js/AmapImport.js"
 	export default {
 		data() {
 			return {
+				resAmap:null,
 				map: null,
 				mapUI: null,
 
 				geolocation: {}, //AMap.Geolocation对象，用来获取地理位置
 				
-				startPosition:null,
+				endLng:null,
+				endLat:null,
 				endPosition:null,
-				
-				rideWeather:null,
+				endWeather:null,
 				
 				oldAllRoute:[],
 				
@@ -202,32 +204,30 @@
 			}
 		},
 		mounted() {
-			window._AMapSecurityConfig = {
-			    securityJsCode:'778235a053b07118a187f5ef22a48e65',
-			}
+			this.initAmap();
 			var that = this
-			
-			//引入高德api
-			const script = document.createElement('script');
-			script.src =
-				'https://webapi.amap.com/maps?v=1.4.15&key=31fc1704dff8d7ec2623319c245dcfe6&plugin=AMap.Geolocation';
-			script.onload = this.initAmap.bind(this)
-			document.head.appendChild(script);
 
-			//引入UI组件库
-			const script2 = document.createElement('script')
-			script2.src = 'https://webapi.amap.com/ui/1.0/main-async.js'
-			document.head.appendChild(script2)
-			console.log("引入api")
-
-			if (typeof window.AMap === 'function') {
-				console.log("before")
-				that.initAmap();
-			} else {
-				console.log("after")
-			}
 		},
 		methods: {
+			async importAMap() {
+				var that = this;
+				try {
+					that.resAmap = await importAPI();
+					//使用await使地理地址获取后再进行地图初始化
+					var x = await that.initLocal();
+					//初始化地图组件
+					console.log("new amap")
+					this.$nextTick(function(){
+						that.map = new that.resAmap.Map('amap', {
+							resizeEnable: true,
+							center: [that.longitude, that.latitude], //地图中心点
+							zoom: 16, //图显示的缩放级别
+						});				  
+					})
+				}catch(e){
+					console.log(e)
+				}
+			},
 			/*
 				监听 service 层数据变更
 			*/
@@ -289,6 +289,8 @@
 				clearInterval(that.polylineInterval);
 				clearInterval(that.clockInterval)
 				clearInterval(that.returnTimeInterval)
+				
+				
 			},
 			removePol() {
 				var that = this
@@ -309,24 +311,9 @@
 
 
 			async initAmap() {
+				//引入api
+				await this.importAMap()
 				var that = this;
-				console.log(that.oldAllRoute[0][0])
-				//使用await使地理地址获取后再进行地图初始化
-				var x = await that.initLocal();
-
-				//将第一次获取的位置信息填入，即初始化allRoute
-				var pushLocal = [
-					[that.longitude, that.latitude]
-				];
-				that.allRoute = pushLocal
-
-				//初始化地图组件
-				console.log("new amap")
-				that.map = new AMap.Map('amap', {
-					resizeEnable: true,
-					center: [that.longitude, that.latitude], //地图中心点
-					zoom: 17, //图显示的缩放级别
-				});
 				
 				//创建当前位置的图标点
 				that.createNowMarker(that.longitude, that.latitude);
@@ -342,23 +329,8 @@
 					console.log(that.oldAllRoute[0][0])
 					
 					//如果当前位置与起始点距离过远，则开启导航至起始点
-					await that.toStartPoint(that.longitude,that.latitude,that.oldAllRoute[0][0],that.oldAllRoute[0][1]);
+					await that.toStartPoint(that.longitude,that.latitude,that.oldAllRoute[0].lng,that.oldAllRoute[0].lat);
 				}
-				
-				
-				//天气插件获取天气信息
-				that.map.plugin('AMap.Weather', () => {
-					var weather = new AMap.Weather();
-					//查询实时天气信息, 查询的城市到行政级别的城市
-					weather.getLive('晋中市', function(err, data) {
-						if (!err) {
-							console.log(data.city);
-							//获取天气信息
-							that.rideWeather = data;
-							console.log(that.rideWeather);
-						}
-					});
-				});
 
 				// 同时引入工具条插件，比例尺插件
 				that.map.plugin([
@@ -466,10 +438,10 @@
 				that.map.plugin('AMap.Riding', () => {
 					let riding = new AMap.Riding({
 						map: that.map,
-						policy: 1,
+						policy: 0,
 						hideMarkers: false,
 						isOutline: true,
-						outlineColor: '#ffeeee',
+						outlineColor: 'red',
 						autoFitView: true
 					});
 					riding.search([startLng, startLat], [endLng, endLat], function(status, result) {
@@ -646,12 +618,29 @@
 				}, 1000);
 			},
 			
+			
+			
 			/*
 				结束骑行，跳转到finish页面
 			*/
-			toFinish(){
+			async toFinish(){
 				var that = this;
-				var rm = {
+				//跳转前把最终位置的天气和具体位置查询出来，然后传递给下个页面直接显示
+				var allRouteLength = that.allRoute.length
+				console.log(that.allRoute)
+				//有时候第二维数组会变成经纬度对象，需要判断赋值
+				if(that.allRoute[allRouteLength-1].lng!==undefined){
+					console.log("that.allRoute[allRouteLength-1].lng")
+					that.endLng = that.allRoute[allRouteLength-1].lng
+					that.endLat = that.allRoute[allRouteLength-1].lat
+				}else{
+					console.log(that.allRoute[allRouteLength-1][0])
+					console.log("that.allRoute[0][0]")
+					that.endLng = that.allRoute[allRouteLength-1][0]
+					that.endLat = that.allRoute[allRouteLength-1][1]
+				}
+				
+				var rideMess = {
 					speed: that.speed,
 					hour: that.hour,
 					minute: that.minute,
@@ -661,21 +650,24 @@
 				/**
 					模拟路线
 				*/
-				var ar = [
+				var allRoute = [
 					[112.590189,37.42093],
 					[112.589862,37.420964],
 					[112.58984,37.421033]
 				]
 				
-				//var allRoute = JSON.stringify(that.allRoute); //所有的路线坐标信息
-				/**
-				 *	模拟路线 
-				 */
-				var allRoute = JSON.stringify(ar);
-				var rideWeather = JSON.stringify(that.rideWeather);
-				var rideMess = JSON.stringify(rm);	//骑行信息，例如速度、时间
+				uni.setStorageSync("finishMess",{
+					"allRoute" : allRoute,
+					//"endLocation" : { Lng :that.endLng, Lat :that.endLat},
+					//测试用
+					"endLocation" : { 
+						Lng :112.58984,
+						Lat :37.421033,
+					},
+					"rideMess" : rideMess
+				})
 				uni.navigateTo({
-					url:'./finish?rideMess='+rideMess+'&rideWeather='+rideWeather+'&allRoute='+allRoute
+					url:'./finish'
 				})
 			},
 
