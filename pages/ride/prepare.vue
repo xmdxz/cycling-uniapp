@@ -177,10 +177,9 @@
 				var that = this
 				//异步传入路线
 				await that.getRoute()
-				console.log(that.allRoute.length)
 				
 				//如果传入路线数据，则初始化路线
-				if(that.allRoute!=null){
+				if(that.allRoute!=null && that.allRoute!=''){
 					console.log("call setIsEnd")
 					//将前端控制数据置为true，显示目的地信息
 					that.$ownerInstance.callMethod('setIsEnd',{				
@@ -208,9 +207,6 @@
 				console.log(mes.data)
 				console.log(mes)
 				var route = mes;
-				/* for(var i=0;i<mes.length;i++){
-					route.push([mes[i][0],mes[i][1]])
-				} */
 				console.log("allRouteSet")
 				console.log(route)
 				if(route!=null && route!=''){
@@ -226,6 +222,11 @@
 				
 				//如果有传入的地图路线，则初始化路线以及起点和终点信息
 				if(that.allRoute!=null && that.allRoute!=''){
+					//把地图中心转到地图路线的起始点
+					var position = new AMap.LngLat(that.startLongitude,that.startLatitude);  // 标准写法
+					// 简写 var position = [116, 39]; 
+					that.map.setCenter(position);
+					
 					//获取目的地和起始点的详细位置信息
 					var startCityMess = await that.getLocationByXY(that.startLongitude,that.startLatitude)
 					that.startLocation = startCityMess.formattedAddress;	//起点具体位置

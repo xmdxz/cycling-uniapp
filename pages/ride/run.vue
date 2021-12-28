@@ -1,12 +1,5 @@
 <template>
 	<view>
-		<view class="floatingMessage">
-			<button @click="amap.start">start</button>
-			<button @click="amap.stop">stop</button>
-			<button @click="amap.removePol">消除路径</button>
-			<button @click="amap.initAllRoute">绘制总骑行路径</button>
-			<button @click="amap.toFinish">结束骑行</button>
-		</view>
 		<view class="amap-container">
 			<view id="amap" class="amap" :prop="oldAllRoute" :change:prop="amap.updateEcharts">
 			</view>
@@ -30,6 +23,11 @@
 
 				<view class="item right">{{distance}}</view>
 			</view>
+		</view>
+		<view class="floatingMessage">
+			<button class="buttonList startButton" @click="amap.start">start</button>
+			<button class="buttonList stopButton" @click="amap.stop">stop</button>
+			<button class="buttonList finishButton" @click="amap.toFinish">结束骑行</button>
 		</view>
 	</view>
 	
@@ -247,40 +245,50 @@
 				}, 1000)
 				//实时获取位置信息以及绘制标记点的计时器，3s
 				that.polylineInterval = setInterval(function() {
-					//记录上次坐标的位置信息
-					var lastLng = that.longitude
-					var lastLat = that.latitude
 					
 					that.onTimeGetLocaltion(); //获取实时位置
-					/* that.longitude += 0.0002;
-					that.latitude += 0.0002; */
-
-					that.createPolyline(); //描绘实时路线
-
-					that.createNowMarker(that.longitude, that.latitude) //绘制当前坐标的标记点
-
+					
+					//本次定位得到的坐标值
 					var arr = [that.longitude, that.latitude]
-					that.allRoute.push(arr); //向总路径的数组中push当前坐标
+					//第一次坐标直接添加字路线数组
+					if(that.allRoute==null || that.allRoute.length==0){
+						that.allRoute.push(arr); //向总路径的数组中push当前坐标
+					}
+					//将上次的最后坐标记录，方便计算
+					var lastLng = that.allRoute[that.allRoute.length-1][0];
+					var lastLat = that.allRoute[that.allRoute.length-1][1]
+					
 					console.log(that.allRoute);
-
-					//使用插件获取已总走路程数
-					var dis = (AMap.GeometryUtil.distanceOfLine(that.allRoute)) / 1000; //m -> km
-					//保留两位小数
-					that.distance = Number(dis).toFixed(2)
-					//计算最后一段3s内路程的骑行速度
-					var lastDis = (AMap.GeometryUtil.distanceOfLine([
-						[lastLng, lastLat],
-						[that.longitude, that.latitude]
-					])); //单位m
-					var s = (lastDis / 3) * 3600 / 1000 //计算最后3s内的平均速度，并转换为km/h
-					var lastSpd = Number(s).toFixed(2)
-					//将数据传值到前台
-					ownerInstance.callMethod('setDistanceAndSpeed', {
-						dis: that.distance,
-						spd: lastSpd
-					})
+					console.log(1111)
+					console.log(that.allRoute)
+					console.log(that.allRoute[that.allRoute.length-1][0])
+					//坐标发生改变才进行添加
+					if((lastLng != that.longitude) && (lastLat != that.latitude)){
+						
+						that.allRoute.push(arr); //向总路径的数组中push当前坐标
+							
+						that.createPolyline(); //描绘实时路线
+						
+						that.createNowMarker(that.longitude, that.latitude) //绘制当前坐标的标记点
+						
+						//使用插件获取已总走路程数
+						var dis = (AMap.GeometryUtil.distanceOfLine(that.allRoute)) / 1000; //m -> km
+						//保留两位小数
+						that.distance = Number(dis).toFixed(2)
+						//计算最后一段3s内路程的骑行速度
+						var lastDis = (AMap.GeometryUtil.distanceOfLine([
+							[lastLng, lastLat],
+							[that.longitude, that.latitude]
+						])); //单位m
+						var s = (lastDis / 3) * 3600 / 1000 //计算最后3s内的平均速度，并转换为km/h
+						var lastSpd = Number(s).toFixed(2)
+						//将数据传值到前台
+						ownerInstance.callMethod('setDistanceAndSpeed', {
+							dis: that.distance,
+							spd: lastSpd
+						})
+					}
 				}, 3000);
-
 			},
 			stop() {
 				var that = this
@@ -345,6 +353,8 @@
 					// 在图面添加定位控件，用来获取和展示用户主机所在的经纬度位置
 					that.map.addControl(new AMap.Geolocation());
 				});
+				
+				
 			},
 
 			/*
@@ -406,7 +416,6 @@
 						that.latitude = result.position.getLat();
 						console.log(that.latitude)
 						console.log(result.formattedAddress)
-						console.log("success resolve")
 						//resolve();
 					} else {
 						console.log("解析定位信息失败,原因:" + result.message);
@@ -698,13 +707,6 @@
 		z-index: 0;
 	}
 
-	.floatingMessage {
-		background-color: lightpink;
-		position: absolute;
-		left: 50rpx;
-		z-index: 1;
-	}
-
 	.table {
 		top: 1050rpx;
 		position: absolute;
@@ -748,5 +750,27 @@
 	.right {
 		text-align: right;
 		padding: 0 40rpx 0 0;
+	}
+	
+	.floatingMessage {
+		display: flex;
+		top: 90vh;
+		position: absolute;
+		left: 50rpx;
+		width: 650rpx;
+		z-index: 1;
+	}
+	.buttonList{
+		flex-direction: row;
+		width: 200rpx;
+	}
+	.startButton{
+		background-color: #66CC99;
+	}
+	.stopButton{
+		background-color: #FFFFCC;
+	}
+	.finishButton{
+		background-color: #FF6666;
 	}
 </style>
