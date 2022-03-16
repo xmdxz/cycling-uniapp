@@ -13,6 +13,18 @@ const router = createRouter({
 			name:'my'
 		},
 		{
+			path:'/pages/my/chat',
+			name:'chat'
+		},
+		{
+			path:'/pages/my/chatList',
+			name:'chatList'
+		},
+		{
+			path: '/pages/my/activity',
+			name:'limitActivity'
+		},
+		{
 			path:'/pages/my/account',
 			name:'account'
 		},
@@ -89,20 +101,20 @@ const router = createRouter({
 			path:'/pages/ride/prepare',
 			name:'prepare'
 		},
+		{
+			path:'/pages/my/notice',
+			name:'notice'
+		}
 	]
 });
 const needTokenPages = [
-	'my','account','collect','info','person','setting','thirdBing'
+	'my','account','collect','info','person','setting','thirdBing','notice','chat'
 ]
 //全局路由前置守卫
 router.beforeEach((to, from, next) => {
 	if(needTokenPages.indexOf(to.name) != -1 && to.name != 'login'){
 		let token = store.state.vuex_token
 		if(token === null || token === '' || typeof token === 'undefined'){
-			uni.showToast({
-				title:'asdasd',
-				duration:20000
-			})
 			next({
 				path:'/pages/login/index',
 				NAVTYPE:'replace'

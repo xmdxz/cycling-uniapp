@@ -10,7 +10,7 @@
 					</view>
 					<view class="content-text">{{ item.body }}</view>
 					<view class="content-time">
-						<u-avatar class="avatar" :src="item.src" size="50"></u-avatar>
+						<u-avatar class="avatar" :src="item.avatar | appendUrlPrefix" size="50"></u-avatar>
 						<text>{{ item.username }}</text>
 						<text>{{ item.time }}</text>
 					</view>
@@ -28,7 +28,7 @@
 					</view>
 					<view class="content-text">{{ item.body }}</view>
 					<view class="content-time">
-						<u-avatar class="avatar" :src="item.src" size="50"></u-avatar>
+						<u-avatar class="avatar" :src="item.avatar | appendUrlPrefix" size="50"></u-avatar>
 						<text>{{ item.username }}</text>
 						<text>{{ item.time }}</text>
 					</view>
@@ -127,6 +127,7 @@ export default {
 			let list = this[type].list;
 			let minId = list.length === 0 ? null : list[0].id;
 			let result = await this.$u.api[this.interface]({ minId: minId, num: this.num, type: this.current });
+			list.push(...result)
 			if (result.length <= this.num) {
 				this[type].more = 'nomore';
 			} else {

@@ -22,6 +22,34 @@ module.exports = {
 				value
 			})
 		}
+
+		this.$u.getChatList = () => {
+			return this.$store.getters.chatList
+		}
+
+		this.$u.insertChatList = (data) => {
+			let list = this.$store.getters.chatList
+			if (list.findIndex((e) => e.id == data.id) >= 0) {
+				return;
+			}
+			let name = 'chat_list'
+			list.unshift(data);
+			this.$store.commit('$uStore', {
+				name,
+				value: list
+			})
+		}
+
+		this.$u.getToken = () => {
+			return this.$store.getters.token
+		}
+
+		this.$u.getId = (name) => {
+			let userString = decodeURIComponent(escape(window.atob(this.$store.getters.token.split('.')[1])));
+			let id = JSON.parse(userString).id;
+			return id;
+		}
+
 		this.$u.generateUUID = () => {
 			var d = new Date().getTime();
 			if (window.performance && typeof window.performance.now === "function") {
@@ -34,7 +62,11 @@ module.exports = {
 			});
 			return uuid;
 		}
-
+		this.$u.nowDateTime = () => {
+			let date = new Date()
+			return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date
+				.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
+		}
 	},
 	computed: {
 		// 将vuex的state中的所有变量，解构到全局混入的mixin中

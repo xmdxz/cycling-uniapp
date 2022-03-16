@@ -38,7 +38,9 @@
 				<u-cell-item icon="order" title="路书"></u-cell-item> -->
 				<u-cell-item icon="star" title="收藏" @click="toOther(0)"></u-cell-item>
 				<u-cell-item icon="list" title="我发布的" @click="toOther(1)"></u-cell-item>
+				<u-cell-item icon="clock" title="有奖活动" @click="toActivity()"></u-cell-item>
 				<!-- <u-cell-item icon="car" title="车队"></u-cell-item> -->
+				<u-cell-item icon="chat" title="消息" @click="toNotice()"></u-cell-item>
 				<u-cell-item icon="account" title="个人与设置" @click="toSetting()"></u-cell-item>
 			</u-cell-group>
 		</view>
@@ -93,6 +95,12 @@ export default {
 		});
 	},
 	methods: {
+		toActivity(){
+			this.$Router.push({name:'limitActivity'})
+		},
+		toNotice() {
+			this.$Router.push({ name: 'chatList' });
+		},
 		toOther(e) {
 			this.$Router.push({ name: 'collect', params: { type: e } });
 		},

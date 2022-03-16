@@ -54,6 +54,8 @@ const install = (Vue, vm) => {
 		minId: params.minId,
 		num: params.num
 	})
+	
+	let getChatHistory = (params = {}) => vm.$u.get("/user/getChatHistory",params);
 
 	let cancelFocused = (params = {}) => vm.$u.delete("/user/cancelFocused?" + putAndDeleteParams(params), null)
 
@@ -80,7 +82,14 @@ const install = (Vue, vm) => {
 	
 	//保存骑行记录
 	let rideFinish = (params = {}) => vm.$u.post("/ride/finish",params)
+	
+	let getAvatar = (params = {}) => vm.$u.get("/user/getAvatar",params)
+	
+	let getLimitActivity = (params = {}) => vm.$u.get("/active/getLimitActivity",params)
+	
+	let seckill = (params = {}) => vm.$u.get("/active/secKill",params)
 
+	let getResult = (params = {}) => vm.$u.get("/active/getResult",params)
 
 	// 将各个定义的接口名称，统一放进对象挂载到vm.$u.api(因为vm就是this，也即this.$u.api)下
 	vm.$u.api = {
@@ -106,7 +115,12 @@ const install = (Vue, vm) => {
 		getCollect,
 		accountCancellation,
 		getRideRoute,
-		rideFinish
+		rideFinish,
+		getChatHistory,
+		getAvatar,
+		getLimitActivity,
+		seckill,
+		getResult
 	};
 }
 
