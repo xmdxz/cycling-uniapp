@@ -21,32 +21,20 @@ const router = createRouter({
 			name:'chatList'
 		},
 		{
-			path: '/pages/my/activity',
-			name:'limitActivity'
-		},
-		{
-			path:'/pages/my/account',
-			name:'account'
-		},
-		{
 			path:'/pages/my/collect',
 			name:'collect'
-		},
-		{
-			path:'/pages/my/info',
-			name:'info'
 		},
 		{
 			path:'/pages/my/person',
 			name:'person'
 		},
 		{
-			path:'/pages/my/setting',
-			name:'setting'
+			path:"/pages/my/dynamic",
+			name:"collect-dynamic"
 		},
 		{
-			path:'/pages/my/thirdBind',
-			name:'thirdBind'
+			path:"/pages/my/order",
+			name:"order"
 		},
 		{
 			path:'/pages/activity/index',
@@ -113,7 +101,7 @@ const needTokenPages = [
 //全局路由前置守卫
 router.beforeEach((to, from, next) => {
 	if(needTokenPages.indexOf(to.name) != -1 && to.name != 'login'){
-		let token = store.state.vuex_token
+		let token = store.state.user_id
 		if(token === null || token === '' || typeof token === 'undefined'){
 			next({
 				path:'/pages/login/index',

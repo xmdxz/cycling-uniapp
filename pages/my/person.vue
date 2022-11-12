@@ -1,293 +1,223 @@
 <template>
 	<view>
 		<u-cell-group title="个人资料">
-			<u-cell-item title="头像" @click="avatar()"><u-avatar class="img" :src="info.avatar" size="100" slot="right-icon"></u-avatar></u-cell-item>
-			<u-cell-item title="昵称" :value="info.username" @click="change('昵称')"></u-cell-item>
-			<u-cell-item title="个性签名" :value="info.introduction" @click="change('个性签名')"></u-cell-item>
-			<u-cell-item title="性别" :value="info.sex === -1 ? '保密' : info.sex === 0 ? '男' : '女'" @click="showOneLevel('sex')"></u-cell-item>
-			<u-cell-item title="生日" :value="info.birthday" @click="showBirthday = true"></u-cell-item>
-			<u-cell-item title="身高" :value="info.height + 'cm'" @click="showOneLevel('height')"></u-cell-item>
-			<u-cell-item title="体重" :value="info.weight + 'kg'" @click="showOneLevel('weight')"></u-cell-item>
-			<u-cell-item title="地址" :value="info.address" @click="showTreeLevel()"></u-cell-item>
+			<u-cell-item title="头像" @click="avatar()">
+				<u-avatar class="img" :src=" info.avatar ? filters['appendUrlPrefix'](info.avatar) :'../../static/img/noLoginAvatar.png'" size="100" slot="right-icon"></u-avatar>
+			</u-cell-item>
+			<u-cell-item title="昵称" :value="info.username" @click="showModal(0)"></u-cell-item>
+			<u-cell-item title="个性签名" :value="info.mark" @click="showModal(1)"></u-cell-item>
+			<u-cell-item title="性别" :value="info.sex == 0 ? '男' : info.sex == 1 ? '女' : '保密'"
+				@click="showOneLevel('sex')"></u-cell-item>
 		</u-cell-group>
-		<u-modal v-model="show" :show-cancel-button="true" @confirm="confirm()" @cancel="cancel()">
-			<view><u-field v-model="input.value" :label="input.label" :placeholder="input.placeholder"></u-field></view>
-		</u-modal>
-		<u-picker v-model="showBirthday" mode="time" @confirm="selectBirthday"></u-picker>
-		<u-picker v-model="showMap" mode="region" @confirm="selectMap"></u-picker>
+		<view class="btn-box flex align-center justify-center"><button class="cu-btn confirem-btn"
+				@tap="editUserInfo">保存</button></view>
+		<view class="cu-modal" :class="modal?'show':''">
+			<view style="background-color: white;" class="cu-dialog">
+				<view class="cu-bar bg-white justify-end">
+					<view class="content">{{modalInfo.label}}</view>
+					<view class="action" @tap="modal = false">
+						<text class="cuIcon-close text-red"></text>
+					</view>
+				</view>
+				<view class="padding-xl" style="padding: 50rpx 20rpx;">
+					<view class="cu-form-group">
+						<input :placeholder="modalInfo.placeholder" class="enterCode" name="input"
+							v-model="modalInfo.value"></input>
+					</view>
+				</view>
+				<view class="cu-bar bg-white">
+					<view class="action margin-0 flex-sub text-green solid-left" @tap="modal = false">算了吧</view>
+					<view class="action margin-0 flex-sub  solid-left" @tap="enterModal">想好了</view>
+				</view>
+			</view>
+		</view>
+		<view>
+			<u-toast ref="uToast" />
+		</view>
+		<!-- <u-picker v-model="showBirthday" mode="time" @confirm="selectBirthday"></u-picker>
+		<u-picker v-model="showMap" mode="region" @confirm="selectMap"></u-picker> -->
 		<u-select v-model="show_sex" :default-value="default_sex" @confirm="selectSex" :list="list_sex"></u-select>
-		<u-select v-model="show_weight" :default-value="default_weight" @confirm="selectWeight" :list="list_weight"></u-select>
-		<u-select v-model="show_height" :default-value="default_height" @confirm="selectHeight" :list="list_height"></u-select>
+		<!-- <u-select v-model="show_weight" :default-value="default_weight" @confirm="selectWeight" :list="list_weight"></u-select>
+		<u-select v-model="show_height" :default-value="default_height" @confirm="selectHeight" :list="list_height"></u-select> -->
 	</view>
 </template>
 
 <script>
-const qiniu = require('qiniu-js');
-export default {
-	data() {
-		return {
-			info: {
-				username: '',
-				sex: -1,
-				height: '',
-				weight: '',
-				birthday: '',
-				address: '',
-				avatar: '../../static/img/qixing.jpg',
-				introduction: '',
-				phone: ''
-			},
-			show: false,
-			showBirthday: false,
-			input: {
-				label: '',
-				placeholder: '',
-				value: null
-			},
-			listMap: [],
-			showMap: false,
-			default_sex: [0],
-			default_age: [0],
-			default_weight: [0],
-			default_height: [0],
-			show_sex: false,
-			show_weight: false,
-			show_height: false,
-			list_sex: [
-				{
-					value: '-1',
-					label: '保密'
+	export default {
+		data() {
+			return {
+				modal: false,
+				info: {
+					username: '',
+					sex: -1,
+					avatar: null,
+					mark: ''
 				},
-				{
-					value: '0',
-					label: '男'
+				show: false,
+				modalInfo: {
+					label: '',
+					placeholder: '',
+					value: null,
+					type: 0
 				},
-				{
-					value: '1',
-					label: '女'
+				default_sex: [0],
+				show_sex: false,
+				list_sex: [{
+						value: '-1',
+						label: '保密'
+					},
+					{
+						value: '0',
+						label: '男'
+					},
+					{
+						value: '1',
+						label: '女'
+					}
+				]
+			};
+		},
+		methods: {
+			async editUserInfo(){
+				let result = await this.$u.api.updateInfo(this.info)
+				if(result){
+					this.$refs.uToast.show({
+						title: '更新成功',
+						// 如果不传此type参数，默认为default，也可以手动写上 type: 'default'
+						type: 'success',
+						icon: true,
+						isTab:true,
+						url:"/pages/my/my"
+					});
 				}
-			],
-			list_weight: [
-				{
-					value: '-1',
-					label: '保密'
+			},
+			enterModal() {
+				let type = this.modalInfo.type
+				if (type === 0) {
+					this.info.username = this.modalInfo.value
+				} else {
+					this.info.mark = this.modalInfo.value
 				}
-			],
-			list_height: [
-				{
-					value: '-1',
-					label: '保密'
-				}
-			]
-		};
-	},
-	methods: {
-		async selectBirthday(e) {
-			let time = e.year + '-' + e.month + '-' + e.day;
-			let result = await this.updateInfo({ birthday: time });
-			if (result) {
-				this.info.birthday = time;
-				this.showBirthday = false;
-			}
-		},
-		async selectMap(e) {
-			let address = e.province.label + e.city.label + e.area.label;
-			let result = await this.updateInfo({ address: address });
-			if (result) {
-				this.info.address = address;
-				this.showMap = false;
-			}
-		},
-		showTreeLevel() {
-			this.showMap = true;
-		},
-		cancel() {
-			this.show = !this.show;
-		},
-		async confirm() {
-			let input = this.input;
-			let info = this.info;
-			if (input.value == null || input.value == '') {
-				uni.showToast({
-					title: '输入不能为空',
-					icon: 'none'
-				});
-			} else {
-				let result = false;
-				switch (input.label) {
-					case '昵称':
-						result = await this.updateInfo({ username: input.value });
-						if (result) {
-							info.username = input.value;
-						}
+				this.modal = false
+			},
+			showModal(type) {
+				switch (type) {
+					case 0:
+						this.modalInfo.label = "昵称"
+						this.modalInfo.placeholder = "请输入昵称"
+						this.modalInfo.value = this.info.username
+						this.modalInfo.type = 0
 						break;
-					case '个性签名':
-						result = await this.updateInfo({ introduction: input.value });
-						if (result) {
-							info.introduction = input.value;
-						}
+					case 1:
+						this.modalInfo.label = "个性签名"
+						this.modalInfo.placeholder = "请输入个性签名"
+						this.modalInfo.value = this.info.mark
+						this.modalInfo.type = 1
 						break;
 					default:
 						break;
 				}
-				input.value = '';
-			}
-		},
-		updateInfo(params) {
-			let that = this;
-			return new Promise((resolve, reject) => {
-				uni.showLoading();
-				that.$u.api.updateInfo(params).then(res => {
-					uni.hideLoading();
-					if (res > 0) {
-						resolve(true);
-					} else {
-						uni.showToast({
-							title: '更新失败，请重试！'
-						});
-						reject(false);
-					}
-				});
-			});
-		},
-		change(e) {
-			this.show = !this.show;
-			this.input.label = e;
-			this.input.placeholder = '请输入' + e;
-		},
-		async avatar() {
-			const options = {
-				quality: 0.8,
-				noCompressIfLarger: true
-			};
-			let that = this;
-			uni.chooseImage({
-				count: 1,
-				sizeType: 'original',
-				async success(e) {
-					let file = e.tempFiles[0]
-					let type = file.type.split('/')
-					let fileName = that.$u.generateUUID()+'.'+type[type.length-1]
-					let token = await that.$u.api.getUploadToken();
-					uni.showLoading();
-					qiniu.compressImage(file, options).then(data => {
-						const observable = qiniu.upload(data.dist, fileName, token, {}, {});
-						const subscription = observable.subscribe({
-							next: result => {},
-							error: () => {
-								console.log('upload error');
-							},
-							async complete(res) {
-								let x = await that.$u.api.updateInfo({ avatar: fileName });
-								uni.hideLoading();
-								if (x > 0) {
-									that.info.avatar = that.filters['appendUrlPrefix'](res.key);
-								} else {
-									uni.showToast({
-										title: '上传失败，请重试！',
-										icon: 'error'
+				this.modal = true
+			},
+			cancel() {
+				this.show = !this.show;
+			},
+			async avatar() {
+				let that = this;
+				uni.chooseImage({
+					count: 1,
+					sizeType: 'original',
+					async success(e) {
+						const filePaths = e.tempFilePaths;
+						uni.showLoading({
+							title:"上传中"
+						})
+						uni.uploadFile({
+							url: getApp().globalData.uploadUrl,
+							filePath: filePaths[0],
+							name:"file",
+							success(e) {
+								uni.hideLoading()
+								if(e.statusCode === 200){
+									let result = JSON.parse(e.data)
+									if(result.code == 20000){
+										that.info.avatar = result.data
+									}else{
+										that.$refs.uToast.show({
+											title: e.message,
+											// 如果不传此type参数，默认为default，也可以手动写上 type: 'default'
+											type: 'error',
+											icon: true
+										});
+									}
+								}else{
+									that.$refs.uToast.show({
+										title: '网络错误',
+										// 如果不传此type参数，默认为default，也可以手动写上 type: 'default'
+										type: 'error',
+										icon: true
 									});
 								}
 							}
-						}); // 上传开始
-					});
+						})
+					}
+				});
+			},
+			showOneLevel(e) {
+				let that = this;
+				that.list = [];
+				let value = null;
+				switch (e) {
+					case 'sex':
+						that.show_sex = true;
+						break;
+					default:
+						break;
 				}
-			});
-		},
-		showOneLevel(e) {
-			let that = this;
-			that.list = [];
-			let value = null;
-			switch (e) {
-				case 'sex':
-					that.show_sex = true;
-					break;
-				case 'age':
-					that.show_age = true;
-					break;
-				case 'height':
-					that.show_height = true;
-					break;
-				case 'weight':
-					that.show_weight = true;
-					break;
-				default:
-					break;
-			}
-		},
-		async selectSex(e) {
-			let sex = e[0].label;
-			let result = await this.updateInfo({ sex: sex });
-			if (result) {
-				this.info.sex = e[0].label;
+			},
+			selectSex(e) {
+				this.info.sex = e[0].value;
 				this.show_sex = false;
 			}
 		},
-		async selectWeight(e) {
-			let weight = e[0].label;
-			let result = await this.updateInfo({ weight: weight });
-			if (result) {
-				this.show_weight = false;
-				this.info.weight = e[0].label;
-			}
-		},
-		async selectHeight(e) {
-			let height = e[0].label;
-			let result = await this.updateInfo({ height: height });
-			if (result) {
-				this.show_height = false;
-				this.info.height = e[0].label;
-			}
-		}
-	},
 
-	onLoad() {
-		let that = this;
-		uni.showLoading();
-		this.$u.api.getUserInfo().then(res => {
-			if (res == null) {
-				uni.hideLoading();
-				uni.showToast({
-					title: '系统异常，请重试！',
-					icon: 'error'
-				});
-				uni.navigateBack();
-			} else {
-				uni.hideLoading();
-				for (let index = 120; index < 250; index++) {
-					let obj = {};
-					let ins = index;
-					obj.value = ins;
-					obj.label = ins;
-					that.list_height.push(obj);
+		onLoad() {
+			let that = this;
+			this.$u.api.getUserInfo({
+				userId:this.$u.getUserId()
+			}).then(res => {
+				if (res) {
+					let info = res;
+					that.default_sex[0] = that.list_sex.findIndex(function(e) {
+						return e.value == info.sex;
+					});
+					if (res.avatar == null || res.avatar === '' || typeof res.avatar === 'undefined') {
+						delete res.avatar;
+					} else {
+						res.avatar = res.avatar
+					}
+					that.info = {
+						...that.info,
+						...res
+					};
 				}
-				for (let index = 30.0; index < 120.0; index++) {
-					let obj = {};
-					let ins = index;
-					obj.value = ins;
-					obj.label = ins;
-					that.list_weight.push(obj);
-				}
-				let info = res;
-				that.default_sex[0] = that.list_sex.findIndex(function(e) {
-					return e.value == info.sex;
-				});
-				that.default_weight[0] = that.list_weight.findIndex(function(e) {
-					return e.label == info.weight;
-				});
-				that.default_height[0] = that.list_height.findIndex(function(e) {
-					return e.label == info.height;
-				});
-				if (res.avatar == null || res.avatar === '' || typeof res.avatar === 'undefined') {
-					delete res.avatar;
-				}else{
-					res.avatar = that.filters['appendUrlPrefix'](res.avatar)
-				}
-				that.info = { ...that.info, ...res };
-			}
-		});
-	}
-};
+			});
+		}
+	};
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+	.btn-box {
+		margin-top: 60rpx;
+
+		.confirem-btn {
+			width: 710rpx;
+			height: 80rpx;
+			background: linear-gradient(90deg, rgba(233, 180, 97, 1), rgba(238, 204, 137, 1));
+			border: 1rpx solid rgba(238, 238, 238, 1);
+			border-radius: 40rpx;
+			font-size: 30rpx;
+			color: rgba(#fff, 0.9);
+		}
+	}
+</style>

@@ -1,14 +1,18 @@
 import Vue from 'vue';
 import App from './App';
 import {router,RouterMount} from "@/common/router.js"
+import cuCustom from './colorui/components/cu-custom.vue'
+import cuCustomHeader from './colorui/components/cu-custom-header.vue'
+import cuCustomFoot from './colorui/components/cu-custom-foot.vue'
 import filters from '@/common/filters.js'
-import webSocket from '@/common/websocketStore.js'
 
+Vue.component('cu-custom',cuCustom)
+Vue.component('cu-custom-header',cuCustomHeader)
+Vue.component('cu-custom-foot',cuCustomFoot)
 Object.keys(filters).forEach(key => {
 	Vue.filter(key,filters[key])
 })
 Vue.prototype.filters = filters
-Vue.prototype.$websocket = webSocket
 // 使用路由插件
 Vue.use(router)
 // const qiniu = require('qiniu-js')

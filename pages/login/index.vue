@@ -2,21 +2,27 @@
 	<view class="wrap">
 		<view id="top"></view>
 		<view class="content">
-			<view class="title">欢迎来到骑行</view>
-			<view class="title_tiny">要想骑行,优先骑行</view>
+			<view class="title">欢迎来到闲鱼</view>
+			<view class="title_tiny">专注于二手交易</view>
 			<view class="u-demo-area">
-				<u-field v-model="phone" label="账号" placeholder="请输入账号" type="text" @input="getPhone()"></u-field>
-				<u-field v-model="password" label="密码" placeholder="请输入密码" type="text" :password="true" @input="getPassword()"></u-field>
+				<u-field v-model="phone" label="手机号" placeholder="请输入手机号" type="text"></u-field>
+				<u-field v-model="password" label="密码" placeholder="请输入密码" type="text" :password="true"></u-field>
 			</view>
-			<view class="u-demo-area" id="u-demo-area-id"><u-button @click="userlogin()" data-name="3333" shape="circle" size="default" type="success">登录</u-button></view>
-			<view id="forget"><text style="color: #00BFFF">忘记密码?</text></view>
-			<view><u-toast ref="uToast" /></view>
+			<view class="u-demo-area" id="u-demo-area-id">
+				<u-button @click="userlogin()" data-name="3333" shape="circle" size="default" type="success">登录
+				</u-button>
+			</view>
+			<!-- <view id="forget"><text style="color: #00BFFF">注册</text></view> -->
+			<view>
+				<u-toast ref="uToast" />
+			</view>
 		</view>
 
 		<view class="buttom">
-			<u-divider type="primary" borderColor="#808080" bg-color="#F7F7F7" @click="click" half-width="250" color="#696969" font-size="30">其他登录方式</u-divider>
+			<u-divider type="primary" borderColor="#808080" bg-color="#F7F7F7" half-width="250" color="#696969"
+				font-size="30">其它</u-divider>
 			<view class="loginType">
-				<view class="wechat item">
+				<!-- 				<view class="wechat item">
 					<view class="icon"><u-icon size="70" name="weixin-fill" color="rgb(83,194,64)"></u-icon></view>
 					微信
 				</view>
@@ -27,10 +33,12 @@
 				<view class="QQ item">
 					<view class="icon"><u-icon size="70" name="qq-fill" color="rgb(17,183,233)"></u-icon></view>
 					QQ
-				</view>
+				</view> -->
 				<view class="QQ item" @click="codeLogin()">
-					<view class="icon"><u-icon size="70" name="phone-fill" color="rgb(17,183,233)"></u-icon></view>
-					验证码登录
+					<view class="icon">
+						<u-icon size="70" name="phone-fill" color="rgb(17,183,233)"></u-icon>
+					</view>
+					注册
 				</view>
 			</view>
 			<view class="hint">
@@ -42,7 +50,7 @@
 							<text id="agreement-text-text1">和</text>
 							<text class="link" id="agreement-text-text1">《隐私政策》</text>
 						</u-checkbox>
-						<view id="agreement-text-text2">骑行网@2021 All Rights Resved</view>
+						<view id="agreement-text-text2">闲鱼网@2022 All Rights Resved</view>
 					</view>
 				</view>
 			</view>
@@ -51,241 +59,198 @@
 </template>
 
 <script>
-export default {
-	data() {
-		return {
-			phone: '',
-			password: '',
-			check: false
-		};
-	},
-	onLoad() {},
-	methods: {
-		//获得输入的手机号
-		getPhone: function(e) {
-			let that = this;
-			that.phone = event.target.value;
+	export default {
+		data() {
+			return {
+				phone: '',
+				password: '',
+				check: false
+			};
 		},
-		//获取输入的密码
-		getPassword: function() {
-			let that = this;
-			that.password = event.target.value;
-		},
-		//获取是否勾选协议
-		checkboxChange(e) {
-			console.log(e);
-			let that = this;
-			that.check = e.value;
-		},
-		//密码登录
-		codeLogin: function() {
-			uni.redirectTo({
-				url: './index2'
-			});
-		},
-		//用户登录
-		async userlogin() {
-			let that = this;
-			let phone = that.phone;
-			let password = that.password;
-			let check = that.check;
-			if (phone.length == 0 || phone.split(' ').join('').length == 0 || password.length == 0 || password.split(' ').join('').length == 0) {
-				console.log('请输入账号密码');
-				that.$refs.uToast.show({
-					title: '请输入账号和密码',
-					// 如果不传此type参数，默认为default，也可以手动写上 type: 'default'
-					type: 'error',
-					position: 'bottom',
-					icon: true
+		onLoad() {},
+		methods: {
+			//获取是否勾选协议
+			checkboxChange(e) {
+				let that = this;
+				that.check = e.value;
+			},
+			//注册
+			codeLogin: function() {
+				uni.redirectTo({
+					url: './index2'
 				});
-			} else {
-				console.log('账号 =>', phone, '密码 =>', password);
-				if (!check) {
+			},
+			//用户登录
+			async userlogin() {
+				let that = this;
+				let phone = that.phone;
+				let password = that.password;
+				let check = that.check;
+				if (phone == null || phone.length == 0 || phone.split(' ').join('').length == 0 || password == null ||
+					password.length == 0 || password.split(' ').join('').length == 0) {
 					that.$refs.uToast.show({
-						title: '请先阅读协议',
+						title: '请输入手机号和密码',
 						// 如果不传此type参数，默认为default，也可以手动写上 type: 'default'
 						type: 'error',
 						position: 'bottom',
 						icon: true
 					});
-				}
-				that.$u.api
-					.userLogin({
-						phone: phone,
-						password: password
-					})
-					.then(res => {
-						uni.showLoading();
-						let msg = res.data.msg;
-						console.log(msg);
-						if (msg == '登录成功') {
-							let token = res.header.authorization;
-							that.$u.vuex('vuex_token', token);
-							let userString = decodeURIComponent(escape(window.atob(token.split('.')[1])));
-							let user = JSON.parse(userString).id;
-							that.$u.vuex('user_id', user);
-							that.$websocket.commit('setUid', user);
-							that.$websocket.dispatch('webSocketInit'); //初始化ws
+				} else {
+					if (!check) {
+						that.$refs.uToast.show({
+							title: '请先阅读协议',
+							// 如果不传此type参数，默认为default，也可以手动写上 type: 'default'
+							type: 'error',
+							position: 'bottom',
+							icon: true
+						});
+					} else {
+						let result = await that.$u.api.userLogin({
+							phone: phone,
+							password: password
+						})
+						if(result){
+							that.$u.vuex('user_id', result)
 							that.$refs.uToast.show({
-								title: msg,
+								title: '登录成功',
 								// 如果不传此type参数，默认为default，也可以手动写上 type: 'default'
 								type: 'success',
-								position: 'bottom',
-								icon: true
+								icon: true,
+								isTab:true,
+								url:'/pages/my/my'
 							});
-							uni.redirectTo({
-								url: '../dynamic/index'
-							});
-							uni.hideLoading();
-						} else if (msg == '该手机号未注册') {
-							that.$refs.uToast.show({
-								title: msg,
-								// 如果不传此type参数，默认为default，也可以手动写上 type: 'default'
-								type: 'error',
-								position: 'bottom',
-								icon: true
-							});
-							uni.hideLoading();
-						} else if (msg == '输入的密码错误') {
-							that.$refs.uToast.show({
-								title: msg,
-								// 如果不传此type参数，默认为default，也可以手动写上 type: 'default'
-								type: 'error',
-								position: 'bottom',
-								icon: true
-							});
-							uni.hideLoading();
 						}
-					});
+					}
+				}
 			}
 		}
-	}
-};
+	};
 </script>
 
 <style lang="scss" scoped>
-#agreement-text-text2 {
-	text-align: center;
-	margin-top: 20rpx;
-	font-size: 23rpx;
-}
-
-#agreement-text-text1 {
-	font-size: 28rpx;
-}
-
-#agreement-text-1 {
-	margin-left: 39rpx;
-}
-
-#agreement-text-2 {
-	margin: 0 auto;
-}
-
-#top {
-	height: 120rpx;
-}
-
-#u-demo-area-id {
-	margin-top: 66rpx;
-}
-
-#forget {
-	text-align: center;
-	margin-top: 39rpx;
-}
-
-.wrap {
-	font-size: 28rpx;
-	background-color: #f7f7f7;
-	height: 100vh;
-
-	.content {
-		width: 620rpx;
-		margin: 80rpx auto 0;
-
-		.title {
-			text-align: left;
-			font-size: 60rpx;
-			font-weight: 500;
-			margin-bottom: 10rpx;
-		}
-
-		.title_tiny {
-			text-align: left;
-			font-size: 25rpx;
-			color: #77787c;
-			margin-bottom: 50rpx;
-		}
-
-		input {
-			text-align: left;
-			margin-bottom: 10rpx;
-			padding-bottom: 6rpx;
-		}
-
-		.tips {
-			color: $u-type-info;
-			margin-bottom: 60rpx;
-			margin-top: 8rpx;
-		}
-
-		.getCaptcha {
-			background-color: rgb(253, 243, 208);
-			color: $u-tips-color;
-			border: none;
-			font-size: 30rpx;
-			padding: 12rpx 0;
-
-			&::after {
-				border: none;
-			}
-		}
-
-		.alternative {
-			color: $u-tips-color;
-			display: flex;
-			justify-content: space-between;
-			margin-top: 30rpx;
-		}
+	#agreement-text-text2 {
+		text-align: center;
+		margin-top: 20rpx;
+		font-size: 23rpx;
 	}
 
-	.buttom {
-		position: absolute;
-		width: 100%;
-		bottom: 15rpx;
-		.loginType {
-			display: flex;
-			padding: 36rpx 50rpx 20rpx 50rpx;
-			justify-content: space-between;
+	#agreement-text-text1 {
+		font-size: 28rpx;
+	}
 
-			.item {
+	#agreement-text-1 {
+		margin-left: 39rpx;
+	}
+
+	#agreement-text-2 {
+		margin: 0 auto;
+	}
+
+	#top {
+		height: 120rpx;
+	}
+
+	#u-demo-area-id {
+		margin-top: 66rpx;
+	}
+
+	#forget {
+		text-align: center;
+		margin-top: 39rpx;
+	}
+
+	.wrap {
+		font-size: 28rpx;
+		background-color: #f7f7f7;
+		height: 100vh;
+
+		.content {
+			width: 620rpx;
+			margin: 80rpx auto 0;
+
+			.title {
+				text-align: left;
+				font-size: 60rpx;
+				font-weight: 500;
+				margin-bottom: 10rpx;
+			}
+
+			.title_tiny {
+				text-align: left;
+				font-size: 25rpx;
+				color: #77787c;
+				margin-bottom: 50rpx;
+			}
+
+			input {
+				text-align: left;
+				margin-bottom: 10rpx;
+				padding-bottom: 6rpx;
+			}
+
+			.tips {
+				color: $u-type-info;
+				margin-bottom: 60rpx;
+				margin-top: 8rpx;
+			}
+
+			.getCaptcha {
+				background-color: rgb(253, 243, 208);
+				color: $u-tips-color;
+				border: none;
+				font-size: 30rpx;
+				padding: 12rpx 0;
+
+				&::after {
+					border: none;
+				}
+			}
+
+			.alternative {
+				color: $u-tips-color;
 				display: flex;
-				flex-direction: column;
-				align-items: center;
-				color: $u-content-color;
-				font-size: 28rpx;
+				justify-content: space-between;
+				margin-top: 30rpx;
 			}
 		}
 
-		.hint {
-			padding: 20rpx 40rpx;
-			font-size: 28rpx;
-			color: $u-tips-color;
+		.buttom {
+			position: absolute;
+			width: 100%;
+			bottom: 15rpx;
 
-			.link {
-				color: #71bfaa;
+			.loginType {
+				display: flex;
+				padding: 36rpx 50rpx 20rpx 50rpx;
+				justify-content: center;
+
+				.item {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					color: $u-content-color;
+					font-size: 28rpx;
+				}
 			}
 
-			.agreement {
-				display: flex;
-				align-items: center;
+			.hint {
+				padding: 20rpx 40rpx;
+				font-size: 28rpx;
+				color: $u-tips-color;
 
-				.agreement-text {
-					color: $u-tips-color;
+				.link {
+					color: #71bfaa;
+				}
+
+				.agreement {
+					display: flex;
+					align-items: center;
+
+					.agreement-text {
+						color: $u-tips-color;
+					}
 				}
 			}
 		}
 	}
-}
 </style>

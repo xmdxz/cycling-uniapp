@@ -4,22 +4,12 @@ export default {
 	globalData: {
 		windowWidth: 0,
 		windowHeight: 0,
-		imageUrlPrefix: 'http://r8mockxu2.bkt.clouddn.com/'
+		imageUrlPrefix: 'http://localhost:10086/',
+		uploadUrl:'http://localhost:10086/upload'
 	},
 	onShow() {
 		//应用生命周期 onShow	当 uni-app 启动，或从后台进入前台显士
 		let that = this;
-		let token = that.$u.getToken();
-		if(token == null || token == "" || token == '' || typeof token == "undefined"){
-			return;
-		}
-		let userString = decodeURIComponent(escape(window.atob(token.split('.')[1])));
-		let id = JSON.parse(userString).id;
-		console.log(id)
-		if (!that.$websocket.getters.open && id != -1) {
-			that.$websocket.commit('setUid', id);
-			that.$websocket.dispatch('webSocketInit');
-		}
 	},
 	onLaunch() {
 		let that = this;
@@ -53,4 +43,25 @@ export default {
 <style lang="scss">
 @import 'uview-ui/index.scss';
 @import 'common/demo.scss';
+		/* color-ui库 */
+		@import "colorui/main.css";
+		@import "colorui/icon.css";
+		@import "colorui/animation.css";
+	
+		/*每个页面公共css */
+		page {
+			background-color: #FFFFFF;
+			overflow-x: hidden;
+			
+		}
+	
+		.Messange-box {
+			position: fixed;
+			right: 0;
+			top: 50%;
+			background: #272822;
+			width: 30px;
+			height: 50px;
+			z-index: 99999;
+		}
 </style>

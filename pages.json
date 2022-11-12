@@ -49,41 +49,21 @@
 			"path": "pages/my/my",
 			"style": {
 				"navigationBarTitleText": "我的",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
 			}
 		},
 		{
-			"path": "pages/my/info",
+			"path": "pages/my/dynamic",
 			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/setting",
-			"style": {
-				"navigationBarTitleText": "设置",
-				"enablePullDownRefresh": false
+				"navigationBarTitleText": "帖子",
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/my/person",
 			"style": {
 				"navigationBarTitleText": "个人信息",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/thirdBind",
-			"style": {
-				"navigationBarTitleText": "第三方绑定",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/account",
-			"style": {
-				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
 		},
@@ -167,15 +147,7 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
-		}
-	    ,{
-            "path" : "pages/my/notice",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-        },
+		},
 		{
 		    "path" : "pages/my/chat",
 		    "style" :                                                                                    
@@ -194,7 +166,7 @@
             
         }
         ,{
-            "path" : "pages/my/activity",
+            "path" : "pages/my/order",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",

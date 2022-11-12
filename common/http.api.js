@@ -1,15 +1,28 @@
 // 如果没有通过拦截器配置域名的话，可以在这里写上完整的URL(加上域名部分)
-let uploadTokenUrl = '/utils/getUploadToken';
-let publicDynamicUrl = '/dynamic/publicDynamic'
+// let uploadTokenUrl = '/utils/getUploadToken';
+// let publicDynamicUrl = '/dynamic/publicDynamic'
 // 此处第二个参数vm，就是我们在页面使用的this，你可以通过vm获取vuex等操作，更多内容详见uView对拦截器的介绍部分：
 // https://uviewui.com/js/http.html#%E4%BD%95%E8%B0%93%E8%AF%B7%E6%B1%82%E6%8B%A6%E6%88%AA%EF%BC%9F
 const install = (Vue, vm) => {
 
 	//用户登录
-	let userLogin = (params = {}) => vm.$u.post("/login", params)
+	let userLogin = (params = {}) => vm.$u.post("/login/phone", params)
 	
+	let deleteData = (params = {}) => vm.$u.get("/user/delete",params)
+	
+	let upload = (params = {}) => vm.$u.post("/upload",params)
 	//用户登录
-	let userLogin2 = (params = {}) => vm.$u.post("/login2", params)
+	let registry = (params = {}) => vm.$u.post("/login/registry", params)
+	
+	let dynamicCollect = (params = {}) => vm.$u.get("/user/dynamic",params)
+	//用户信息
+	let userInfo = (params = {}) => vm.$u.get("/user/data", params)
+	
+	let collect = (params = {}) => vm.$u.get("/user/collect",params)
+	
+	let userOrder = (params = {}) => vm.$u.get("/user/order",params)
+	
+	let userPublish = (params = {}) => vm.$u.get("/user/publish",params)
 	//获取验证码
 	let getCode = (params = {}) => vm.$u.get("/code?phone="+params, null)
 	// 动态相关Api
@@ -38,7 +51,7 @@ const install = (Vue, vm) => {
 	let getTopicByName = (params = {}) => vm.$u.get('/topic/findByTopicName',params)
 
 	//获取用户信息
-	let getUserInfo = (params = {}) => vm.$u.get("/user/getUserInfo", null)
+	let getUserInfo = (params = {}) => vm.$u.get("/user/basicInfo", params)
 
 	//获取我的界面的用户信息
 	let getOwnInfo = (params = {}) => vm.$u.get("/user/getOwnInfo", null)
@@ -47,7 +60,7 @@ const install = (Vue, vm) => {
 	let getRelatedCount = (params = {}) => vm.$u.get("/user/getRelatedCount", null)
 
 	//更新信息
-	let updateInfo = (params = {}) => vm.$u.put("/user/updateInfo", params)
+	let updateInfo = (params = {}) => vm.$u.post("/user/update", params)
 
 	//获取粉丝
 	let getFansOrFocusedAndSimple = (params = {}) => vm.$u.get(params.url, {
@@ -90,11 +103,21 @@ const install = (Vue, vm) => {
 	let seckill = (params = {}) => vm.$u.get("/active/secKill",params)
 
 	let getResult = (params = {}) => vm.$u.get("/active/getResult",params)
-
+	
 	// 将各个定义的接口名称，统一放进对象挂载到vm.$u.api(因为vm就是this，也即this.$u.api)下
 	vm.$u.api = {
 		userLogin,
-		userLogin2,
+		registry,
+		userInfo,
+		collect,
+		dynamicCollect,
+		upload,
+		userOrder,
+		userPublish,
+		deleteData,
+		
+		
+		
 		getCode,
 		getUploadToken,
 		publicDynamic,

@@ -7,13 +7,12 @@ let lifeData = {};
 try {
 	// 尝试获取本地是否存在lifeData变量，第一次启动APP时是不存在的
 	lifeData = uni.getStorageSync('lifeData');
-
 } catch (e) {
 
 }
 
 // 需要永久存储，且下次APP启动需要取出的，在state中的变量名
-let saveStateKeys = ['vuex_token','chat_list'];
+let saveStateKeys = ['user_id'];
 
 // 保存变量到本地存储中
 const saveLifeData = function(key, value) {
@@ -32,9 +31,7 @@ const store = new Vuex.Store({
 	state: {
 		// 如果上面从本地获取的lifeData对象下有对应的属性，就赋值给state中对应的变量
 		// 加上vuex_前缀，是防止变量名冲突，也让人一目了然
-		user_id: -1,
-		vuex_token: lifeData.vuex_token ? lifeData.vuex_token : '',
-		chat_list: lifeData.chat_list ? lifeData.chat_list : [],
+		user_id: lifeData.user_id,
 		// 如果vuex_version无需保存到本地永久存储，无需lifeData.vuex_version方式
 		// 自定义tabbar数据
 		vuex_tabbar: [{
@@ -74,11 +71,8 @@ const store = new Vuex.Store({
 		id: state => {
 			return state.user_id
 		},
-		token: state => {
-			return state.vuex_token
-		},
-		chatList: state => {
-			return state.chat_list
+		tab: state => {
+			return state.vuex_tabbar
 		}
 	},
 	mutations: {
@@ -102,15 +96,15 @@ const store = new Vuex.Store({
 			// 保存变量到本地，见顶部函数定义
 			saveLifeData(saveKey, state[saveKey])
 		},
-		deleteToken() {
-			let that = this
-			uni.removeStorage({
-				key: 'lifeData',
-				success(e) {
-					that.state.vuex_token = null
-				}
-			})
-		}
+		// deleteToken() {
+		// 	let that = this
+		// 	uni.removeStorage({
+		// 		key: 'lifeData',
+		// 		success(e) {
+		// 			that.state.vuex_token = null
+		// 		}
+		// 	})
+		// }
 	}
 })
 

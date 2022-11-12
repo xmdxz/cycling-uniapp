@@ -22,34 +22,13 @@ module.exports = {
 				value
 			})
 		}
-
-		this.$u.getChatList = () => {
-			return this.$store.getters.chatList
+		
+		this.$u.getUserId = () => {
+			return this.$store.getters.id
 		}
-
-		this.$u.insertChatList = (data) => {
-			let list = this.$store.getters.chatList
-			if (list.findIndex((e) => e.id == data.id) >= 0) {
-				return;
-			}
-			let name = 'chat_list'
-			list.unshift(data);
-			this.$store.commit('$uStore', {
-				name,
-				value: list
-			})
+		this.$u.getTabList = () => {
+			return this.$store.getters.tab
 		}
-
-		this.$u.getToken = () => {
-			return this.$store.getters.token
-		}
-
-		this.$u.getId = (name) => {
-			let userString = decodeURIComponent(escape(window.atob(this.$store.getters.token.split('.')[1])));
-			let id = JSON.parse(userString).id;
-			return id;
-		}
-
 		this.$u.generateUUID = () => {
 			var d = new Date().getTime();
 			if (window.performance && typeof window.performance.now === "function") {
