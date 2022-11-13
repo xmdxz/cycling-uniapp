@@ -13,7 +13,7 @@ const router = createRouter({
 			name:'my'
 		},
 		{
-			path:'/pages/my/chat',
+			path:'/pages/dynamic/chat',
 			name:'chat'
 		},
 		{

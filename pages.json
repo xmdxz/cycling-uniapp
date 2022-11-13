@@ -142,6 +142,13 @@
 			}
 		},
 		{
+			"path": "pages/dynamic/chat",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
 			"path": "pages/dynamic/searchresult",
 			"style": {
 				"navigationBarTitleText": "",

@@ -98,7 +98,7 @@
 				</view>
 
 				<view style="margin: 0 20upx;">
-					<u-button size="medium" :hair-line="false" shape="circle" :ripple="true" :custom-style="{
+					<u-button @click="want" size="medium" :hair-line="false" shape="circle" :ripple="true" :custom-style="{
 						backgroundColor:'#f8d347',
 						fontSize:'30upx',
 						fontWeight:'bolder',
@@ -174,6 +174,9 @@
 			sold(){
 				this.$Router.push({name:"publicdynamic",params:{name:this.info.name}})
 			},
+			want(){
+				this.$Router.push({name:"chat",params:{receiver:1,goodsId:this.info.id,}})
+			},
 			change(index) {
 				this.current = index
 			},
@@ -195,7 +198,7 @@
 			async cancelCollect() {
 				let result = await this.$u.api.cancelCollect({
 					id: this.info.id,
-					userId: this.$u.getUserId()
+					userId: this.$u.getUserId(),
 				})
 				if (result) {
 					this.isCollect = false

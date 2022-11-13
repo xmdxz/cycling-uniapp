@@ -130,6 +130,12 @@ const install = (Vue, vm) => {
 
 	let getResult = (params = {}) => vm.$u.get("/active/getResult",params)
 	
+	let insertChat = (params = {}) => vm.$u.post("/chat",params)
+	
+	let buy = (params = {}) => vm.$u.post("/chat/buy",params)	
+	
+	let chatList = (params = {}) => vm.$u.get("/chat/chatList/"+params.goodsId)
+	
 	// 将各个定义的接口名称，统一放进对象挂载到vm.$u.api(因为vm就是this，也即this.$u.api)下
 	vm.$u.api = {
 		userLogin,
@@ -184,7 +190,10 @@ const install = (Vue, vm) => {
 		getAvatar,
 		getLimitActivity,
 		seckill,
-		getResult
+		getResult,
+		insertChat,
+		chatList,
+		buy,
 	};
 }
 
