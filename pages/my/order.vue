@@ -11,7 +11,7 @@
 					<view class="content-item">
 						<view class="content-header">
 							<text style="float: left;" class="content-title">{{ item.name }}</text>
-							<text style="float: right;margin-right: 30rpx;font-size: 20rpx;color: coral;" >{{ '交易完成' }}</text>
+							<text v-if="type != 0" style="float: right;margin-right: 30rpx;font-size: 20rpx;color: coral;" >{{ '交易完成' }}</text>
 						</view>
 						<view style="display: flex;">
 							<view style="margin-left: 25rpx;" class="content-text">{{ '￥' + item.price }}</view>

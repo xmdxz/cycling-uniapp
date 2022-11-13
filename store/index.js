@@ -37,13 +37,13 @@ const store = new Vuex.Store({
 		vuex_tabbar: [{
 				iconPath: "/static/ico/首页_动态灰.png",
 				selectedIconPath: "/static/ico/首页_动态亮.png",
-				text: '动态',
+				text: '闲鱼',
 				pagePath: '/pages/dynamic/index'
 			},
 			{
 				iconPath: "/static/ico/活动.png",
 				selectedIconPath: "/static/ico/活动选中.png",
-				text: '活动',
+				text: '会玩',
 				pagePath: '/pages/activity/index'
 			},
 			{
@@ -56,7 +56,7 @@ const store = new Vuex.Store({
 			{
 				iconPath: "/static/ico/骑行.png",
 				selectedIconPath: "/static/ico/骑行选中.png",
-				text: '骑行',
+				text: '消息',
 				pagePath: '/pages/ride/prepare'
 			},
 			{

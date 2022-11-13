@@ -59,9 +59,11 @@ const install = (Vue, vm) => {
 			return res.data.data;
 		} else if (res.statusCode !== 200) {
 			vm.$u.toast("网络错误,请重试")
+			return false
 		} else if (res.data.code !== 20000) {
 			vm.$u.toast(res.data.message)
-		};
+			return false
+		} ;
 	}
 }
 

@@ -1,250 +1,423 @@
 <template>
 	<view>
-		<u-sticky>
-			<view class="search">
-				<u-search v-model="value" @change="change" @custom="custom" @search="search" :shape="shape" :clearabled="clearabled"
-				:show-action="showAction" :input-align="inputAlign" @clear="clear"></u-search>
-			</view>
-		</u-sticky>
-		<u-swiper  :height="250" :list="list" title="true" :effect3d="effect3d"
-		:indicator-pos="indicatorPos" :mode="mode" :interval="3000" ></u-swiper>
-		<view class="pickers">
-			<view class="pickers-text">筛选</view>
-			<u-picker mode="region" v-model="showpicker"  :area-code='["13", "1303", "130304"]' @confirm="confirm"></u-picker>
-			<a class="areabutton" @click="showpicker = true">{{input ? input : "选择地区"}}</a>
+		<view class="content-main">
+			<u-sticky :enable="true">
+				<u-notice-bar mode="horizontal" :list="textList"></u-notice-bar>
+			</u-sticky>
+
+			<u-line color="gray"></u-line>
+
+			<swiper :current="swiperCurrent">
+				<!-- 当选中推荐标签时显示 -->
+				<swiper-item class="swiper-item">
+					<scroll-view scroll-y style="height: 100%;width: 100%;margin-top: 20upx;"
+						@scrolltolower="onreachBottom">
+						<view class="swiper-div">
+							<!-- 推荐动态 -->
+							<view class="u-margin-30 recommed">
+								<!-- 小标题 -->
+								<u-section title="动态" :right="false" sub-title="更多" line-color="#f8d347"></u-section>
+								<!-- 瀑布流 -->
+								<view class="wrap" style="background: rgb(249,250,251);">
+									<u-waterfall v-model="flowList" ref="uWaterfall">
+										<!-- 左侧瀑布流 -->
+										<template v-slot:left="{ leftList }">
+											<view class="water" v-for="(item, index) in leftList" :key="index"
+												>
+												<!-- 商品图片 -->
+												<u-lazy-load threshold="-450" border-radius="10"
+													:image="item.images == null || item.images.length == 0 ? '../../static/img/noLoginAvatar.png':filters['appendUrlPrefix'](item.images[0])"
+													:index="index"></u-lazy-load>
+												<!-- 文章标题 -->
+												<view class="content-title">{{ item.name }}</view>
+												<view class="content-info">
+													<!-- 作者 -->
+													<view class="content-author">
+														<u-avatar :src="!item.userInfo.avatar ?'../../static/img/noLoginAvatar.png':filters['appendUrlPrefix'](item.userInfo.avatar)" size="40"
+															style="vertical-align: middle;"></u-avatar>
+														{{ item.userInfo.username }}
+													</view>
+												<view class="content-like">
+													<!-- <u-icon name="heart" color="rgb(109,111,111)"
+														style="vertical-align: middle;" size="30"></u-icon> -->
+													<u-icon v-if="!item.isCollect" style="margin:0 20upx;" name="star" @click="collect(item)" size="50"></u-icon>
+													<u-icon v-else style="margin:0 20upx;" name="star" color="#f8d347" @click="cancelCollect(item)" size="50">
+													</u-icon>
+												</view>
+												</view>
+											</view>
+										</template>
+										<!-- 右侧瀑布流 -->
+										<template v-slot:right="{ rightList }">
+											<view class="water" v-for="(item, index) in rightList" :key="index"
+												>
+												<!-- 文章图片 -->
+												<u-lazy-load threshold="-450" border-radius="10" :image="item.images == null || item.images.length == 0 ? '../../static/img/noLoginAvatar.png':filters['appendUrlPrefix'](item.images[0])"
+													:index="index" style="width: 100%;"></u-lazy-load>
+												<!-- 文章标题 -->
+												<view class="content-title">{{ item.name }}</view>
+												<view class="content-info">
+													<!-- 作者 -->
+													<view class="content-author">
+														<u-avatar :src="!item.userInfo.avatar ?'../../static/img/noLoginAvatar.png':filters['appendUrlPrefix'](item.userInfo.avatar)" size="40"
+															style="vertical-align: middle;"></u-avatar>
+														{{ item.userInfo.username }}
+													</view>
+													<view class="content-like">
+														<!-- <u-icon name="heart" color="rgb(109,111,111)"
+															style="vertical-align: middle;" size="30"></u-icon> -->
+														<u-icon v-if="!item.isCollect" style="margin:0 20upx;" name="star" @click="collect(item)" size="50"></u-icon>
+														<u-icon v-else style="margin:0 20upx;" name="star" color="#f8d347" @click="cancelCollect(item)" size="50">
+														</u-icon>
+													</view>
+												</view>
+											</view>
+										</template>
+									</u-waterfall>
+								</view>
+								<!-- 加载更多 -->
+								<u-loadmore  :status="loadStatus"
+									></u-loadmore>
+							</view>
+						</view>
+					</scroll-view>
+				</swiper-item>
+				</scroll-view>
+				</swiper-item>
+			</swiper>
 		</view>
-		<view class="u-card-wrap">
-			<!--一下是单独一个card-->
-			<u-card @click="click" @head-click="headClick" :title="title" :sub-title="subTitle" :thumb="thumb" :padding="padding" :border="border">
-				<view class="" slot="body"> 
-					<view class="u-body-item u-flex u-border-bottom u-col-between u-p-t-0">
-						<view class="u-body-item map"><map id="map" :latitude="latitude" :longitude="longitude" :polyline="lineArray" ></map></view>
-						<view class="u-body-item-title u-line-2">
-							凤凰山山路骑行，环山公路骑行。一起感受速度与激情的碰撞，山路速降，32km长速降赛道。
-						</view>
-						
-					</view>
-				</view>
-				<view class="" slot="foot">
-						<u-tag class="tags" :text="text" :type="type" :shape="shape" :closeable="false" :mode="mode_tag" :show="true" :size="size" />
-						<u-tag class="tags" text="风景" type="success" :shape="shape" :closeable="false" :mode="mode_tag" :show="true" :size="size" />
-						<u-tag class="tags" text="耐力" type="warning" :shape="shape" :closeable="false" :mode="mode_tag" :show="true" :size="size" />
-						<view class="more">
-							<u-icon @click="mores()" name="more-dot-fill"></u-icon>
-						</view>
-				</view>
-			</u-card>
-			<!------------>
-			<!--一下是单独一个card-->
-			<u-card @click="click" @head-click="headClick" :title="title" :sub-title="subTitle" :thumb="thumb" :padding="padding" :border="border">
-				<view class="" slot="body"> 
-					<view class="u-body-item u-flex u-border-bottom u-col-between u-p-t-0">
-						<view class="u-body-item map"><map id="map" :latitude="latitude" :longitude="longitude" :polyline="lineArray" ></map></view>
-						<view class="u-body-item-title u-line-2">
-							凤凰山山路骑行，环山公路骑行。一起感受速度与激情的碰撞，山路速降，32km长速降赛道。
-						</view>
-						
-					</view>
-				</view>
-				<view class="" slot="foot">
-						<u-tag class="tags" :text="text" :type="type" :shape="shape" :closeable="false" :mode="mode_tag" :show="true" :size="size" />
-						<u-tag class="tags" text="风景" type="success" :shape="shape" :closeable="false" :mode="mode_tag" :show="true" :size="size" />
-						<u-tag class="tags" text="耐力" type="warning" :shape="shape" :closeable="false" :mode="mode_tag" :show="true" :size="size" />
-						<view class="more">
-							<u-icon @click="mores()" name="more-dot-fill"></u-icon>
-						</view>
-				</view>
-			</u-card>
-			<!------------>
-			<!--一下是单独一个card-->
-			<u-card @click="click" @head-click="headClick" :title="title" :sub-title="subTitle" :thumb="thumb" :padding="padding" :border="border">
-				<view class="" slot="body"> 
-					<view class="u-body-item u-flex u-border-bottom u-col-between u-p-t-0">
-						<view class="u-body-item map"><map id="map" :latitude="latitude" :longitude="longitude" :polyline="lineArray" ></map></view>
-						<view class="u-body-item-title u-line-2">
-							凤凰山山路骑行，环山公路骑行。一起感受速度与激情的碰撞，山路速降，32km长速降赛道。
-						</view>
-						
-					</view>
-				</view>
-				<view class="" slot="foot">
-						<u-tag class="tags" :text="text" :type="type" :shape="shape" :closeable="false" :mode="mode_tag" :show="true" :size="size" />
-						<u-tag class="tags" text="风景" type="success" :shape="shape" :closeable="false" :mode="mode_tag" :show="true" :size="size" />
-						<u-tag class="tags" text="耐力" type="warning" :shape="shape" :closeable="false" :mode="mode_tag" :show="true" :size="size" />
-						<view class="more">
-							<u-icon @click="mores()" name="more-dot-fill"></u-icon>
-						</view>
-				</view>
-			</u-card>
-			<!------------>
-			
-		</view>
+
 		<u-tabbar v-model="tabBarCurrent" :list="tabBarList" :mid-button="true" mid-button-size="90"></u-tabbar>
 	</view>
 </template>
 
 <script>
-	import store from "../../store/index.js"
+	import store from '../../store/index.js';
 	export default {
+		components: {
+		},
 		data() {
 			return {
-				tabBarCurrent:0,
-				tabBarList:[],
-				input:"",
-				value:'',
-				//中心点位置：
-				latitude:'35.60533428584708',
-				longitude:'110.71650971386717',
-				//路线信息：
-				lineArray:[{//指定一系列坐标点，从数组第一项连线至最后一项
-								　　　　points:[
-										   {latitude: 35.60533428584,longitude: 110.7165097138},
-										   {latitude: 35.60543428965,longitude: 110.7175097139},
-										   {latitude: 35.60585428965,longitude: 110.7177097439},
-										   {latitude: 35.604434289658,longitude: 110.7175097139},
-										    // [35.60533428584,110.7165097138],
-										    // [35.60543428965,110.7175097139],
-										   	// [35.60585428965,110.7177097439],
-										   	// [35.604434289658,110.7175097139],
-								　　　　],
-								　　　　color:"#0000AA",//线的颜色
-								　　　　width:2,//线的宽度
-								　　　　dottedLine:false,//是否虚线
-								　　　　arrowLine:true,    //带箭头的线 开发者工具暂不支持该属性
-								　　}],
-				title: '征服凤凰山！',
-				subTitle: '2020-05-15',
-				
-				//卡片左上角  头像
-				thumb: 'https://img0.baidu.com/it/u=1077360284,2857506492&fm=26&fmt=auto',
-				padding: 20,
-				border: true,
-				text:'危险',
-				type:'error',
-				shap:'circle',
-				size:'mini',
-				mode_tag: 'light',
-				list: [{
-						image: 'https://cdn.uviewui.com/uview/swiper/1.jpg',
-						title: '昨夜星辰昨夜风，画楼西畔桂堂东'
-					},
-					{
-						image: 'https://cdn.uviewui.com/uview/swiper/2.jpg',
-						title: '身无彩凤双飞翼，心有灵犀一点通'
-					},
-					{
-						image: 'https://cdn.uviewui.com/uview/swiper/3.jpg',
-						title: '谁念西风独自凉，萧萧黄叶闭疏窗，沉思往事立残阳'
+				textList: ['最新通知:发布动态需要遵守社区规定,不得发布违法违规内容'],
+				flowList: [],
+				swiperCurrent: 0,
+				src: '/static/img/topicimg.jpg',
+				loadStatus: 'loadmore',
+				tabBarCurrent: 0,
+				tabBarList: [],
+				page:{
+					current:1,
+					size:10
+				},
+				num:0
+			};
+		},
+		watch:{
+			'flowList':{
+				handler(newV,oldV){
+					if (newV.length >= this.num) {
+						this.loadStatus = 'nomore';
+					} else {
+						this.loadStatus = 'loadmore';
 					}
-				],
-				mode: 'round',
-				indicatorPos: 'bottomCenter',
-				effect3d: false,
-				
-				showpicker:false,
+				}
 			}
 		},
-		onLoad(){
-			this.tabBarList = store.state.vuex_tabbar,
-			console.log(this.latitude)
-			//console.log(this.longitude)
-			console.log(this.lineArray[0].points)
-			var ava =0;
-			var ave =0;
-			for(var i =0;i <this.lineArray[0].points.length;i++){
-				ava +=this.lineArray[0].points[i].latitude;
-				ave +=this.lineArray[0].points[i].longitude;
-			}
-			ava /=this.lineArray[0].points.length;
-			ave /=this.lineArray[0].points.length;
-			this.latitude=ava;
-			this.longitude=ave;
+		onLoad() {
+			this.addRandomData();
+			this.tabBarList = store.state.vuex_tabbar;
 		},
+		onPullDownRefresh() {
+			this.page.current = 1
+			this.flowList = []
+			this.$refs.uWaterfall.clear();
+			this.addRandomData();
+			uni.stopPullDownRefresh()
+		},
+		onShow() {
+			
+		},
+		onHide() {
+			
+		},
+		// onReachBottom() {
+		// 	this.loadStatus = 'loading'
+		// 	//模拟数据加载
+		// 	setTimeout(() => {
+		// 		this.addRandomData()
+		// 		this.loadStatus = 'loadmore'
+		// 	}, 1000)
+		// },
 		methods: {
-			click(){
-				uni.navigateTo({
-					url: './addactivity'
+			async collect(item) {
+				let result = await this.$u.api.collectDySave({
+					id: item.id,
+					userId: this.$u.getUserId()
 				})
+				if (result) {
+					item.isCollect = true
+					this.$u.toast("收藏成功")
+				}else{
+					this.$u.toast("请先登录")
+				}
 			},
-			mores(){
-				event.stopPropagation();
-				alert("click mors")
+			async cancelCollect(item) {
+				let result = await this.$u.api.cancelDyCollect({
+					id: item.id,
+					userId: this.$u.getUserId()
+				})
+				if (result) {
+					item.isCollect = false
+				}
 			},
-			headClick(){
-				event.stopPropagation();
-				let res = this.$u.api.getallactive();
-				console.log(res)
+			async onreachBottom() {
+				console.log(this.num)
+				if(this.flowList.length >= this.num){
+					this.loadStatus = 'nomore';
+					return
+				}
+				this.page.current ++
+				this.loadStatus = 'loading';
+				this.addRandomData();
+				this.loadStatus = 'loadmore';
 			},
-			confirm(e) {
-				console.log(e);
-				this.input = e.province.label + '-' + e.city.label + '-' + e.area.label;
-			}
+			// tabs通知swiper切换
+			tabsChange(index) {
+				this.swiperCurrent = index;
+			},
+			// // swiper-item左右移动，通知tabs的滑块跟随移动
+			// transition(e) {
+			// 	let dx = e.detail.dx;
+			// 	this.$refs.uTabs.setDx(dx);
+			// },
+			// // 由于swiper的内部机制问题，快速切换swiper不会触发dx的连续变化，需要在结束时重置状态
+			// // swiper滑动结束，分别设置tabs和swiper的状态
+			// animationfinish(e) {
+			// 	let current = e.detail.current;
+			// 	this.$refs.uTabs.setFinishCurrent(current);
+			// 	this.swiperCurrent = current;
+			// 	this.current = current;
+			// },
+			async addRandomData() {
+				let result = await this.$u.api.dynamicPage({
+					current:this.page.current,
+					size:this.page.size,
+					userId:this.$u.getUserId()
+				})
+				if(result){
+					this.num = result.total
+					// for (let i = 0; i < 10; i++) {
+					// 	let index = this.$u.random(0, this.contentList.length - 1);
+					// 	// 先转成字符串再转成对象，避免数组对象引用导致数据混乱
+					// 	let item = JSON.parse(JSON.stringify(this.contentList[index]));
+					// 	// item.id = this.$u.guid();
+					// 	this.flowList.push(item);
+					// }
+					this.flowList.push(...result.records)
+				}
+				// let res = await this.$u.api.getDynamicByRecommend({
+				// })
+				// console.log(res)
+			},
 		}
-	}
+	};
 </script>
 
-<style scoped lang="scss">
-	.u-search{
-		padding-bottom: 20rpx;
-		padding-left: 20rpx;
+<style>
+	.content-main {
+		width: 100%;
+		height: 100%;
 	}
-	.u-demo {
-		padding-top: 0;
+
+	.content-main .search {
+		width: 90%;
+		margin: 0 auto;
+		display: flex;
+		flex-wrap: nowrap;
+		border: 4rpx solid #dd6161;
+		border-radius: 35rpx;
 	}
-	
-	.u-card-wrap { 
-		background-color: $u-bg-color;
-		padding: 1px;
+
+	.content-main .search-btn {
+		width: 200rpx;
+		height: 71rpx;
+		background-color: #dd6161;
+		color: #ffffff;
+		position: absolute;
+		top: 0rpx;
+		right: 39rpx;
 	}
-	
-	.u-body-item {
-		font-size: 32rpx;
-		color: #333;
-		padding: 20rpx 10rpx;
+
+	.content-main .stickt {
+		width: 100%;
+		height: auto;
+		background-color: #ffffff;
+	}
+
+	.content-main swiper {
+		height: 100vh;
+	}
+
+	.topic .topic-content {
+		width: 100%;
+		margin: 0 auto;
+		display: flex;
+		justify-content: flex-start;
+		padding-left: 10upx;
+		flex-wrap: nowrap;
+	}
+
+	.topic-content .topic-item {
+		width: 25%;
+		margin-right: 20upx;
+		margin-top: 25upx;
+		text-align: center;
+	}
+
+	.topic-content .topic-item image {
+		width: 100%;
+	}
+
+	.topic-content .topic-item text {
+		font-size: 20upx;
+		color: #606266;
+		margin-top: 15upx;
+	}
+
+	.wrap {
+		margin-top: 20upx;
+	}
+
+	.wrap .water {
+		border-radius: 8px;
+		margin: 0 15upx 15upx 15upx;
+		/* padding: 8px; */
+		position: relative;
+		background-color: #ffffff;
+	}
+
+	.water .content-title {
+		font-size: 30rpx;
+		margin-top: 10upx;
+		margin-left: 10upx;
+		font-weight: bolder;
+	}
+
+	.water .content-info {
+		margin-top: 10upx;
+		display: flex;
+		justify-content: space-between;
+		flex-flow: row nowrap;
+		padding: 10upx;
+	}
+
+	.content-info .content-author {
+		font-size: 25upx;
+
+		color: rgb(112, 113, 114);
+	}
+
+	.content-info .content-like {
+		font-size: 25upx;
+	}
+
+	.content {
+		width: 100%;
+	}
+
+	.content .content-item {
+		width: 100%;
+	}
+
+	.content-item .content-header {
+		margin-left: 30upx;
+		display: flex;
+		justify-content: flex-start;
+	}
+
+	.content-header .content-authorinfo {
+		margin-top: 5upx;
+		margin-left: 20upx;
+		display: flex;
 		flex-direction: column;
 	}
-		
-	.u-body-item image {
-		width: 120rpx;
-		flex: 0 0 120rpx;
-		height: 120rpx;
-		border-radius: 8rpx;
-		margin-left: 12rpx;
+
+	.content-header .content-authorinfo .content-user {
+		font-size: 30upx;
 	}
-	
-	.u-body-item .map{
-		text-align: center;
-		width: 95%;
+
+	.content-header .content-authorinfo .content-level {
+		font-size: 25upx;
+		color: #82848a;
 	}
-	
-	.u-body-item .map map{
-		text-align: center;
-		width: 95%;
+
+	.content-item .content-text {
+		width: 90%;
+		margin: 0 auto;
+		margin-top: 10upx;
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
-	.more{
-		float: right;
-		text-align: right;
-		padding-right: 10rpx;
-	}
-	.tags{
-		margin-right: 20rpx;
-	}
-	.pickers{
-		height: 80rpx;
+
+	.content-item .content-imgs {
+		width: 90%;
+		margin: 0 auto;
+		margin-top: 10upx;
+		height: 202upx;
 		display: flex;
+		justify-content: space-between;
 		flex-direction: row;
+		flex-wrap: wrap;
 	}
-	.pickers-text{
-		margin-top: 20rpx;
-		margin-left: 60rpx;
-		color: #C8C9CC;
+
+	.content-imgs .content-img {
+		width: 30%;
+		height: 200upx;
 	}
-	.areabutton{
-		font-size: 30rpx;
-		margin-left: 300rpx;
-		margin-top: 20rpx;
+
+	.content-item .content-imgs::after {
+		content: '';
+		width: 30%;
 	}
-	.search{
-		background-color: #FFFFFF;
+
+	.content-item .content-time {
+		width: 90%;
+		margin: 0 auto;
+		margin-top: 10upx;
+		text-align: right;
+		font-size: 25upx;
+		color: #909399;
+	}
+
+	.content-item .content-comment {
+		width: 100%;
+		margin-top: 10upx;
+		padding: 10upx 40upx;
+		background-color: rgb(245, 250, 250);
+	}
+
+	.content-comment .comment-item {
+		display: flex;
+	}
+
+	.comment-item .comment-user {
+		font-size: 25upx;
+		color: #2b85e4;
+		font-weight: bold;
+	}
+
+	.comment-item .comment-text {
+		flex: 1;
+		word-break: break-all;
+		margin-left: 10upx;
+		font-size: 25upx;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 </style>

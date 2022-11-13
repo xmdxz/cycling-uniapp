@@ -2,7 +2,7 @@
 	<view>
 		<view style="margin-top: 30rpx;">
 			<u-empty text="收藏列表为空" :show="collect.list.length == 0" mode="list"></u-empty>
-			<view v-for="(item, index) in collect.list" :key="index" @click="toDynamic(item.id)">
+			<view v-for="(item, index) in collect.list" :key="index" @click="toDetail(item.id)">
 				<view class="content">
 					<view class="content-image">
 						<image class="img-item" mode="widthFix"
@@ -58,6 +58,10 @@
 			}
 		},
 		methods: {
+			toDetail(id){
+				console.log(id)
+				this.$router.push({name:"dynamicdetail",params:{id:id}})
+			},
 			async loadmore(){
 				await this.getList()
 			},

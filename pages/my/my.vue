@@ -324,6 +324,9 @@
 			this.tabBarList = this.$u.getTabList();
 		},
 		methods: {
+			issue(){
+				this.$Router.push({name:"publicdynamic"})
+			},
 			hrefSort(item) {
 				this.$router.push({
 					name: "order",

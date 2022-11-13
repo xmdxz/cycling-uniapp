@@ -4,9 +4,35 @@
 // 此处第二个参数vm，就是我们在页面使用的this，你可以通过vm获取vuex等操作，更多内容详见uView对拦截器的介绍部分：
 // https://uviewui.com/js/http.html#%E4%BD%95%E8%B0%93%E8%AF%B7%E6%B1%82%E6%8B%A6%E6%88%AA%EF%BC%9F
 const install = (Vue, vm) => {
-
+	let publishGoods = (params = {}) => vm.$u.post("/goods/publish",params)
 	//用户登录
 	let userLogin = (params = {}) => vm.$u.post("/login/phone", params)
+	
+	let dynamicPage = (params = {}) => vm.$u.get("/dynamic/page",params)
+	
+	let publishDynamic = (params = {}) => vm.$u.post("/dynamic/publish",params)
+	
+	let isCollect = (params = {}) => vm.$u.get("/user/isCollect",params)
+	
+	let collectSave = (params = {}) => vm.$u.get("/user/save/collect",params)
+	
+	let cancelCollect = (params = {}) => vm.$u.get("/user/cancel/collect",params)
+	
+	let collectDySave = (params = {}) => vm.$u.get("/user/save/dyCollect",params)
+	
+	let cancelDyCollect = (params = {}) => vm.$u.get("/user/cancel/dyCollect",params)
+	
+	let publishPrice = (params = {}) => vm.$u.get("/user/publishPrice",params)
+	
+	let publishComment = (params = {}) => vm.$u.post("/user/comment",params)
+	
+	let goodsDetail = (params = {}) => vm.$u.get("/goods/detail",params)
+	
+	let commentList = (params = {}) => vm.$u.get("/comment",params)
+	
+	let priceList  = (params = {}) => vm.$u.get("/publishPrice",params)
+	
+	let goodsPage = (params = {}) => vm.$u.get("/goods/page",params)
 	
 	let deleteData = (params = {}) => vm.$u.get("/user/delete",params)
 	
@@ -115,6 +141,21 @@ const install = (Vue, vm) => {
 		userOrder,
 		userPublish,
 		deleteData,
+		goodsPage,
+		goodsDetail,
+		commentList,
+		collectSave,
+		cancelCollect,
+		publishPrice,
+		isCollect,
+		publishComment,
+		priceList,
+		publishGoods,
+		publishDynamic,
+		dynamicPage,
+		cancelDyCollect,
+		collectDySave,
+		
 		
 		
 		

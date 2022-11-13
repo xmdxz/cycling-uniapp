@@ -2,11 +2,11 @@
 	<view>
 		<u-mask :show="show" @click="toBack()">
 			<view class="public-mask">
-				<view class="public-dynamic" @click="toPublicDynamic()">
-					发布动态
+				<view class="public-dynamic" @click.stop="toPublicDynamic()">
+					发布商品
 				</view>
-				<view class="public-activity">
-					发布活动
+				<view class="public-activity" @click.stop="toPublicAcDynamic()">
+					发布帖子
 				</view>
 			</view>
 		</u-mask>
@@ -29,6 +29,11 @@
 			toPublicDynamic(){
 				uni.redirectTo({
 					url: './publicdynamic'
+				})
+			},
+			toPublicAcDynamic(){
+				uni.navigateTo({
+					url:"/pages/activity/addactivity"
 				})
 			}
 		}

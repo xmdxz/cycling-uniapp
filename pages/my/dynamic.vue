@@ -1,30 +1,17 @@
 <template>
 	<view style="margin-top: 30rpx">
 		<u-empty text="收藏帖子列表为空" :show="data.length == 0" mode="list"></u-empty>
-		<customWaterfallsFlow ref="waterfallsFlowRef" @imageClick="showImage" :value="show">
-			<!-- #ifdef MP-WEIXIN -->
-			<view class="item" v-for="(item,index) in data" :key="index" slot="slot{{index}}">
+		<customWaterfallsFlow ref="waterfallsFlowRef" @imageClick="showImage" :value="data">
+			<template v-slot:default="item">
 				<view class="content">
-					<view class="text">{{ item.mark || ''}}</view>
+					<view class="text">{{ item.content || ''}}</view>
 					<view class="user">
 						<u-avatar class="avatar" :src="!item.userInfo.avatar ?'../../static/img/noLoginAvatar.png':filters['appendUrlPrefix'](item.userInfo.avatar)" size="45"></u-avatar>
 						<view class="shop-name">{{item.userInfo.username}}</view>
 					</view>
 				</view>
 				<!--      <view class="desc">{{ item.desc }}</view>-->
-			</view>
-			<!-- #endif -->
-			<!-- #ifndef MP-WEIXIN -->
-			<template v-slot:default="item">
-				<view class="content">
-					<view class="text">{{ item.mark || ''}}</view>
-					<view class="user">
-						<u-avatar class="avatar" :src="!item.userInfo.avatar ?'../../static/img/noLoginAvatar.png':filters['appendUrlPrefix'](item.userInfo.avatar)" size="45"></u-avatar>
-						<view class="shop-name">{{item.userInfo.username}}</view>
-					</view>
-				</view>
 			</template>
-			<!-- #endif -->
 		</customWaterfallsFlow>
 		<u-toast ref="uToast"></u-toast>
 		<u-loadmore @loadmore="loadMore" :status="load.status" loadingIcon="semicircle" />
@@ -60,10 +47,8 @@
 					} else {
 						this.load.status = 'nomore'
 					}
-					this.show = newL.map(e => {
-						let obj = {}
-						obj.image = e.images == null || e.images.length == 0 ? null : this.filters['appendUrlPrefix'](e.images[0])
-						return obj
+					newL.forEach(e => {
+						e.image = e.images == null || e.images.length == 0 ? null : this.filters['appendUrlPrefix'](e.images[0])
 					})
 				}
 			}

@@ -7,8 +7,8 @@
 	"pages": [{
 			"path": "pages/dynamic/index",
 			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"navigationBarTitleText": "闲鱼",
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -115,14 +115,14 @@
 		{
 			"path": "pages/activity/index",
 			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"navigationBarTitleText": "会玩",
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/activity/addactivity",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "发布动态",
 				"enablePullDownRefresh": false
 			}
 		},
