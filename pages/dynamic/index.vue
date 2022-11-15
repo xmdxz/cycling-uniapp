@@ -101,7 +101,7 @@
 		data() {
 			return {
 				imgList: ['/static/img/1.jpg', '/static/img/2.jpg', '/static/img/3.jpg'],
-				textList: ['最新通知:发布动态需要遵守社区规定,不得发布违法违规内容'],
+				textList: ['最新通知:发布商品需要遵守社区规定,不得发布违法违规内容'],
 				flowList: [],
 				swiperCurrent: 0,
 				src: '/static/img/topicimg.jpg',
@@ -137,11 +137,22 @@
 			this.addRandomData();
 			uni.stopPullDownRefresh()
 		},
-		onShow() {
-			
+		async onShow() {
+			let notice = await this.$u.api.noticeList({
+				type:"GOODS"
+			})
+			if(notice && notice.length > 0){
+				this.textList = notice
+			}
+			let images = await this.$u.api.imagesList()
+			if(images != null && images.length > 1){
+				this.imgList = images.map(e => {
+					return this.filters['appendUrlPrefix'](e.image)
+				})
+			}
 		},
 		onHide() {
-			
+
 		},
 		// onReachBottom() {
 		// 	this.loadStatus = 'loading'

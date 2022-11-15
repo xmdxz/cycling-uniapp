@@ -8,9 +8,13 @@ const install = (Vue, vm) => {
 	//用户登录
 	let userLogin = (params = {}) => vm.$u.post("/login/phone", params)
 	
+	let imagesList = (params = {}) => vm.$u.get("/index/images",params)
+	
 	let dynamicPage = (params = {}) => vm.$u.get("/dynamic/page",params)
 	
 	let publishDynamic = (params = {}) => vm.$u.post("/dynamic/publish",params)
+	
+	let noticeList = (params = {}) => vm.$u.get("/notice/list",params)
 	
 	let isCollect = (params = {}) => vm.$u.get("/user/isCollect",params)
 	
@@ -163,8 +167,8 @@ const install = (Vue, vm) => {
 		dynamicPage,
 		cancelDyCollect,
 		collectDySave,
-		
-		
+		noticeList,
+		imagesList,
 		
 		
 		getCode,

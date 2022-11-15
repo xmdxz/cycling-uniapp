@@ -123,9 +123,10 @@
 				}
 			}
 		},
-		onLoad() {
+		async onLoad() {
 			this.addRandomData();
 			this.tabBarList = store.state.vuex_tabbar;
+
 		},
 		onPullDownRefresh() {
 			this.page.current = 1
@@ -134,11 +135,16 @@
 			this.addRandomData();
 			uni.stopPullDownRefresh()
 		},
-		onShow() {
-			
+		async onShow() {
+			let notice = await this.$u.api.noticeList({
+				type:"DYNAMIC"
+			})
+			if(notice && notice.length > 0){
+				this.textList = notice
+			}
 		},
 		onHide() {
-			
+
 		},
 		// onReachBottom() {
 		// 	this.loadStatus = 'loading'
