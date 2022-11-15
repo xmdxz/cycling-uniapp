@@ -47,13 +47,6 @@ export default {
 	mounted() {
 		let receiver = this.$Route.query.receiver;
 		this.goodsId = this.$Route.query.goodsId;
-		if(receiver == null || receiver == '' || typeof receiver == "undefined"){
-			uni.showToast({
-				title:"非法！"
-			})
-			uni.navigateBack()
-			return
-		}
 		// if(receiveId == null || typeof receiveId == "undefined" || parseInt(receiveId) < 0){
 		// 	uni.navigateBack()
 		// 	return
@@ -97,7 +90,8 @@ export default {
 					that.talkList.push(sMsg)
 				}
 			}
-		}
+		},
+		
 	},
 	methods: {
 		// 获取历史消息
@@ -258,8 +252,17 @@ export default {
 				}, 400);
 			}
 			uni.hideLoading();
-		}
-	}
+		},
+	},
+	activated(){
+		this.goodsId = this.$Route.query.goodsId;
+		let result = this.$u.api.chatList({
+			goodsId: this.goodsId
+		});
+		result.then((res) =>{
+			this.talkList = res;
+		})
+	},
 };
 </script>	
 

@@ -92,7 +92,7 @@ const router = createRouter({
 		{
 			path:'/pages/my/notice',
 			name:'notice'
-		}
+		},
 	]
 });
 const needTokenPages = [

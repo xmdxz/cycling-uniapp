@@ -136,6 +136,8 @@ const install = (Vue, vm) => {
 	
 	let chatList = (params = {}) => vm.$u.get("/chat/chatList/"+params.goodsId)
 	
+	let allChatList = (params = {}) => vm.$u.get("/chat/chatList",params)
+	
 	// 将各个定义的接口名称，统一放进对象挂载到vm.$u.api(因为vm就是this，也即this.$u.api)下
 	vm.$u.api = {
 		userLogin,
@@ -194,6 +196,7 @@ const install = (Vue, vm) => {
 		insertChat,
 		chatList,
 		buy,
+		allChatList,
 	};
 }
 
