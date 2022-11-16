@@ -18,7 +18,7 @@
 								:src="!item.userInfo.avatar ?'../../static/img/noLoginAvatar.png':filters['appendUrlPrefix'](item.userInfo.avatar)"
 								size="50"></u-avatar>
 							<text>{{ item.userInfo.username }}</text>
-							<u-button style="float: right;margin-right: 30rpx;" shape="circle" size="mini" >我想要</u-button>
+							<u-button style="float: right;margin-right: 30rpx;" @click="cancelCollect(item.id,index)" shape="circle" size="mini" >取消收藏</u-button>
 						</view>
 					</view>
 				</view>
@@ -58,8 +58,14 @@
 			}
 		},
 		methods: {
+			async cancelCollect(id,index){
+				let result = await this.$u.api.cancelCollect({
+					id: id,
+					userId: this.$u.getUserId(),
+				})
+				this.collect.list.splice(index,1)
+			},
 			toDetail(id){
-				console.log(id)
 				this.$router.push({name:"dynamicdetail",params:{id:id}})
 			},
 			async loadmore(){

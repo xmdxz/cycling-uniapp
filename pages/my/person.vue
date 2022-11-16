@@ -11,6 +11,8 @@
 		</u-cell-group>
 		<view class="btn-box flex align-center justify-center"><button class="cu-btn confirem-btn"
 				@tap="editUserInfo">保存</button></view>
+				<view class="btn-box flex align-center justify-center"><button class="cu-btn confirem-btn"
+						@tap="logout()">退出登录</button></view>
 		<view class="cu-modal" :class="modal?'show':''">
 			<view style="background-color: white;" class="cu-dialog">
 				<view class="cu-bar bg-white justify-end">
@@ -78,6 +80,10 @@
 			};
 		},
 		methods: {
+			logout(){
+				this.$u.logout()
+				this.$Router.replace({name:"login"})
+			},
 			async editUserInfo(){
 				let result = await this.$u.api.updateInfo(this.info)
 				if(result){

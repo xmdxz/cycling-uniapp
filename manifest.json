@@ -148,7 +148,7 @@
                 "enable" : false
             }
         },
-        "title" : "uView UI",
+        "title" : "数码二手交易",
         "sdkConfigs" : {
             "maps" : {
                 "qqmap" : {

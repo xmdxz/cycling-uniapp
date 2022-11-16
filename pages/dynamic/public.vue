@@ -1,15 +1,7 @@
 <template>
 	<view>
-		<u-mask :show="show" @click="toBack()">
-			<view class="public-mask">
-				<view class="public-dynamic" @click.stop="toPublicDynamic()">
-					发布商品
-				</view>
-				<view class="public-activity" @click.stop="toPublicAcDynamic()">
-					发布帖子
-				</view>
-			</view>
-		</u-mask>
+		<u-action-sheet :list="list" :mask-close-able="false" @close="toBack()" @click="to" v-model="show">
+		</u-action-sheet>
 	</view>
 </template>
 
@@ -17,23 +9,47 @@
 	export default {
 		data() {
 			return {
-				show: true
+				show: false,
+				list: [{
+					text: '发布商品',
+					color: 'black',
+					fontSize: 50,
+					subText: '30s发布宝贝'
+				}, {
+					text: '发布动态',
+					color: 'blue',
+					fontSize: 50,
+					subText: '让更多人看见你'
+				}],
 			}
 		},
+		onLoad() {
+			this.show = true
+		},
+		onShow() {
+			this.show = true
+		},
 		methods: {
+			to(index) {
+				if (index == 0) {
+					this.toPublicDynamic()
+				} else {
+					this.toPublicAcDynamic()
+				}
+			},
 			toBack() {
 				uni.switchTab({
 					url: './index'
 				})
 			},
-			toPublicDynamic(){
+			toPublicDynamic() {
 				uni.redirectTo({
 					url: './publicdynamic'
 				})
 			},
-			toPublicAcDynamic(){
+			toPublicAcDynamic() {
 				uni.navigateTo({
-					url:"/pages/activity/addactivity"
+					url: "/pages/activity/addactivity"
 				})
 			}
 		}
@@ -67,5 +83,4 @@
 		justify-content: center;
 		font-size: 50rpx;
 	}
-	
 </style>

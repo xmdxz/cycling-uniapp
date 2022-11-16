@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<!-- <u-navbar back-text="返回" title="发布动态" :is-back="true" :custom-back="toBackPage"></u-navbar> -->
+		<u-navbar back-text="返回" title="发布动态" :is-back="true" :custom-back="toBackPage"></u-navbar>
 		<view class="public-content">
 			<view class="content">
 				<u-input type="textarea" v-model="content" placeholder="描述一下动态吧" maxlength="500" :clearable="false"

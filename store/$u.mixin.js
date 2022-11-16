@@ -22,7 +22,9 @@ module.exports = {
 				value
 			})
 		}
-		
+		this.$u.logout = () => {
+			this.$store.commit('logout')
+		}
 		this.$u.getUserId = () => {
 			return this.$store.getters.id
 		}
